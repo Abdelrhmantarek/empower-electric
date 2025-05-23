@@ -1,6 +1,5 @@
 import { ReactNode, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import LoaderScreen from "./LoaderScreen";
 
 interface PageTransitionProps {
   children: ReactNode;
@@ -8,11 +7,10 @@ interface PageTransitionProps {
 
 export default function PageTransition({ children }: PageTransitionProps) {
   const location = useLocation();
-  const [isLoading, setIsLoading] = useState(false);
   const [displayLocation, setDisplayLocation] = useState(location);
   const [transitionStage, setTransitionStage] = useState("fadeIn");
 
-  // Store scroll position for each route
+  // Navigation handler
   useEffect(() => {
     // Save current scroll position when leaving a page
     const currentPath = displayLocation.pathname;
@@ -23,40 +21,19 @@ export default function PageTransition({ children }: PageTransitionProps) {
 
     if (location.pathname !== displayLocation.pathname) {
       setTransitionStage("fadeOut");
-      setIsLoading(true);
 
       // After fadeOut completes, update the location
       const timeout = setTimeout(() => {
         setDisplayLocation(location);
         setTransitionStage("fadeIn");
 
-        // Show loader briefly
-        setTimeout(() => {
-          setIsLoading(false);
-
-          // Restore scroll position after content loads
-          const nextPath = location.pathname;
-          const savedScrollPos = sessionStorage.getItem(
-            `scrollPos-${nextPath}`
-          );
-
-          if (savedScrollPos) {
-            setTimeout(() => {
-              window.scrollTo(0, parseInt(savedScrollPos));
-            }, 100);
-          } else {
-            window.scrollTo(0, 0); // Default to top for new pages
-          }
-        }, 600);
-      }, 300);
+        // Always scroll to top on navigation
+        window.scrollTo(0, 0);
+      }, 300); // Fade-out duration
 
       return () => clearTimeout(timeout);
     }
   }, [location, displayLocation]);
-
-  if (isLoading) {
-    return <LoaderScreen />;
-  }
 
   return (
     <div

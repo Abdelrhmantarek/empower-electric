@@ -1,8 +1,12 @@
 
 import Layout from "@/components/Layout";
 import { Link } from "react-router-dom";
+import { useEffect } from 'react';
 
 const About = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scrolls to the top when the component mounts
+  }, []);
   return (
     <Layout>
       <div className="section-container">
@@ -30,7 +34,7 @@ const About = () => {
           </div>
           <div className="relative h-[400px] rounded-xl overflow-hidden">
             <img
-              src="https://images.unsplash.com/photo-1553260168-69f3c017f5bd?q=80&w=1974&auto=format&fit=crop"
+              src="../../assets/about/mission.png"
               alt="Empower EV Team"
               className="w-full h-full object-cover"
             />

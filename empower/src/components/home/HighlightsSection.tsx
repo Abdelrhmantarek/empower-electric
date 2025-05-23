@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const carHighlights = [
   {
-    id: 1,
+    id: "aion-v-plus",
     name: "AION V Plus",
     subtitle: "Premium SUV",
     image: "../../../assets/cars/aion-tiny.jpg",
@@ -21,7 +21,7 @@ const carHighlights = [
     price: "$79,900",
   },
   {
-    id: 2,
+    id: "hyptec-gt",
     name: "Hyptec - GT",
     subtitle: "Sports Sedan",
     image: "../../../assets/cars/hyptec.png",
@@ -36,7 +36,7 @@ const carHighlights = [
     price: "$115,000",
   },
   {
-    id: 3,
+    id: "gs3",
     name: "GS3",
     subtitle: "Compact Urban EV",
     image: "../../../assets/cars/gs3.jpeg",
@@ -142,8 +142,9 @@ export default function HighlightsSection() {
                 const isVisible = isActive || isPrev || isNext;
 
                 return (
-                  <div
+                  <Link
                     key={car.id}
+                    to={`/inventory/${car.id}`}
                     className={cn(
                       "absolute transition-all duration-800 ease-out cursor-pointer perspective",
                       isActive && "z-30 transform scale-100",
@@ -154,7 +155,13 @@ export default function HighlightsSection() {
                       !isVisible &&
                         "z-10 transform scale-50 opacity-0 pointer-events-none"
                     )}
-                    onClick={() => handleCardClick(index)}
+                    onClick={(e) => {
+                      // Only trigger carousel navigation for non-active cards
+                      if (!isActive) {
+                        e.preventDefault(); // Prevent Link navigation
+                        handleCardClick(index);
+                      }
+                    }}
                     style={{
                       transform: isActive
                         ? `
@@ -227,13 +234,10 @@ export default function HighlightsSection() {
                               className="flex justify-between items-center animate-fade-in"
                               style={{ animationDelay: "0.3s" }}
                             >
-                              <Link
-                                className="button-primary group"
-                                to={`/inventory/${car.id}`}
-                              >
+                              <span className="button-primary group inline-flex items-center">
                                 View Details
                                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                              </Link>
+                              </span>
                               <div className="text-right">
                                 <p className="text-2xl font-bold text-foreground">
                                   {car.price}
@@ -257,7 +261,7 @@ export default function HighlightsSection() {
                         ></div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
