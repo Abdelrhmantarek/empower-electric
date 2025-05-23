@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { useLanguage } from "../Layout";
+import video from "../../../public/hero/hero-video.mp4";
 
 const translations = {
   en: {
@@ -36,7 +37,7 @@ export default function HeroSection() {
           className="w-full h-full object-cover"
         >
           <source 
-            src="../../../public/hero/hero-video.mp4" 
+            src={video}
             type="video/mp4" 
           />
           Your browser does not support the video tag.

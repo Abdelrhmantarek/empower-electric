@@ -3,13 +3,14 @@ import { ChevronRight, ChevronLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import aionImage from "../../../public/cars/aion-tiny.jpg";
 
 const carHighlights = [
   {
     id: "aion-v-plus",
     name: "AION V Plus",
     subtitle: "Premium SUV",
-    image: "../../../public/cars/aion-tiny.jpg",
+    image: aionImage,
     description:
       "The future of electric SUVs with up to 400 miles of range and advanced AI assistance.",
     specs: {
