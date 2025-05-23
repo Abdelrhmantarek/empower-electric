@@ -36,7 +36,7 @@ export default function HeroSection() {
           className="w-full h-full object-cover"
         >
           <source 
-            src="../../../assets/hero/hero-video.mp4" 
+            src="../../../public/hero/hero-video.mp4" 
             type="video/mp4" 
           />
           Your browser does not support the video tag.

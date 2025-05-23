@@ -9,7 +9,7 @@ const carHighlights = [
     id: "aion-v-plus",
     name: "AION V Plus",
     subtitle: "Premium SUV",
-    image: "../../../assets/cars/aion-tiny.jpg",
+    image: "../../../public/cars/aion-tiny.jpg",
     description:
       "The future of electric SUVs with up to 400 miles of range and advanced AI assistance.",
     specs: {
