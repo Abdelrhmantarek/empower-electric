@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ChevronRight, ChevronLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 const carHighlights = [
   {
@@ -38,8 +39,7 @@ const carHighlights = [
     id: 3,
     name: "GS3",
     subtitle: "Compact Urban EV",
-    image:
-      "../../../assets/cars/gs3.jpeg",
+    image: "../../../assets/cars/gs3.jpeg",
     description:
       "Compact urban electric vehicle with smart features and surprising interior space.",
     specs: {
@@ -227,10 +227,13 @@ export default function HighlightsSection() {
                               className="flex justify-between items-center animate-fade-in"
                               style={{ animationDelay: "0.3s" }}
                             >
-                              <Button className="button-primary group">
-                                Order Now
+                              <Link
+                                className="button-primary group"
+                                to={`/inventory/${car.id}`}
+                              >
+                                View Details
                                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                              </Button>
+                              </Link>
                               <div className="text-right">
                                 <p className="text-2xl font-bold text-foreground">
                                   {car.price}

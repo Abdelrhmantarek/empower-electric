@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { Grid, List } from "lucide-react";
 import { useLanguage } from "@/components/Layout";
 import { motion } from "framer-motion";
-
+import QuoteModal from "@/components/inventory/QuoteModal";
 
 const translations = {
   en: {
@@ -44,6 +44,8 @@ const Inventory = () => {
   const { language } = useLanguage();
   const t = translations[language];
   const isRtl = language === "ar";
+  // Update
+  const [selectedCarForQuote, setSelectedCarForQuote] = useState<Car | null>(null);
 
   const applyFilters = (filters: any, sort: string, search: string) => {
     let result = [...cars];
@@ -321,7 +323,10 @@ const Inventory = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <CarCard car={car} />
+                <CarCard 
+                  car={car} 
+                  onRequestQuote={() => setSelectedCarForQuote(car)}
+                />
               </motion.div>
             ))}
           </div>
@@ -340,6 +345,14 @@ const Inventory = () => {
           </Link>
         </motion.div>
       </div>
+      {/* 4. Add the QuoteModal at the bottom */}
+      {selectedCarForQuote && (
+        <QuoteModal
+          car={selectedCarForQuote}
+          isOpen={!!selectedCarForQuote}
+          onClose={() => setSelectedCarForQuote(null)}
+        />
+      )}
     </Layout>
   );
 };

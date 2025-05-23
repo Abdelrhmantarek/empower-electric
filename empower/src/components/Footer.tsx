@@ -164,8 +164,8 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-
-            <h3 className="text-lg font-semibold pt-2 relative inline-block">
+            {/* EV-Services */}
+            {/* <h3 className="text-lg font-semibold pt-2 relative inline-block">
               {t.evServices}
               <span className="absolute -bottom-1 left-0 right-0 h-1 bg-ev-accent/80"></span>
             </h3>
@@ -194,7 +194,8 @@ export default function Footer() {
                   <span>{t.homeChargerInstall}</span>
                 </a>
               </li>
-            </ul>
+            </ul> */}
+            {/* EV-Services */}
           </div>
 
           {/* Column 3: Contact Info */}
@@ -222,13 +223,13 @@ export default function Footer() {
               </li>
             </ul>
 
-            <iframe 
+            {/* <iframe 
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.3059353029!2d-74.25986548248684!3d40.69714941512199!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1652813333306!5m2!1sen!2s" 
               className="w-full h-32 rounded-lg mt-4 opacity-80 hover:opacity-100 transition-opacity duration-300" 
               allowFullScreen 
               loading="lazy" 
               title="Map"
-            />
+            /> */}
           </div>
 
           {/* Column 4: Newsletter & Business Hours */}
@@ -251,7 +252,7 @@ export default function Footer() {
               </button>
             </div>
 
-            <h3 className="text-lg font-semibold pt-4 relative inline-block">
+            {/* <h3 className="text-lg font-semibold pt-4 relative inline-block">
               {t.businessHours}
               <span className="absolute -bottom-1 left-0 right-0 h-1 bg-ev-accent/80"></span>
             </h3>
@@ -268,7 +269,7 @@ export default function Footer() {
                 <span className="text-gray-300">{t.sunday}:</span>
                 <span className="text-white">{t.sundayHours}</span>
               </li>
-            </ul>
+            </ul> */}
           </div>
         </div>
 

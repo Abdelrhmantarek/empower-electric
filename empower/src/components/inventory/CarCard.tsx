@@ -7,6 +7,7 @@ import { useLanguage } from "../Layout";
 
 interface CarCardProps {
   car: Car;
+  onRequestQuote: () => void; // Add this line
 }
 
 const translations = {
@@ -24,7 +25,7 @@ const translations = {
   }
 };
 
-export default function CarCard({ car }: CarCardProps) {
+export default function CarCard({ car, onRequestQuote }: CarCardProps) {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const { language } = useLanguage();
   const t = translations[language];
@@ -84,7 +85,8 @@ export default function CarCard({ car }: CarCardProps) {
             {/* Request a Quote Modal */}
             <button 
               className="button-secondary text-sm py-2.5 group-hover:bg-ev-blue group-hover:text-white"
-              onClick={() => setIsQuoteModalOpen(true)}
+              onClick={onRequestQuote}  // Add this onClick handler
+              // onClick={() => setIsQuoteModalOpen(true)}
             >
               {t.requestQuote}
             </button>

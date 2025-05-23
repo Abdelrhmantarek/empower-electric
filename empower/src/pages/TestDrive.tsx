@@ -201,12 +201,12 @@ const TestDrive = () => {
 
   const handleNext = () => {
     setStep(step + 1);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 375, behavior: "smooth" });
   };
 
   const handlePrevious = () => {
     setStep(step - 1);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 375, behavior: "smooth" });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -335,7 +335,24 @@ const TestDrive = () => {
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
               <button
-                onClick={() => setIsSubmitted(false)}
+                onClick={() => {
+                  window.scrollTo({ top: 375, behavior: "smooth" });
+                  setIsSubmitted(false);
+                  setStep(1);
+                  setSelectedCar(null);
+                  setSelectedDate(null);
+                  setFormData({
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    phone: "",
+                    carModel: "",
+                    date: "",
+                    time: "",
+                    licenseFile: null,
+                    comments: "",
+                  });
+                }}
                 className="button-secondary"
               >
                 {t.scheduleAnother}

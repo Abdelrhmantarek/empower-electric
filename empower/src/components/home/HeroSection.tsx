@@ -25,7 +25,7 @@ export default function HeroSection() {
   const t = translations[language];
   
   return (
-    <section className="relative h-[100vh] min-h-[600px] overflow-hidden bg-ev-charcoal">
+    <section className="relative h-[85vh] min-h-[600px] overflow-hidden bg-ev-charcoal">
       {/* Hero Background Video */}
       <div className="absolute inset-0 z-0">
         <video 
@@ -35,14 +35,12 @@ export default function HeroSection() {
           playsInline
           className="w-full h-full object-cover"
         >
-          <source 
-            src="https://res.cloudinary.com/dgek0ocgh/video/upload/v1716307073/electric-car-video_iqtczp.mp4" 
+          {/* <source 
+            src="../../../assets/hero/hero-video.mp4" 
             type="video/mp4" 
-          />
+          /> */}
           Your browser does not support the video tag.
         </video>
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"></div>
       </div>
       
       {/* Hero Content */}
@@ -64,14 +62,14 @@ export default function HeroSection() {
             </Link>
           </div>
           {/* Animated Car */}
-          <div className="absolute bottom-16 right-0 transform translate-x-1/2 opacity-0 animate-slide-up" style={{ animationDelay: "0.8s", animationFillMode: "forwards" }}>
+          {/* <div className="absolute bottom-16 right-0 transform translate-x-1/2 opacity-0 animate-slide-up" style={{ animationDelay: "0.8s", animationFillMode: "forwards" }}>
             <div className="relative">
               <img src="https://res.cloudinary.com/dgek0ocgh/image/upload/v1716307076/electric-car-silhouette_oxxr0d.webp" alt="Electric Car" className="h-32 md:h-56 animate-float" />
               <div className="absolute inset-0 flex items-center">
                 <div className="h-3 w-24 bg-ev-accent/20 rounded-full blur-md animate-pulse"></div>
               </div>
             </div>
-          </div>
+          </div> */}
           {/* Scroll Indicator */}
           <div className="hidden md:block absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce-small">
             <div className="text-center text-white/70 text-xs mb-2">{t.scrollIndicator}</div>
