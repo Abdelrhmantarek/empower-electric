@@ -81,6 +81,7 @@ export default function CarCard({ car }: CarCardProps) {
             >
               {t.viewDetails}
             </Link>
+            {/* Request a Quote Modal */}
             <button 
               className="button-secondary text-sm py-2.5 group-hover:bg-ev-blue group-hover:text-white"
               onClick={() => setIsQuoteModalOpen(true)}

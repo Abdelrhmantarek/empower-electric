@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,12 +16,10 @@ import { AnimatePresence } from "framer-motion";
 // Wrapper component for page transitions with enhanced animation
 const PageTransitionWrapper = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
-  
+
   return (
     <AnimatePresence mode="wait">
-      <PageTransition key={location.pathname}>
-        {children}
-      </PageTransition>
+      <PageTransition key={location.pathname}>{children}</PageTransition>
     </AnimatePresence>
   );
 };
@@ -36,41 +33,62 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={
-            <PageTransitionWrapper>
-              <Index />
-            </PageTransitionWrapper>
-          } />
-          <Route path="/inventory" element={
-            <PageTransitionWrapper>
-              <Inventory />
-            </PageTransitionWrapper>
-          } />
-          <Route path="/inventory/:id" element={
-            <PageTransitionWrapper>
-              <CarDetail />
-            </PageTransitionWrapper>
-          } />
-          <Route path="/test-drive" element={
-            <PageTransitionWrapper>
-              <TestDrive />
-            </PageTransitionWrapper>
-          } />
-          <Route path="/about" element={
-            <PageTransitionWrapper>
-              <About />
-            </PageTransitionWrapper>
-          } />
-          <Route path="/contact" element={
-            <PageTransitionWrapper>
-              <Contact />
-            </PageTransitionWrapper>
-          } />
-          <Route path="*" element={
-            <PageTransitionWrapper>
-              <NotFound />
-            </PageTransitionWrapper>
-          } />
+          <Route
+            path="/"
+            element={
+              <PageTransitionWrapper>
+                <Index />
+              </PageTransitionWrapper>
+            }
+          />
+          <Route
+            path="/inventory"
+            element={
+              <PageTransitionWrapper>
+                <Inventory />
+              </PageTransitionWrapper>
+            }
+          />
+          <Route
+            path="/inventory/:id"
+            element={
+              <PageTransitionWrapper>
+                <CarDetail />
+              </PageTransitionWrapper>
+            }
+          />
+          <Route
+            path="/test-drive"
+            element={
+              <PageTransitionWrapper>
+                <TestDrive />
+              </PageTransitionWrapper>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <PageTransitionWrapper>
+                <About />
+              </PageTransitionWrapper>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <PageTransitionWrapper>
+                <Contact />
+              </PageTransitionWrapper>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <PageTransitionWrapper>
+                <NotFound />
+              </PageTransitionWrapper>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

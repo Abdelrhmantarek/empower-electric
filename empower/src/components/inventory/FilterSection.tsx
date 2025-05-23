@@ -1,11 +1,8 @@
-
-import { useState, useRef, useEffect } from "react";
-import { Filter, Search, Sliders, ChevronDown, XCircle, Check, ArrowUpDown } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Slider } from "@/components/ui/slider";
-import { Badge } from "@/components/ui/badge";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useLanguage } from "../Layout";
+import { SlidersHorizontal, X, Search } from "lucide-react";
+import { useLanguage } from "@/components/Layout";
+import { Car } from "@/data/cars";
 
 interface FilterSectionProps {
   onFilterChange: (filters: any) => void;
@@ -15,417 +12,500 @@ interface FilterSectionProps {
 
 const translations = {
   en: {
-    search: "Search for a vehicle...",
     filters: "Filters",
-    hideFilters: "Hide Filters",
-    sort: {
+    search: "Search Electric Vehicles...",
+    make: "Manufacturer",
+    model: "Model",
+    price: "Price Range ($)",
+    range: "Range (mi)",
+    color: "Color",
+    year: "Year",
+    battery: "Battery Capacity (kWh)",
+    charging: "Charging Speed (kW)",
+    drivetrain: "Drivetrain",
+    sortBy: "Sort By",
+    all: "All",
+    minPrice: "Min Price",
+    maxPrice: "Max Price",
+    minRange: "Min Range",
+    maxRange: "Max Range",
+    minBattery: "Min Battery",
+    maxBattery: "Max Battery",
+    minCharging: "Min Charging",
+    maxCharging: "Max Charging",
+    clearFilters: "Clear Filters",
+    applyFilters: "Apply Filters",
+    sortOptions: {
       featured: "Featured",
       priceLow: "Price: Low to High",
       priceHigh: "Price: High to Low",
-      newest: "Newest First"
+      rangeHigh: "Range: High to Low",
+      newest: "Newest First",
     },
-    priceRange: "Price Range",
-    min: "Min",
-    max: "Max",
-    year: "Year",
-    allYears: "All Years",
-    clearFilters: "Clear Filters",
-    apply: "Apply Filters",
-    activeFilters: "Active Filters",
-    sortBy: "Sort by"
+    drivetrainOptions: {
+      all: "All",
+      awd: "All-Wheel Drive",
+      rwd: "Rear-Wheel Drive",
+      fwd: "Front-Wheel Drive",
+    },
   },
   ar: {
-    search: "ابحث عن سيارة...",
     filters: "الفلاتر",
-    hideFilters: "إخفاء الفلاتر",
-    sort: {
-      featured: "مميز",
-      priceLow: "السعر: من الأقل للأعلى",
-      priceHigh: "السعر: من الأعلى للأقل",
-      newest: "الأحدث أولاً"
-    },
-    priceRange: "نطاق السعر",
-    min: "الحد الأدنى",
-    max: "الحد الأقصى",
+    search: "ابحث عن السيارات الكهربائية...",
+    make: "الصانع",
+    model: "الطراز",
+    price: "نطاق السعر ($)",
+    range: "المدى (كم)",
+    color: "اللون",
     year: "السنة",
-    allYears: "كل السنوات",
+    battery: "سعة البطارية (كيلوواط ساعة)",
+    charging: "سرعة الشحن (كيلوواط)",
+    drivetrain: "نظام الدفع",
+    sortBy: "ترتيب حسب",
+    all: "الكل",
+    minPrice: "الحد الأدنى للسعر",
+    maxPrice: "الحد الأقصى للسعر",
+    minRange: "الحد الأدنى للمدى",
+    maxRange: "الحد الأقصى للمدى",
+    minBattery: "الحد الأدنى للبطارية",
+    maxBattery: "الحد الأقصى للبطارية",
+    minCharging: "الحد الأدنى للشحن",
+    maxCharging: "الحد الأقصى للشحن",
     clearFilters: "مسح الفلاتر",
-    apply: "تطبيق الفلاتر",
-    activeFilters: "الفلاتر النشطة",
-    sortBy: "ترتيب حسب"
-  }
+    applyFilters: "تطبيق الفلاتر",
+    sortOptions: {
+      featured: "مميز",
+      priceLow: "السعر: من الأقل إلى الأعلى",
+      priceHigh: "السعر: من الأعلى إلى الأقل",
+      rangeHigh: "المدى: من الأعلى إلى الأقل",
+      newest: "الأحدث أولاً",
+    },
+    drivetrainOptions: {
+      all: "الكل",
+      awd: "الدفع الرباعي",
+      rwd: "الدفع الخلفي",
+      fwd: "الدفع الأمامي",
+    },
+  },
 };
 
-// Price range config
-const MIN_PRICE = 30000;
-const MAX_PRICE = 120000;
-
-export default function FilterSection({ 
-  onFilterChange, 
+const FilterSection: React.FC<FilterSectionProps> = ({
+  onFilterChange,
   onSortChange,
-  onSearchChange 
-}: FilterSectionProps) {
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [priceRange, setPriceRange] = useState([MIN_PRICE, MAX_PRICE]);
-  const [filters, setFilters] = useState({
-    priceMin: "",
-    priceMax: "",
-    year: "all"
-  });
-  const [sortOption, setSortOption] = useState("featured");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [activeFilters, setActiveFilters] = useState<string[]>([]);
-  const formRef = useRef<HTMLDivElement>(null);
+  onSearchChange,
+}) => {
   const { language } = useLanguage();
   const t = translations[language];
   const isRtl = language === "ar";
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    make: "all",
+    model: "all",
+    priceMin: "",
+    priceMax: "",
+    rangeMin: "",
+    rangeMax: "",
+    color: "all",
+    year: "all",
+    batteryMin: "",
+    batteryMax: "",
+    chargingMin: "",
+    chargingMax: "",
+    drivetrain: "all",
+  });
+  const [sort, setSort] = useState("featured");
+  const [search, setSearch] = useState("");
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat(language === 'ar' ? 'ar-SA' : 'en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0
-    }).format(price);
-  };
-  
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    const newFilters = { ...filters, [name]: value };
-    setFilters(newFilters);
-    updateActiveFilters(newFilters, priceRange);
+  // Sample data for filters (in a real app, this would come from cars data)
+  const makes = [
+    "all",
+    "Tesla",
+    "Rivian",
+    "Lucid",
+    "BMW",
+    "Mercedes",
+    "Porsche",
+    "Audi",
+  ];
+  const models = [
+    "all",
+    "Model S",
+    "Model 3",
+    "Model Y",
+    "R1T",
+    "Air",
+    "i4",
+    "Taycan",
+    "e-tron",
+  ];
+  const colors = [
+    "all",
+    "Black",
+    "White",
+    "Red",
+    "Blue",
+    "Silver",
+    "Green",
+    "Gray",
+  ];
+  const years = ["all", "2025", "2024", "2023", "2022", "2021", "2020"];
+  const drivetrains = ["all", "awd", "rwd", "fwd"];
+
+  useEffect(() => {
+    onFilterChange(filters);
+  }, [filters, onFilterChange]);
+
+  useEffect(() => {
+    onSortChange(sort);
+  }, [sort, onSortChange]);
+
+  useEffect(() => {
+    onSearchChange(search);
+  }, [search, onSearchChange]);
+
+  const handleFilterChange = (key: string, value: string) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSliderChange = (values: number[]) => {
-    setPriceRange(values);
-    const newFilters = { 
-      ...filters, 
-      priceMin: values[0].toString(), 
-      priceMax: values[1].toString() 
-    };
-    setFilters(newFilters);
-    updateActiveFilters(newFilters, values);
-  };
-  
-  const updateActiveFilters = (currentFilters: any, prices: number[]) => {
-    const newActiveFilters: string[] = [];
-    
-    // Add price range if it's not the default
-    if (prices[0] !== MIN_PRICE || prices[1] !== MAX_PRICE) {
-      newActiveFilters.push(`Price: ${formatPrice(prices[0])} - ${formatPrice(prices[1])}`);
-    }
-    
-    // Add year if selected
-    if (currentFilters.year && currentFilters.year !== "all") {
-      newActiveFilters.push(`Year: ${currentFilters.year}`);
-    }
-    
-    setActiveFilters(newActiveFilters);
-  };
-  
-  const applyFilters = () => {
-    const filtersToApply = {
-      ...filters,
-      priceMin: priceRange[0],
-      priceMax: priceRange[1]
-    };
-    onFilterChange(filtersToApply);
-  };
-  
-  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortOption(e.target.value);
-    onSortChange(e.target.value);
-  };
-  
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    onSearchChange(e.target.value);
-  };
-  
-  const clearFilters = () => {
+  const handleClearFilters = () => {
     setFilters({
+      make: "all",
+      model: "all",
       priceMin: "",
       priceMax: "",
-      year: "all"
+      rangeMin: "",
+      rangeMax: "",
+      color: "all",
+      year: "all",
+      batteryMin: "",
+      batteryMax: "",
+      chargingMin: "",
+      chargingMax: "",
+      drivetrain: "all",
     });
-    setPriceRange([MIN_PRICE, MAX_PRICE]);
-    setSortOption("featured");
-    setSearchTerm("");
-    setActiveFilters([]);
-    onFilterChange({});
-    onSortChange("featured");
-    onSearchChange("");
+    setSort("featured");
+    setSearch("");
   };
-  
+
+  const filterVariants = {
+    hidden: { opacity: 0, maxHeight: 0, overflow: "hidden" },
+    visible: { opacity: 1, maxHeight: 1000, overflow: "hidden" },
+    exit: { opacity: 0, maxHeight: 0, overflow: "hidden" },
+  };
+
+  const inputVariants = {
+    hover: { scale: 1.01, transition: { duration: 0.2 } },
+    focus: { scale: 1.01, boxShadow: "0 0 0 2px rgba(59, 130, 246, 0.3)" },
+  };
+
   return (
-    <div className="mb-8 space-y-6">
-      {/* Search & Filter Header */}
-      <motion.div 
-        className="bg-card rounded-xl shadow-lg border border-border/50 overflow-hidden"
+    <div className="mb-8">
+      <motion.div
+        className="flex items-center justify-between mb-6 space-x-4 rtl:space-x-reverse"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.3 }}
       >
-        <div className="p-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            {/* Search */}
-            <motion.div 
-              className="relative flex-grow"
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-            >
-              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <Search className="w-5 h-5 text-ev-blue" />
-              </div>
-              <input
-                type="text"
-                placeholder={t.search}
-                className={`w-full ps-12 pe-4 py-4 bg-muted/30 border-none rounded-xl focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-300 text-lg ${
-                  searchTerm ? "ring-2 ring-ev-blue" : ""
-                }`}
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
-              <AnimatePresence>
-                {searchTerm && (
-                  <motion.button
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    onClick={() => {
-                      setSearchTerm("");
-                      onSearchChange("");
-                    }}
-                    className="absolute inset-y-0 end-4 flex items-center text-muted-foreground hover:text-ev-blue transition-colors"
-                  >
-                    <XCircle className="w-5 h-5" />
-                  </motion.button>
-                )}
-              </AnimatePresence>
-            </motion.div>
-            
-            <div className="flex flex-wrap md:flex-nowrap gap-3">
-              {/* Sort */}
-              <motion.div 
-                className="relative flex-shrink-0 group w-full md:w-auto"
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4, delay: 0.2 }}
+        <div className="relative flex-1 max-w-md">
+          <Search className="absolute top-1/2 transform -translate-y-1/2 left-3 h-5 w-5 text-gray-400 dark:text-gray-500" />
+          <motion.input
+            type="text"
+            placeholder={t.search}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className={`w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200 ${
+              isRtl ? "text-right" : ""
+            }`}
+            variants={inputVariants}
+            whileHover="hover"
+            whileFocus="focus"
+          />
+        </div>
+        <motion.button
+          onClick={() => setIsFilterOpen(!isFilterOpen)}
+          className="flex items-center space-x-2 bg-ev-blue text-white px-5 py-3 rounded-xl hover:bg-ev-blue/90 transition-all duration-200 dark:bg-ev-blue/80 dark:hover:bg-ev-blue"
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+        >
+          <SlidersHorizontal className="h-5 w-5" />
+          <span>{t.filters}</span>
+        </motion.button>
+      </motion.div>
+
+      <AnimatePresence>
+        {isFilterOpen && (
+          <motion.div
+            variants={filterVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+            className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                {t.filters}
+              </h3>
+              <motion.button
+                onClick={() => setIsFilterOpen(false)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <div className="absolute inset-y-0 start-0 flex items-center ps-4 pointer-events-none text-ev-blue">
-                  <ArrowUpDown className="w-4 h-4" />
-                </div>
+                <X className="h-5 w-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200" />
+              </motion.button>
+            </div>
+
+            <div
+              className={`grid gap-6 ${
+                isRtl ? "text-right" : ""
+              } md:grid-cols-2 lg:grid-cols-4`}
+            >
+              {/* Make Filter */}
+              <motion.div variants={inputVariants} whileHover="hover">
+                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                  {t.make}
+                </label>
                 <select
-                  value={sortOption}
-                  onChange={handleSortChange}
-                  className={`w-full md:w-auto appearance-none ps-12 pe-10 py-4 bg-muted/30 border-none rounded-xl focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all text-base ${isRtl ? "text-right" : ""}`}
+                  value={filters.make}
+                  onChange={(e) => handleFilterChange("make", e.target.value)}
+                  className="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
                 >
-                  <option value="featured">{t.sort.featured}</option>
-                  <option value="price-low">{t.sort.priceLow}</option>
-                  <option value="price-high">{t.sort.priceHigh}</option>
-                  <option value="newest">{t.sort.newest}</option>
+                  {makes.map((make) => (
+                    <option key={make} value={make}>
+                      {make === "all" ? t.all : make}
+                    </option>
+                  ))}
                 </select>
-                <div className="absolute inset-y-0 end-0 flex items-center pe-4 pointer-events-none">
-                  <ChevronDown className="w-4 h-4" />
+              </motion.div>
+
+              {/* Model Filter */}
+              <motion.div variants={inputVariants} whileHover="hover">
+                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                  {t.model}
+                </label>
+                <select
+                  value={filters.model}
+                  onChange={(e) => handleFilterChange("model", e.target.value)}
+                  className="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
+                >
+                  {models.map((model) => (
+                    <option key={model} value={model}>
+                      {model === "all" ? t.all : model}
+                    </option>
+                  ))}
+                </select>
+              </motion.div>
+
+              {/* Price Range */}
+              <motion.div variants={inputVariants} whileHover="hover">
+                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                  {t.price}
+                </label>
+                <div className="flex space-x-3 rtl:space-x-reverse">
+                  <input
+                    type="number"
+                    placeholder={t.minPrice}
+                    value={filters.priceMin}
+                    onChange={(e) =>
+                      handleFilterChange("priceMin", e.target.value)
+                    }
+                    className="w-1/2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
+                  />
+                  <input
+                    type="number"
+                    placeholder={t.maxPrice}
+                    value={filters.priceMax}
+                    onChange={(e) =>
+                      handleFilterChange("priceMax", e.target.value)
+                    }
+                    className="w-1/2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
+                  />
                 </div>
               </motion.div>
-              
-              {/* Filter Popover */}
-              <Popover>
-                <PopoverTrigger asChild>
-                  <motion.button 
-                    className={`flex items-center gap-2 bg-ev-blue hover:bg-ev-blue-light text-white font-medium py-4 px-6 rounded-xl transition-all duration-300 w-full md:w-auto relative overflow-hidden ${isRtl ? "flex-row-reverse" : ""}`}
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.4, delay: 0.3 }}
-                    whileHover={{ 
-                      scale: 1.02,
-                      boxShadow: "0 4px 20px rgba(0, 98, 204, 0.2)" 
-                    }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Filter className="h-4 w-4" />
-                    {t.filters}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-ev-blue/0 via-white/20 to-ev-blue/0"
-                      initial={{ x: "-100%" }}
-                      animate={{ x: "100%" }}
-                      transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                    />
-                  </motion.button>
-                </PopoverTrigger>
-                <PopoverContent className="w-full md:w-[550px] p-6 animate-fade-in z-50 shadow-xl" align={isRtl ? "end" : "start"}>
-                  <motion.div 
-                    ref={formRef} 
-                    className="space-y-6"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="space-y-6">
-                      <motion.div 
-                        className="space-y-4"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: 0.1 }}
-                      >
-                        <h3 className={`font-semibold text-lg ${isRtl ? "text-right" : ""}`}>{t.priceRange}</h3>
-                        <div className="px-2">
-                          <Slider
-                            defaultValue={[MIN_PRICE, MAX_PRICE]}
-                            min={MIN_PRICE}
-                            max={MAX_PRICE}
-                            step={1000}
-                            value={priceRange}
-                            onValueChange={handleSliderChange}
-                            className="py-4"
-                          />
-                          <div className="flex items-center justify-between mt-2 text-sm">
-                            <span>{formatPrice(priceRange[0])}</span>
-                            <span>{formatPrice(priceRange[1])}</span>
-                          </div>
-                        </div>
-                      </motion.div>
-                      
-                      <motion.div 
-                        className="space-y-3"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: 0.2 }}
-                      >
-                        <h3 className={`font-semibold text-lg ${isRtl ? "text-right" : ""}`}>{t.year}</h3>
-                        <div className="grid grid-cols-3 gap-2">
-                          <motion.button
-                            type="button"
-                            onClick={() => handleFilterChange({ target: { name: 'year', value: 'all' }} as any)}
-                            className={`py-2 px-3 rounded-md text-center transition-all ${
-                              filters.year === 'all' 
-                                ? 'bg-ev-blue text-white' 
-                                : 'bg-muted/50 hover:bg-muted'
-                            }`}
-                            whileHover={{ scale: 1.03 }}
-                            whileTap={{ scale: 0.97 }}
-                          >
-                            {t.allYears}
-                          </motion.button>
-                          {[2025, 2024, 2023, 2022, 2021].map((year, index) => (
-                            <motion.button
-                              key={year}
-                              type="button"
-                              onClick={() => handleFilterChange({ target: { name: 'year', value: year.toString() }} as any)}
-                              className={`py-2 px-3 rounded-md text-center transition-all ${
-                                filters.year === year.toString() 
-                                  ? 'bg-ev-blue text-white' 
-                                  : 'bg-muted/50 hover:bg-muted'
-                              }`}
-                              whileHover={{ scale: 1.03 }}
-                              whileTap={{ scale: 0.97 }}
-                              initial={{ opacity: 0, y: 5 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.2, delay: 0.1 + (index * 0.05) }}
-                            >
-                              {year}
-                            </motion.button>
-                          ))}
-                        </div>
-                      </motion.div>
-                    </div>
-                    
-                    <hr className="my-4" />
-                    
-                    <div className="flex flex-col sm:flex-row gap-4 justify-between">
-                      <motion.button
-                        onClick={clearFilters}
-                        className="text-ev-blue hover:text-ev-blue-light transition-colors flex items-center gap-2"
-                        whileHover={{ scale: 1.02, x: 3 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        <XCircle className="h-4 w-4" />
-                        {t.clearFilters}
-                      </motion.button>
-                      
-                      <motion.button
-                        onClick={() => {
-                          applyFilters();
-                          document.body.click(); // Close popover
-                        }}
-                        className="bg-ev-blue hover:bg-ev-blue-light text-white py-2 px-6 rounded-lg transition-colors"
-                        whileHover={{ scale: 1.02, boxShadow: "0 4px 12px rgba(0, 98, 204, 0.2)" }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        {t.apply}
-                      </motion.button>
-                    </div>
-                  </motion.div>
-                </PopoverContent>
-              </Popover>
+
+              {/* Range */}
+              <motion.div variants={inputVariants} whileHover="hover">
+                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                  {t.range}
+                </label>
+                <div className="flex space-x-3 rtl:space-x-reverse">
+                  <input
+                    type="number"
+                    placeholder={t.minRange}
+                    value={filters.rangeMin}
+                    onChange={(e) =>
+                      handleFilterChange("rangeMin", e.target.value)
+                    }
+                    className="w-1/2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
+                  />
+                  <input
+                    type="number"
+                    placeholder={t.maxRange}
+                    value={filters.rangeMax}
+                    onChange={(e) =>
+                      handleFilterChange("rangeMax", e.target.value)
+                    }
+                    className="w-1/2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
+                  />
+                </div>
+              </motion.div>
+
+              {/* Color Filter */}
+              <motion.div variants={inputVariants} whileHover="hover">
+                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                  {t.color}
+                </label>
+                <select
+                  value={filters.color}
+                  onChange={(e) => handleFilterChange("color", e.target.value)}
+                  className="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
+                >
+                  {colors.map((color) => (
+                    <option key={color} value={color}>
+                      {color === "all" ? t.all : color}
+                    </option>
+                  ))}
+                </select>
+              </motion.div>
+
+              {/* Year Filter */}
+              <motion.div variants={inputVariants} whileHover="hover">
+                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                  {t.year}
+                </label>
+                <select
+                  value={filters.year}
+                  onChange={(e) => handleFilterChange("year", e.target.value)}
+                  className="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
+                >
+                  {years.map((year) => (
+                    <option key={year} value={year}>
+                      {year === "all" ? t.all : year}
+                    </option>
+                  ))}
+                </select>
+              </motion.div>
+
+              {/* Battery Capacity */}
+              <motion.div variants={inputVariants} whileHover="hover">
+                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                  {t.battery}
+                </label>
+                <div className="flex space-x-3 rtl:space-x-reverse">
+                  <input
+                    type="number"
+                    placeholder={t.minBattery}
+                    value={filters.batteryMin}
+                    onChange={(e) =>
+                      handleFilterChange("batteryMin", e.target.value)
+                    }
+                    className="w-1/2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
+                  />
+                  <input
+                    type="number"
+                    placeholder={t.maxBattery}
+                    value={filters.batteryMax}
+                    onChange={(e) =>
+                      handleFilterChange("batteryMax", e.target.value)
+                    }
+                    className="w-1/2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
+                  />
+                </div>
+              </motion.div>
+
+              {/* Charging Speed */}
+              <motion.div variants={inputVariants} whileHover="hover">
+                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                  {t.charging}
+                </label>
+                <div className="flex space-x-3 rtl:space-x-reverse">
+                  <input
+                    type="number"
+                    placeholder={t.minCharging}
+                    value={filters.chargingMin}
+                    onChange={(e) =>
+                      handleFilterChange("chargingMin", e.target.value)
+                    }
+                    className="w-1/2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
+                  />
+                  <input
+                    type="number"
+                    placeholder={t.maxCharging}
+                    value={filters.chargingMax}
+                    onChange={(e) =>
+                      handleFilterChange("chargingMax", e.target.value)
+                    }
+                    className="w-1/2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
+                  />
+                </div>
+              </motion.div>
+
+              {/* Drivetrain Filter */}
+              <motion.div variants={inputVariants} whileHover="hover">
+                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                  {t.drivetrain}
+                </label>
+                <select
+                  value={filters.drivetrain}
+                  onChange={(e) =>
+                    handleFilterChange("drivetrain", e.target.value)
+                  }
+                  className="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
+                >
+                  {drivetrains.map((drivetrain) => (
+                    <option key={drivetrain} value={drivetrain}>
+                      {
+                        t.drivetrainOptions[
+                          drivetrain as keyof typeof t.drivetrainOptions
+                        ]
+                      }
+                    </option>
+                  ))}
+                </select>
+              </motion.div>
+
+              {/* Sort By */}
+              <motion.div variants={inputVariants} whileHover="hover">
+                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                  {t.sortBy}
+                </label>
+                <select
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value)}
+                  className="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
+                >
+                  <option value="featured">{t.sortOptions.featured}</option>
+                  <option value="price-low">{t.sortOptions.priceLow}</option>
+                  <option value="price-high">{t.sortOptions.priceHigh}</option>
+                  <option value="range-high">{t.sortOptions.rangeHigh}</option>
+                  <option value="newest">{t.sortOptions.newest}</option>
+                </select>
+              </motion.div>
             </div>
-          </div>
-        </div>
-        
-        {/* Active Filters */}
-        <AnimatePresence>
-          {activeFilters.length > 0 && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="bg-muted/30 border-t border-border/50 px-6 py-3 overflow-hidden"
-            >
-              <div className={`flex items-center flex-wrap gap-2 ${isRtl ? "flex-row-reverse" : ""}`}>
-                <span className="text-sm text-muted-foreground">{t.activeFilters}:</span>
-                {activeFilters.map((filter, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.2, delay: index * 0.05 }}
-                  >
-                    <Badge variant="secondary" className="flex items-center gap-1 py-1.5 px-3 group">
-                      {filter}
-                      <motion.div
-                        whileHover={{ rotate: 90 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <XCircle 
-                          className="h-3 w-3 cursor-pointer hover:text-destructive group-hover:text-destructive transition-colors" 
-                          onClick={() => {
-                            if (filter.includes("Price")) {
-                              setPriceRange([MIN_PRICE, MAX_PRICE]);
-                              setFilters({...filters, priceMin: "", priceMax: ""});
-                            } else if (filter.includes("Year")) {
-                              setFilters({...filters, year: "all"});
-                            }
-                            // Re-apply filters without this one
-                            const updatedFilters = activeFilters.filter((_, i) => i !== index);
-                            setActiveFilters(updatedFilters);
-                            applyFilters();
-                          }}
-                        />
-                      </motion.div>
-                    </Badge>
-                  </motion.div>
-                ))}
-                
-                {activeFilters.length > 0 && (
-                  <motion.button 
-                    onClick={clearFilters}
-                    className="text-xs underline text-ev-blue hover:text-ev-blue-light ml-2 hover:font-medium transition-all"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {t.clearFilters}
-                  </motion.button>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
+
+            <div className="mt-8 flex justify-end space-x-3 rtl:space-x-reverse">
+              <motion.button
+                onClick={handleClearFilters}
+                className="px-5 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                {t.clearFilters}
+              </motion.button>
+              <motion.button
+                onClick={() => setIsFilterOpen(false)}
+                className="px-5 py-2 bg-ev-blue text-white rounded-lg hover:bg-ev-blue/90 dark:bg-ev-blue/80 dark:hover:bg-ev-blue transition-all duration-200"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                {t.applyFilters}
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
-}
+};
+
+export default FilterSection;

@@ -1,4 +1,3 @@
-
 import Layout from "@/components/Layout";
 import HeroSection from "@/components/home/HeroSection";
 import HighlightsSection from "@/components/home/HighlightsSection";
@@ -14,8 +13,8 @@ const Index = () => {
       <HighlightsSection />
       <BenefitsSection />
       <UspSection />
-      <PartnersSection />
       <CtaSection />
+      <PartnersSection />
     </Layout>
   );
 };

@@ -21,23 +21,23 @@ const partners = [
   },
   {
     name: "BYD",
-    logo: "https://www.carlogos.org/car-logos/byd-logo-2007-1300x1300.png"
+    logo: "../../../assets/partners/byd.png"
   },
   {
     name: "Rivian",
-    logo: "https://www.carlogos.org/logo/Rivian-logo-2000x2500.png"
+    logo: "../../../assets/partners/rivian.png"
   },
   {
     name: "Lucid Motors",
-    logo: "https://www.carlogos.org/car-logos/lucid-motors-logo-1500x1500.png"
+    logo: "../../../assets/partners/lucid.png"
   },
   {
     name: "Polestar",
-    logo: "https://www.carlogos.org/car-logos/polestar-logo-2500x2500.png"
+    logo: "../../../assets/partners/polestar.png"
   },
   {
     name: "NIO",
-    logo: "https://www.carlogos.org/car-logos/nio-logo-black-2500x2500.png"
+    logo: "../../../assets/partners/nio.png"
   }
 ];
 
