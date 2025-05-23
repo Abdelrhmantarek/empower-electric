@@ -2,6 +2,7 @@
 import Layout from "@/components/Layout";
 import { Link } from "react-router-dom";
 import { useEffect } from 'react';
+import mission from "../../public/about/mission.png"; // Importing the mission image
 
 const About = () => {
   useEffect(() => {
@@ -34,7 +35,7 @@ const About = () => {
           </div>
           <div className="relative h-[400px] rounded-xl overflow-hidden">
             <img
-              src="../../assets/about/mission.png"
+              src={mission}
               alt="Empower EV Team"
               className="w-full h-full object-cover"
             />

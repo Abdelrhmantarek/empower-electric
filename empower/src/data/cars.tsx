@@ -1,3 +1,10 @@
+import gs3Image from "../../public/cars/gs3.jpeg"
+import aionImage from "../../public/cars/aion-tiny.jpg"
+import aionFullImage from "../../public/cars/aion-full-tiny.jpg"
+import aionBackImage from "../../public/cars/aion-back-tiny.jpg"
+import hyptecImage from "../../public/cars/hyptec.png"
+
+
 export interface CarColor {
   name: string;
   value: string;
@@ -45,17 +52,17 @@ export const cars: Car[] = [
       {
         name: "Midnight Black",
         value: "#121212",
-        image: "../../assets/cars/aion-tiny.jpg",
+        image: aionImage,
       },
       {
         name: "Arctic Silver",
         value: "#E8E9EB",
-        image: "../../assets/cars/aion-tiny.jpg",
+        image: aionImage,
       },
       {
         name: "Sapphire Blue",
         value: "#0F52BA",
-        image: "../../assets/cars/aion-tiny.jpg",
+        image: aionImage,
       },
     ],
     specs: {
@@ -67,7 +74,7 @@ export const cars: Car[] = [
       seating: "5 Adults",
     },
     images: [
-      "../../assets/cars/aion-tiny.jpg",
+      aionImage,
       "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=1000&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1000&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=1000&auto=format&fit=crop",
@@ -75,10 +82,10 @@ export const cars: Car[] = [
     ],
     featured: true,
     interior: [
-      "../../assets/cars/aion-full-tiny.jpg",
-      "../../assets/cars/aion-back-tiny.jpg",
+      aionFullImage,
+      aionBackImage,
     ],
-    mainImage: "../../assets/cars/aion-tiny.jpg",
+    mainImage: aionImage,
   },
 
   {
@@ -96,19 +103,19 @@ export const cars: Car[] = [
         name: "Performance Red",
         value: "#FF2800",
         image:
-          "../../assets/cars/hyptec.png",
+          hyptecImage,
       },
       {
         name: "Phantom White",
         value: "#FFFFFF",
         image:
-          "../../assets/cars/hyptec.png",
+          hyptecImage,
       },
       {
         name: "Monaco Blue",
         value: "#00205B",
         image:
-          "../../assets/cars/hyptec.png",
+          hyptecImage,
       },
     ],
     specs: {
@@ -128,10 +135,10 @@ export const cars: Car[] = [
     ],
     featured: true,
     interior: [
-      "../../assets/cars/hyptec.png",
-      "../../assets/cars/hyptec.png",
+      hyptecImage,
+      hyptecImage,
     ],
-    mainImage: "../../assets/cars/hyptec.png",
+    mainImage: hyptecImage,
   },
 
   {
@@ -149,19 +156,19 @@ export const cars: Car[] = [
         name: "Urban Gray",
         value: "#808080",
         image:
-          "../../assets/cars/gs3.jpeg",
+          gs3Image,
       },
       {
         name: "Electric Yellow",
         value: "#F9E430",
         image:
-          "../../assets/cars/gs3.jpeg",
+          gs3Image,
       },
       {
         name: "Ocean Teal",
         value: "#008080",
         image:
-          "../../assets/cars/gs3.jpeg",
+          gs3Image,
       },
     ],
     specs: {
@@ -173,7 +180,7 @@ export const cars: Car[] = [
       seating: "5 Adults",
     },
     images: [
-      "../../assets/cars/gs3.jpeg",
+      gs3Image,
       "https://images.unsplash.com/photo-1594639464720-28eb974c373e?q=80&w=1000&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1637846896755-f3569ba7b3af?q=80&w=1000&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1462396240927-52f3a60f5a0f?q=80&w=1000&auto=format&fit=crop",
@@ -181,9 +188,9 @@ export const cars: Car[] = [
     ],
     featured: false,
     interior: [
-      "../../assets/cars/gs3.jpeg",
-      "../../assets/cars/gs3.jpeg",
+      gs3Image,
+      gs3Image,
     ],
-    mainImage: "../../assets/cars/gs3.jpeg",
+    mainImage: gs3Image,
   },
 ];

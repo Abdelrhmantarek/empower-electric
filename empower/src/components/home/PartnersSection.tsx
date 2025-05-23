@@ -1,6 +1,11 @@
 
 import { motion } from "framer-motion";
 import { useLanguage } from "../Layout";
+import byd from "../../../public/partners/byd.png";
+import rivian from "../../../public/partners/rivian.png";
+import lucid from "../../../public/partners/lucid.png";
+import polestar from "../../../public/partners/polestar.png";
+import nio from "../../../public/partners/nio.png";
 
 const translations = {
   en: {
@@ -21,23 +26,23 @@ const partners = [
   },
   {
     name: "BYD",
-    logo: "../../../assets/partners/byd.png"
+    logo: byd
   },
   {
     name: "Rivian",
-    logo: "../../../assets/partners/rivian.png"
+    logo: rivian
   },
   {
     name: "Lucid Motors",
-    logo: "../../../assets/partners/lucid.png"
+    logo: lucid
   },
   {
     name: "Polestar",
-    logo: "../../../assets/partners/polestar.png"
+    logo: polestar
   },
   {
     name: "NIO",
-    logo: "../../../assets/partners/nio.png"
+    logo: nio
   }
 ];
 

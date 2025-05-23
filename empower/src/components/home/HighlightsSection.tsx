@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import aionImage from "../../../public/cars/aion-tiny.jpg";
+import hypImage from "../../../public/cars/hyptec.png"
+import gs3Image from "../../../public/cars/gs3.jpeg";
 
 const carHighlights = [
   {
@@ -25,7 +27,7 @@ const carHighlights = [
     id: "hyptec-gt",
     name: "Hyptec - GT",
     subtitle: "Sports Sedan",
-    image: "../../../assets/cars/hyptec.png",
+    image: hypImage,
     description:
       "Luxury electric sports car with stunning design and exhilarating performance.",
     specs: {
@@ -40,7 +42,7 @@ const carHighlights = [
     id: "gs3",
     name: "GS3",
     subtitle: "Compact Urban EV",
-    image: "../../../assets/cars/gs3.jpeg",
+    image: gs3Image,
     description:
       "Compact urban electric vehicle with smart features and surprising interior space.",
     specs: {
