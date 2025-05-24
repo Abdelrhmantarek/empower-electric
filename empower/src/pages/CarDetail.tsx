@@ -20,13 +20,14 @@ import ImageGallery from "@/components/inventory/ImageGallery";
 import CarSpinView from "@/components/inventory/CarSpinView";
 import ColorSelector from "@/components/inventory/ColorSelector";
 import QuoteModal from "@/components/inventory/QuoteModal";
-import { cars, Car, CarColor } from "@/data/cars";
+import { fetchCars, Car, CarColor } from "@/data/cars";
 
 const CarDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [car, setCar] = useState<Car | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<CarColor | null>(null);
   const [quoteModalOpen, setQuoteModalOpen] = useState(false);
   const [viewMode, setViewMode] = useState<"photos" | "spin">("photos");
@@ -37,40 +38,61 @@ const CarDetail = () => {
   const chargingRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const foundCar = cars.find((c) => c.id === id);
-
-    if (foundCar) {
-      setCar(foundCar);
-      setSelectedColor(foundCar.colors[0]);
-
-      // Scroll to car name when component mounts
-      setTimeout(() => {
-        carNameRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }, 100);
-
-      // Trigger specs animation after a delay
-      setTimeout(() => {
-        setShowSpecsAnimation(true);
-      }, 1000);
+  // CarDetail.tsx (partial update to focus on useEffect)
+useEffect(() => {
+  const loadCar = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const cars = await fetchCars();
+      const foundCar = cars.find((c) => c.id === id); // id is now a string (e.g., "5")
+      if (foundCar) {
+        setCar(foundCar);
+        console.log(`Found car: ${JSON.stringify(foundCar)}`);
+        setSelectedColor(foundCar.colors[0]);
+        setTimeout(() => {
+          carNameRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }, 100);
+        setTimeout(() => {
+          setShowSpecsAnimation(true);
+        }, 1000);
+      } else {
+        setCar(undefined);
+      }
+    } catch (err) {
+      setError("Failed to load car details. Please try again later.");
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
-
-    // Cleanup event listeners to prevent memory leaks
-    return () => {
-      // Remove any global event listeners if added by ImageGallery or CarSpinView
-    };
-  }, [id]);
+  };
+  loadCar();
+}, [id]);
 
   if (isLoading) {
     return (
       <Layout>
         <div className="section-container flex justify-center items-center h-96">
           <div className="animate-pulse text-xl">Loading...</div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="section-container text-center py-20">
+          <h2 className="text-2xl font-bold mb-4">Error</h2>
+          <p className="text-muted-foreground mb-8">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="button-primary"
+          >
+            Retry
+          </button>
         </div>
       </Layout>
     );
@@ -243,7 +265,6 @@ const CarDetail = () => {
                     : car.images
                 }
                 alt={`${car.make} ${car.model}`}
-                // isActive={viewMode === "photos"}
               />
               <CarSpinView carId={car.id} isActive={viewMode === "spin"} />
             </div>

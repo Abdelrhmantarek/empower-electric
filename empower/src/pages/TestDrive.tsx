@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Layout from "@/components/Layout";
-import { Car as CarType, cars } from "@/data/cars";
+import { fetchCars, Car as CarType } from "@/data/cars"; // Import fetchCars instead of static cars
 import { useLanguage } from "@/components/Layout";
 
 // Date helper functions
@@ -89,6 +89,9 @@ const translations = {
     scheduleAnother: "Schedule Another Test Drive",
     return: "Return to Home",
     browse: "Browse Inventory",
+    loading: "Loading vehicles...",
+    error: "Failed to load vehicles. Please try again later.",
+    noVehicles: "No vehicles available for test drive at the moment.",
   },
   ar: {
     testDriveTitle: "حجز تجربة قيادة",
@@ -124,6 +127,9 @@ const translations = {
     scheduleAnother: "جدولة تجربة قيادة أخرى",
     return: "العودة إلى الصفحة الرئيسية",
     browse: "تصفح المخزون",
+    loading: "جارٍ تحميل السيارات...",
+    error: "فشل في تحميل السيارات. الرجاء المحاولة مرة أخرى لاحقًا.",
+    noVehicles: "لا توجد سيارات متاحة لتجربة القيادة في الوقت الحالي.",
   },
 };
 
@@ -136,6 +142,9 @@ const TestDrive = () => {
   const isRtl = language === "ar";
   const textAlign = isRtl ? "text-right" : "text-left";
 
+  const [cars, setCars] = useState<CarType[]>([]); // State to store fetched cars
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedCar, setSelectedCar] = useState<CarType | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [formData, setFormData] = useState({
@@ -158,17 +167,32 @@ const TestDrive = () => {
   const timeSlots = generateTimeSlots();
 
   useEffect(() => {
-    if (carId) {
-      const car = cars.find((c) => c.id === carId);
-      if (car) {
-        setSelectedCar(car);
-        setFormData((prev) => ({ ...prev, carModel: car.id }));
+    const loadCars = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const fetchedCars = await fetchCars();
+        setCars(fetchedCars);
+
+        if (carId) {
+          const car = fetchedCars.find((c) => c.id === carId);
+          if (car) {
+            setSelectedCar(car);
+            setFormData((prev) => ({ ...prev, carModel: car.id }));
+          }
+        }
+      } catch (err) {
+        setError(t.error);
+      } finally {
+        setIsLoading(false);
       }
-    }
+    };
+
+    loadCars();
 
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
-  }, [carId]);
+  }, [carId, t.error]);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -237,7 +261,29 @@ const TestDrive = () => {
       </div>
 
       <div className="section-container max-w-5xl mx-auto">
-        {isSubmitted ? (
+        {isLoading ? (
+          <div className="flex justify-center items-center h-96">
+            <div className="animate-pulse text-xl">{t.loading}</div>
+          </div>
+        ) : error ? (
+          <div className="text-center py-20">
+            <h2 className="text-2xl font-bold mb-4">Error</h2>
+            <p className="text-muted-foreground mb-8">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="button-primary"
+            >
+              Retry
+            </button>
+          </div>
+        ) : cars.length === 0 ? (
+          <div className="text-center py-20">
+            <h2 className="text-2xl font-bold mb-4">{t.noVehicles}</h2>
+            <Link to="/inventory" className="button-primary">
+              {t.browse}
+            </Link>
+          </div>
+        ) : isSubmitted ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

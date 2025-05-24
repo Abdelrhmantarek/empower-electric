@@ -9,6 +9,8 @@ interface ImageGalleryProps {
 export default function ImageGallery({ images, alt }: ImageGalleryProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  console.log("Imagesssssss", images)
   
   return (
     <div className="space-y-4">

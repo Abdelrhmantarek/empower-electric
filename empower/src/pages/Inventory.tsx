@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Layout from "@/components/Layout";
 import CarCard from "@/components/inventory/CarCard";
 import FilterSection from "@/components/inventory/FilterSection";
-import { cars, Car } from "@/data/cars";
+import { fetchCars, Car } from "@/data/cars";
 import { Link } from "react-router-dom";
 import { Grid, List } from "lucide-react";
 import { useLanguage } from "@/components/Layout";
@@ -20,6 +20,7 @@ const translations = {
     resetFilters: "Reset Filters",
     testDriveHeading: "Want to test drive one of our vehicles?",
     bookTestDrive: "Book a Test Drive",
+    loading: "Loading...",
   },
   ar: {
     title: "معرضنا",
@@ -31,24 +32,45 @@ const translations = {
     resetFilters: "إعادة ضبط الفلاتر",
     testDriveHeading: "هل تريد تجربة قيادة إحدى سياراتنا؟",
     bookTestDrive: "احجز تجربة قيادة",
+    loading: "جار التحميل...",
   },
 };
 
 const Inventory = () => {
-  const [filteredCars, setFilteredCars] = useState<Car[]>(cars);
+  const [filteredCars, setFilteredCars] = useState<Car[]>([]);
+  const [allCars, setAllCars] = useState<Car[]>([]); // Store all cars fetched from Strapi
   const [isGridView, setIsGridView] = useState(true);
   const [activeFilters, setActiveFilters] = useState<any>({});
   const [activeSort, setActiveSort] = useState("featured");
   const [searchQuery, setSearchQuery] = useState("");
-  const [resetFilters, setResetFilters] = useState(false); // New state to trigger reset
+  const [resetFilters, setResetFilters] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const { language } = useLanguage();
   const t = translations[language];
   const isRtl = language === "ar";
-  // Update
   const [selectedCarForQuote, setSelectedCarForQuote] = useState<Car | null>(null);
 
+  // Fetch cars when component mounts
+  useEffect(() => {
+    const loadCars = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const carsData = await fetchCars();
+        setAllCars(carsData);
+        setFilteredCars(carsData); // Initially, filtered cars are all cars
+      } catch (err) {
+        setError("Failed to load inventory. Please try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadCars();
+  }, []);
+
   const applyFilters = (filters: any, sort: string, search: string) => {
-    let result = [...cars];
+    let result = [...allCars];
 
     // Apply make filter
     if (filters.make && filters.make !== "all") {
@@ -70,15 +92,23 @@ const Inventory = () => {
 
     // Apply range filter
     if (filters.rangeMin) {
-      result = result.filter((car) => car.range >= Number(filters.rangeMin));
+      result = result.filter(
+        (car) =>
+          parseInt(car.specs.range) >= Number(filters.rangeMin)
+      );
     }
     if (filters.rangeMax) {
-      result = result.filter((car) => car.range <= Number(filters.rangeMax));
+      result = result.filter(
+        (car) =>
+          parseInt(car.specs.range) <= Number(filters.rangeMax)
+      );
     }
 
     // Apply color filter
     if (filters.color && filters.color !== "all") {
-      result = result.filter((car) => car.color === filters.color);
+      result = result.filter((car) =>
+        car.colors.some((color) => color.name === filters.color)
+      );
     }
 
     // Apply year filter
@@ -89,24 +119,14 @@ const Inventory = () => {
     // Apply battery capacity filter
     if (filters.batteryMin) {
       result = result.filter(
-        (car) => car.batteryCapacity >= Number(filters.batteryMin)
+        (car) =>
+          parseInt(car.specs.battery) >= Number(filters.batteryMin)
       );
     }
     if (filters.batteryMax) {
       result = result.filter(
-        (car) => car.batteryCapacity <= Number(filters.batteryMax)
-      );
-    }
-
-    // Apply charging speed filter
-    if (filters.chargingMin) {
-      result = result.filter(
-        (car) => car.chargingSpeed >= Number(filters.chargingMin)
-      );
-    }
-    if (filters.chargingMax) {
-      result = result.filter(
-        (car) => car.chargingSpeed <= Number(filters.chargingMax)
+        (car) =>
+          parseInt(car.specs.battery) <= Number(filters.batteryMax)
       );
     }
 
@@ -135,7 +155,7 @@ const Inventory = () => {
         result.sort((a, b) => b.price - a.price);
         break;
       case "range-high":
-        result.sort((a, b) => b.range - a.range);
+        result.sort((a, b) => parseInt(b.specs.range) - parseInt(a.specs.range));
         break;
       case "newest":
         result.sort((a, b) => b.year - a.year);
@@ -166,7 +186,7 @@ const Inventory = () => {
   };
 
   const handleResetFilters = () => {
-    setResetFilters(true); // Trigger reset in FilterSection
+    setResetFilters(true);
     setActiveFilters({
       make: "all",
       model: "all",
@@ -203,8 +223,37 @@ const Inventory = () => {
       "featured",
       ""
     );
-    setTimeout(() => setResetFilters(false), 0); // Reset the trigger
+    setTimeout(() => setResetFilters(false), 0);
   };
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="section-container flex justify-center items-center h-96">
+          <div className="animate-pulse text-xl">{t.loading || "Loading..."}</div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="section-container text-center py-20">
+          <h2 className="text-2xl font-bold mb-4">Error</h2>
+          <p className="text-muted-foreground mb-8">{error}</p>
+          <motion.button
+            onClick={() => window.location.reload()}
+            className="button-primary"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Retry
+          </motion.button>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -231,7 +280,7 @@ const Inventory = () => {
           onFilterChange={handleFilterChange}
           onSortChange={handleSortChange}
           onSearchChange={handleSearchChange}
-          reset={resetFilters} // Pass reset trigger
+          // reset={resetFilters}
         />
 
         <motion.div
@@ -345,7 +394,6 @@ const Inventory = () => {
           </Link>
         </motion.div>
       </div>
-      {/* 4. Add the QuoteModal at the bottom */}
       {selectedCarForQuote && (
         <QuoteModal
           car={selectedCarForQuote}
