@@ -237,11 +237,11 @@ export interface CarColor {
 // cars.tsx (fetchCars function)
 export const fetchCars = async (): Promise<Car[]> => {
   try {
-    const response = await fetch("http://localhost:1337/api/cars?populate[images][populate]=image&populate=mainImage&populate[colors][populate]=*", {
+    const response = await fetch(`${process.env.REACT_APP_STRAPI_API_URL}/api/cars?populate[images][populate]=image&populate=mainImage&populate[colors][populate]=*`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer d33372c5d8bb73a59a591218cf88f4e5289fa9b60e99bac55846e2ac01fd1862886c1ade3f7442b3b6223d16d718dee0d7f2bce2084d5df39e5f9eb3a2b1eb2b87ca5e7bd1c360e35b469c6eb6d96d609016debebbd2e891e61f694cbbeb5b1bc6e5af5001f9e8ec64506880220130a1311741454c8d87fdfcdd77efeb7ab5ba"
+        "Authorization": `Bearer ${process.env.REACT_APP_STRAPI_API_TOKEN}`
       },
     });
 
@@ -281,7 +281,7 @@ export const fetchCars = async (): Promise<Car[]> => {
               name: color.name,
               value: color.value,
               image: color.image?.url
-                ? `http://localhost:1337${color.image.url}`
+                ? `${process.env.REACT_APP_STRAPI_API_URL}${color.image.url}`
                 : "",
             }))
           : [],
@@ -295,17 +295,17 @@ export const fetchCars = async (): Promise<Car[]> => {
         },
         images: item.images
           ? item.images.map(
-              (img: any) => `http://localhost:1337${img.image.url}`
+              (img: any) => `${process.env.REACT_APP_STRAPI_API_URL}${img.image.url}`
             )
           : [],
         featured: item.featured || false,
         interior: item.interior
           ? item.interior.map(
-              (img: any) => `http://localhost:1337${img.url}`
+              (img: any) => `${process.env.REACT_APP_STRAPI_API_URL}${img.url}`
             )
           : [],
         mainImage: item.mainImage
-          ? `http://localhost:1337${item.mainImage.url}`
+          ? `${process.env.REACT_APP_STRAPI_API_URL}${item.mainImage.url}`
           : "",
         drivetrain: item.drivetrain || "",
       };
