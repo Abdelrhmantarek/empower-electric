@@ -243,7 +243,7 @@ const CarDetail = () => {
                     : car.images
                 }
                 alt={`${car.make} ${car.model}`}
-                isActive={viewMode === "photos"}
+                // isActive={viewMode === "photos"}
               />
               <CarSpinView carId={car.id} isActive={viewMode === "spin"} />
             </div>
