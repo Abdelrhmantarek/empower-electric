@@ -68,12 +68,12 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				ev: {
-          blue: '#0062cc',
-          'blue-light': '#0084ff',
-          'blue-dark': '#004999',
-          accent: '#00eaff',
-          'accent-dark': '#00c6d9',
-          charcoal: '#1a1d24',
+          blue: '#164f89',
+          'blue-light':'#2274c5',
+          'blue-dark':'#0f355c',
+          accent: '#C7AC70',
+          'accent-dark':'#836f43',
+          charcoal: '#102429',
           silver: '#f1f2f3',
           'gray-dark': '#242830',
           'gray-light': '#eaeaea',

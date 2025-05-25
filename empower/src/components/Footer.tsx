@@ -1,7 +1,9 @@
-
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, ChevronRight, Zap, Leaf, Shield, Car } from "lucide-react";
 import { useLanguage } from "./Layout";
+import { useState, useEffect } from "react";
+import logoWhite from "../../public/logo/logo.png";
+import logoDark from "../../public/logo/logo-dark.png";
 
 const translations = {
   en: {
@@ -73,7 +75,29 @@ export default function Footer() {
   const isRtl = language === "ar";
   const textAlign = isRtl ? "text-right" : "text-left";
   const flexDirection = isRtl ? "flex-row-reverse" : "flex-row";
-  
+  const [isDarkMode, setIsDarkMode] = useState(false); // State to track theme
+
+  // Detect theme changes
+  useEffect(() => {
+    const checkTheme = () => {
+      const isDark = document.documentElement.classList.contains("dark");
+      setIsDarkMode(isDark);
+    };
+
+    // Initial check
+    checkTheme();
+
+    // Use MutationObserver to detect changes to the classList
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    // Cleanup observer on component unmount
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <footer className="bg-gradient-to-br from-ev-charcoal to-ev-blue-dark text-white">
       {/* Top wavy divider */}
@@ -89,13 +113,11 @@ export default function Footer() {
           <div className={`space-y-6 ${textAlign}`}>
             <Link to="/" className={`flex items-center ${isRtl ? 'justify-end' : 'justify-start'}`}>
               <div className="relative">
-                <span className="text-3xl font-bold text-white">
-                  EMPOWER<span className="text-ev-accent">EV</span>
-                </span>
-                <span className="absolute -top-2 -right-2 flex h-4 w-4">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-ev-accent opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-4 w-4 bg-ev-accent"></span>
-                </span>
+                <img
+                  src={logoDark} // Switch logo based on theme
+                  alt="EmpowerEV Logo"
+                  className="h-40 w-50" // Adjust as needed
+                />
               </div>
             </Link>
             <p className="text-gray-300 leading-relaxed">
@@ -164,38 +186,6 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-            {/* EV-Services */}
-            {/* <h3 className="text-lg font-semibold pt-2 relative inline-block">
-              {t.evServices}
-              <span className="absolute -bottom-1 left-0 right-0 h-1 bg-ev-accent/80"></span>
-            </h3>
-            <ul className="space-y-3">
-              <li>
-                <a href="#" className={`text-gray-300 hover:text-ev-accent transition-colors flex items-center ${isRtl ? 'flex-row-reverse justify-end' : ''} gap-2`}>
-                  <Zap className="h-4 w-4 text-ev-accent" />
-                  <span>{t.chargingSolutions}</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" className={`text-gray-300 hover:text-ev-accent transition-colors flex items-center ${isRtl ? 'flex-row-reverse justify-end' : ''} gap-2`}>
-                  <Car className="h-4 w-4 text-ev-accent" />
-                  <span>{t.maintenanceService}</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" className={`text-gray-300 hover:text-ev-accent transition-colors flex items-center ${isRtl ? 'flex-row-reverse justify-end' : ''} gap-2`}>
-                  <Shield className="h-4 w-4 text-ev-accent" />
-                  <span>{t.batteryWarranty}</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" className={`text-gray-300 hover:text-ev-accent transition-colors flex items-center ${isRtl ? 'flex-row-reverse justify-end' : ''} gap-2`}>
-                  <Leaf className="h-4 w-4 text-ev-accent" />
-                  <span>{t.homeChargerInstall}</span>
-                </a>
-              </li>
-            </ul> */}
-            {/* EV-Services */}
           </div>
 
           {/* Column 3: Contact Info */}
@@ -222,14 +212,6 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
-
-            {/* <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.3059353029!2d-74.25986548248684!3d40.69714941512199!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1652813333306!5m2!1sen!2s" 
-              className="w-full h-32 rounded-lg mt-4 opacity-80 hover:opacity-100 transition-opacity duration-300" 
-              allowFullScreen 
-              loading="lazy" 
-              title="Map"
-            /> */}
           </div>
 
           {/* Column 4: Newsletter & Business Hours */}
@@ -251,25 +233,6 @@ export default function Footer() {
                 {t.subscribe}
               </button>
             </div>
-
-            {/* <h3 className="text-lg font-semibold pt-4 relative inline-block">
-              {t.businessHours}
-              <span className="absolute -bottom-1 left-0 right-0 h-1 bg-ev-accent/80"></span>
-            </h3>
-            <ul className="space-y-3">
-              <li className={`flex justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
-                <span className="text-gray-300">{t.monday}:</span>
-                <span className="text-white">{t.weekdayHours}</span>
-              </li>
-              <li className={`flex justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
-                <span className="text-gray-300">{t.saturday}:</span>
-                <span className="text-white">{t.saturdayHours}</span>
-              </li>
-              <li className={`flex justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
-                <span className="text-gray-300">{t.sunday}:</span>
-                <span className="text-white">{t.sundayHours}</span>
-              </li>
-            </ul> */}
           </div>
         </div>
 

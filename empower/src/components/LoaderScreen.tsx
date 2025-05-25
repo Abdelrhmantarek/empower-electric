@@ -1,7 +1,33 @@
 import { BatteryCharging, Zap } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import logoWhite from "../../public/logo/logo.png";
+import logoDark from "../../public/logo/logo-dark.png";
 
 export default function LoaderScreen() {
+  const [isDarkMode, setIsDarkMode] = useState(false); // State to track theme
+
+  // Detect theme changes
+  useEffect(() => {
+    const checkTheme = () => {
+      const isDark = document.documentElement.classList.contains("dark");
+      setIsDarkMode(isDark);
+    };
+
+    // Initial check
+    checkTheme();
+
+    // Use MutationObserver to detect changes to the classList
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    // Cleanup observer on component unmount
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <motion.div
       className="fixed inset-0 h-screen w-screen flex items-center justify-center bg-background z-[1000]"
@@ -12,240 +38,144 @@ export default function LoaderScreen() {
       transition={{ duration: 0.4 }}
     >
       <div className="flex flex-col items-center">
+        {/* Premium Logo Animation */}
         <motion.div
-          className="relative"
-          animate={{ scale: [0.95, 1.05, 0.95] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="relative mb-12"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <div className="w-24 h-24 rounded-full border-4 border-ev-blue/20 animate-spin"></div>
-          <div className="absolute top-0 left-0 w-24 h-24 rounded-full border-t-4 border-r-4 border-ev-accent animate-spin"></div>
-
-          {/* Enhanced Electric charges */}
+          {/* Logo Container with Subtle Glow */}
           <motion.div
-            className="absolute -top-8 left-1/2 -translate-x-1/2"
-            animate={{ y: [0, -20, 0], opacity: [0, 1, 0] }}
-            transition={{ duration: 1, repeat: Infinity, ease: "easeOut" }}
-          >
-            <Zap className="h-8 w-8 text-ev-accent" />
-          </motion.div>
-          <motion.div
-            className="absolute -bottom-8 left-1/2 -translate-x-1/2"
-            animate={{ y: [0, 20, 0], opacity: [0, 1, 0] }}
+            className="relative"
+            animate={{
+              scale: [1, 1.02, 1],
+            }}
             transition={{
-              duration: 1,
+              duration: 3,
               repeat: Infinity,
-              ease: "easeOut",
-              delay: 0.2,
+              ease: "easeInOut"
             }}
           >
-            <Zap className="h-8 w-8 text-ev-blue" />
-          </motion.div>
-          <motion.div
-            className="absolute -left-8 top-1/2 -translate-y-1/2"
-            animate={{ x: [0, -20, 0], opacity: [0, 1, 0] }}
-            transition={{
-              duration: 1,
-              repeat: Infinity,
-              ease: "easeOut",
-              delay: 0.4,
-            }}
-          >
-            <Zap className="h-8 w-8 text-ev-accent" />
-          </motion.div>
-          <motion.div
-            className="absolute -right-8 top-1/2 -translate-y-1/2"
-            animate={{ x: [0, 20, 0], opacity: [0, 1, 0] }}
-            transition={{
-              duration: 1,
-              repeat: Infinity,
-              ease: "easeOut",
-              delay: 0.6,
-            }}
-          >
-            <Zap className="h-8 w-8 text-ev-blue" />
-          </motion.div>
-
-          {/* Additional electric bolts */}
-          <motion.div
-            className="absolute -top-4 -left-4"
-            animate={{ rotate: [0, 45, 0], opacity: [0, 1, 0] }}
-            transition={{
-              duration: 1.2,
-              repeat: Infinity,
-              ease: "easeOut",
-              delay: 0.1,
-            }}
-          >
-            <Zap className="h-7 w-7 text-yellow-400" />
-          </motion.div>
-          <motion.div
-            className="absolute -top-4 -right-4"
-            animate={{ rotate: [0, -45, 0], opacity: [0, 1, 0] }}
-            transition={{
-              duration: 1.2,
-              repeat: Infinity,
-              ease: "easeOut",
-              delay: 0.3,
-            }}
-          >
-            <Zap className="h-7 w-7 text-yellow-400" />
-          </motion.div>
-          <motion.div
-            className="absolute -bottom-4 -left-4"
-            animate={{ rotate: [0, -45, 0], opacity: [0, 1, 0] }}
-            transition={{
-              duration: 1.2,
-              repeat: Infinity,
-              ease: "easeOut",
-              delay: 0.5,
-            }}
-          >
-            <Zap className="h-7 w-7 text-yellow-400" />
-          </motion.div>
-          <motion.div
-            className="absolute -bottom-4 -right-4"
-            animate={{ rotate: [0, 45, 0], opacity: [0, 1, 0] }}
-            transition={{
-              duration: 1.2,
-              repeat: Infinity,
-              ease: "easeOut",
-              delay: 0.7,
-            }}
-          >
-            <Zap className="h-7 w-7 text-yellow-400" />
-          </motion.div>
-
-          {/* Central battery with zap */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            {/* Subtle backdrop glow */}
             <motion.div
-              className="relative"
-              animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.1, 1] }}
-              transition={{
-                duration: 1.8,
-                repeat: Infinity,
-                ease: "easeInOut",
+              className="absolute inset-0 bg-gradient-to-r from-ev-blue/20 via-ev-accent/20 to-ev-blue/20 rounded-2xl blur-xl"
+              animate={{
+                opacity: [0.3, 0.6, 0.3],
+                scale: [1, 1.1, 1]
               }}
-            >
-              <motion.div
-                className="absolute inset-0 rounded-full bg-ev-blue opacity-30 blur-lg"
-                animate={{ scale: [1, 1.8, 1], opacity: [0.3, 0.5, 0.3] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              />
-              <BatteryCharging className="h-12 w-12 text-ev-blue animate-pulse" />
-              <motion.div
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                animate={{ scale: [1, 1.8, 1], rotateZ: [0, 20, -20, 0] }}
-                transition={{ duration: 1, repeat: Infinity }}
-              >
-                <Zap className="h-7 w-7 text-ev-accent" />
-              </motion.div>
-            </motion.div>
-          </div>
-
-          {/* Electric pulse rings */}
-          <motion.div
-            className="absolute inset-0 rounded-full border-2 border-ev-accent/30"
-            animate={{ scale: [1, 2.5], opacity: [1, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
-          />
-          <motion.div
-            className="absolute inset-0 rounded-full border-2 border-ev-blue/30"
-            animate={{ scale: [1, 2.5], opacity: [1, 0] }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              ease: "easeOut",
-              delay: 0.5,
-            }}
-          />
-          <motion.div
-            className="absolute inset-0 rounded-full border-2 border-yellow-400/30"
-            animate={{ scale: [1, 2.5], opacity: [1, 0] }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              ease: "easeOut",
-              delay: 1,
-            }}
-          />
+              transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            
+            {/* Logo Image */}
+            <motion.img
+              src={isDarkMode ? logoDark : logoWhite} // Switch logo based on theme
+              alt="EmPower Logo"
+              className="relative z-10 h-40 w-auto object-contain filter brightness-110"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.3 }}
+            />
+          </motion.div>
         </motion.div>
 
-        <motion.div className="mt-8 text-xl font-medium bg-gradient-to-r from-ev-blue via-ev-accent to-ev-blue bg-clip-text text-transparent relative">
+        {/* Elegant Progress Indicator */}
+        <motion.div
+          className="relative w-64 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
+          initial={{ opacity: 0, width: 0 }}
+          animate={{ opacity: 1, width: 256 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+        >
+          {/* Animated progress bar */}
           <motion.div
-            className="overflow-hidden relative"
+            className="absolute top-0 left-0 h-full bg-gradient-to-r from-ev-blue via-ev-accent to-ev-blue rounded-full"
             initial={{ width: "0%" }}
             animate={{ width: "100%" }}
-            transition={{ duration: 1, ease: "easeInOut", delay: 0.3 }}
-          >
-            <span
-              className="opacity-0 animate-slide-up"
-              style={{ animationDelay: "0.2s", animationFillMode: "forwards" }}
-            >
-              E
-            </span>
-            <span
-              className="opacity-0 animate-slide-up"
-              style={{ animationDelay: "0.3s", animationFillMode: "forwards" }}
-            >
-              M
-            </span>
-            <span
-              className="opacity-0 animate-slide-up"
-              style={{ animationDelay: "0.4s", animationFillMode: "forwards" }}
-            >
-              P
-            </span>
-            <span
-              className="opacity-0 animate-slide-up"
-              style={{ animationDelay: "0.5s", animationFillMode: "forwards" }}
-            >
-              O
-            </span>
-            <span
-              className="opacity-0 animate-slide-up"
-              style={{ animationDelay: "0.6s", animationFillMode: "forwards" }}
-            >
-              W
-            </span>
-            <span
-              className="opacity-0 animate-slide-up"
-              style={{ animationDelay: "0.7s", animationFillMode: "forwards" }}
-            >
-              E
-            </span>
-            <span
-              className="opacity-0 animate-slide-up"
-              style={{ animationDelay: "0.8s", animationFillMode: "forwards" }}
-            >
-              R
-            </span>
-          </motion.div>
-
-          {/* Electricity spark line */}
-          <motion.div
-            className="absolute -bottom-4 left-0 right-0 h-0.5 bg-gradient-to-r from-ev-blue via-yellow-400 to-ev-accent"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 1.2, delay: 1 }}
+            transition={{
+              duration: 2,
+              delay: 0.8,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
           />
-
-          {/* Additional electricity sparks */}
+          
+          {/* Shimmer effect */}
           <motion.div
-            className="absolute -bottom-3 left-1/4 h-3 w-0.5 bg-ev-accent"
-            animate={{ height: [3, 10, 3], opacity: [0.3, 1, 0.3] }}
-            transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
-          />
-          <motion.div
-            className="absolute -bottom-3 left-1/2 h-3 w-0.5 bg-yellow-400"
-            animate={{ height: [3, 15, 3], opacity: [0.3, 1, 0.3] }}
-            transition={{ duration: 1.3, repeat: Infinity, delay: 0.5 }}
-          />
-          <motion.div
-            className="absolute -bottom-3 left-3/4 h-3 w-0.5 bg-ev-blue"
-            animate={{ height: [3, 10, 3], opacity: [0.3, 1, 0.3] }}
-            transition={{ duration: 0.7, repeat: Infinity, delay: 0.8 }}
+            className="absolute top-0 left-0 h-full w-20 bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full"
+            animate={{ x: [-80, 256] }}
+            transition={{
+              duration: 1.5,
+              delay: 1,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
           />
         </motion.div>
+
+        {/* Premium Loading Text */}
+        <motion.div
+          className="mt-8 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1 }}
+        >
+          <motion.p
+            className="text-lg font-medium text-foreground mb-2"
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          >
+            Loading your experience...
+          </motion.p>
+          
+          {/* Animated dots */}
+          <div className="flex justify-center space-x-1">
+            {[0, 1, 2].map((i) => (
+              <motion.div
+                key={i}
+                className="w-2 h-2 bg-ev-blue rounded-full"
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.5, 1, 0.5],
+                }}
+                transition={{
+                  duration: 1,
+                  repeat: Infinity,
+                  delay: i * 0.2,
+                  ease: "easeInOut"
+                }}
+              />
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Subtle floating particles for premium feel */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(8)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-ev-accent/30 rounded-full"
+              style={{
+                left: `${20 + (i * 10)}%`,
+                top: `${30 + (i * 5)}%`,
+              }}
+              animate={{
+                y: [-20, -40, -20],
+                opacity: [0, 0.6, 0],
+                scale: [0.5, 1, 0.5],
+              }}
+              transition={{
+                duration: 3 + (i * 0.5),
+                repeat: Infinity,
+                delay: i * 0.3,
+                ease: "easeInOut"
+              }}
+            />
+          ))}
+        </div>
       </div>
     </motion.div>
   );
