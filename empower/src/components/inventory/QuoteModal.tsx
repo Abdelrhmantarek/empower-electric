@@ -63,7 +63,11 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
   useEffect(() => {
     if (isOpen) {
       const scrollY = window.scrollY;
-      setModalPosition(scrollY);
+      const viewportHeight = window.innerHeight;
+      const modalHeight = viewportHeight * 0.8; // Use 80% of viewport height
+      const maxTopOffset = Math.max(20, scrollY + (viewportHeight - modalHeight) / 2);
+      const minTopOffset = 20;
+      setModalPosition(Math.min(maxTopOffset, scrollY + minTopOffset));
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
@@ -116,7 +120,6 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
           {/* Backdrop */}
           <motion.div 
             className="fixed inset-0 z-50 bg-gray-900/80 backdrop-blur-md"
-            style={{ top: modalPosition, height: '100vh' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -126,19 +129,20 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
           
           {/* Modal */}
           <div 
-            className="fixed z-50 flex items-center justify-center overflow-y-auto p-4"
-            style={{ top: modalPosition, height: '100vh', width: '100%' }}
+            className="fixed z-50 flex items-center justify-center w-full p-2 sm:p-4"
+            style={{ top: 0, left: 0, right: 0, bottom: 0 }}
           >
             <motion.div 
-              className="bg-card dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-sm mx-auto overflow-hidden border border-gray-200 dark:border-gray-700"
+              className="bg-card dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-[90vw] sm:max-w-sm mx-auto overflow-hidden border border-gray-200 dark:border-gray-700"
               onClick={(e) => e.stopPropagation()}
+              style={{ top: `${modalPosition}px`, position: 'absolute', maxHeight: '80vh' }}
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 400 }}
             >
               {/* Header with Car Image */}
-              <div className="relative h-32 overflow-hidden">
+              <div className="relative h-24 sm:h-32 overflow-hidden">
                 <motion.img 
                   src={car.mainImage} 
                   alt={`${car.make} ${car.model}`}
@@ -151,12 +155,12 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
                 
                 {/* Car details overlay */}
                 <motion.div 
-                  className={`absolute bottom-0 left-0 right-0 p-3 text-gray-200 dark:text-gray-100 ${textAlign}`}
+                  className={`absolute bottom-0 left-0 right-0 p-2 sm:p-3 text-gray-200 dark:text-gray-100 ${textAlign}`}
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.2, duration: 0.5 }}
                 >
-                  <h3 className="text-base font-bold">{car.make} {car.model}</h3>
+                  <h3 className="text-sm sm:text-base font-bold">{car.make} {car.model}</h3>
                   <div className="flex items-center gap-2 text-gray-200 dark:text-gray-100 text-xs">
                     <span>{car.year}</span>
                     <span>•</span>
@@ -166,7 +170,7 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
                 
                 {/* Close Button */}
                 <motion.button
-                  className="absolute top-2 right-2 bg-gray-800/50 hover:bg-gray-700/70 text-white p-1.5 rounded-full"
+                  className="absolute top-2 right-2 bg-gray-800/50 hover:bg-gray-700/70 text-white p-1 sm:p-1.5 rounded-full"
                   onClick={onClose}
                   initial={{ opacity: 0, rotate: -90 }}
                   animate={{ opacity: 1, rotate: 0 }}
@@ -178,24 +182,24 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
               </div>
               
               {/* Content */}
-              <div className="p-4">
+              <div className="p-3 sm:p-4" style={{ maxHeight: 'calc(80vh - 8rem)', overflowY: 'auto' }}>
                 {isSubmitted ? (
                   <motion.div 
-                    className="text-center py-6"
+                    className="text-center py-4 sm:py-6"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
                   >
                     <motion.div 
-                      className="rounded-full bg-green-100 dark:bg-green-900/30 p-3 mx-auto w-14 h-14 flex items-center justify-center"
+                      className="rounded-full bg-green-100 dark:bg-green-900/30 p-2 sm:p-3 mx-auto w-12 sm:w-14 h-12 sm:h-14 flex items-center justify-center"
                       initial={{ scale: 0, rotate: -180 }}
                       animate={{ scale: 1, rotate: 0 }}
                       transition={{ type: "spring", damping: 10, stiffness: 100 }}
                     >
-                      <Check className="h-7 w-7 text-green-500 dark:text-green-400" />
+                      <Check className="h-6 sm:h-7 w-6 sm:w-7 text-green-500 dark:text-green-400" />
                     </motion.div>
                     <motion.h3 
-                      className="mt-4 text-lg font-bold text-gray-900 dark:text-gray-200"
+                      className="mt-2 sm:mt-4 text-base sm:text-lg font-bold text-gray-900 dark:text-gray-200"
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 0.4 }}
@@ -203,7 +207,7 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
                       {t.requestSubmitted}
                     </motion.h3>
                     <motion.p 
-                      className="mt-2 text-muted-foreground text-sm"
+                      className="mt-1 sm:mt-2 text-muted-foreground text-xs sm:text-sm"
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 0.5 }}
@@ -214,23 +218,23 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
                 ) : (
                   <>
                     <motion.div 
-                      className={`text-center mb-3 ${textAlign}`}
+                      className={`text-center mb-2 sm:mb-3 ${textAlign}`}
                       initial={{ y: -10, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 0.2 }}
                     >
-                      <h2 className="text-base font-bold">{t.requestInfo}</h2>
+                      <h2 className="text-sm sm:text-base font-bold">{t.requestInfo}</h2>
                     </motion.div>
                     
-                    <form onSubmit={handleSubmit} className={`${textAlign} space-y-3`}>
-                      <div className="grid grid-cols-2 gap-3">
+                    <form onSubmit={handleSubmit} className={`${textAlign} space-y-2 sm:space-y-3`}>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                         <motion.div 
-                          className="col-span-2"
+                          className="col-span-1 sm:col-span-2"
                           initial={{ x: isRtl ? 20 : -20, opacity: 0 }}
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 0.3 }}
                         >
-                          <label htmlFor="name" className={`block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300 font-inter ${textAlign}`}>
+                          <label htmlFor="name" className={`block text-xs font-medium mb-0.5 text-gray-700 dark:text-gray-300 font-inter ${textAlign}`}>
                             {t.name} <span className="text-red-500">*</span>
                           </label>
                           <input
@@ -238,18 +242,19 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
                             name="name"
                             type="text"
                             required
-                            className={`w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent font-inter ${textAlign} transition-all duration-200`}
+                            className={`w-full border border-gray-300 dark:border-gray-600 rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent font-inter ${textAlign} transition-all duration-200`}
                             value={formData.name}
                             onChange={handleChange}
                           />
                         </motion.div>
                         
                         <motion.div 
+                          className="col-span-1"
                           initial={{ x: isRtl ? 20 : -20, opacity: 0 }}
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 0.4 }}
                         >
-                          <label htmlFor="email" className={`block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300 font-inter ${textAlign}`}>
+                          <label htmlFor="email" className={`block text-xs font-medium mb-0.5 text-gray-700 dark:text-gray-300 font-inter ${textAlign}`}>
                             {t.email} <span className="text-red-500">*</span>
                           </label>
                           <input
@@ -257,7 +262,7 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
                             name="email"
                             type="email"
                             required
-                            className={`w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent font-inter ${textAlign}`}
+                            className={`w-full border border-gray-300 dark:border-gray-600 rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent font-inter ${textAlign}`}
                             value={formData.email}
                             onChange={handleChange}
                             dir="ltr"
@@ -265,11 +270,12 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
                         </motion.div>
                         
                         <motion.div 
+                          className="col-span-1"
                           initial={{ x: isRtl ? 20 : -20, opacity: 0 }}
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 0.5 }}
                         >
-                          <label htmlFor="phone" className={`block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300 font-inter ${textAlign}`}>
+                          <label htmlFor="phone" className={`block text-xs font-medium mb-0.5 text-gray-700 dark:text-gray-300 font-inter ${textAlign}`}>
                             {t.phone} <span className="text-red-500">*</span>
                           </label>
                           <input
@@ -277,7 +283,7 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
                             name="phone"
                             type="tel"
                             required
-                            className={`w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent font-inter ${textAlign}`}
+                            className={`w-full border border-gray-300 dark:border-gray-600 rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent font-inter ${textAlign}`}
                             value={formData.phone}
                             onChange={handleChange}
                             dir="ltr"
@@ -285,18 +291,19 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
                         </motion.div>
                         
                         <motion.div 
+                          className="col-span-1"
                           initial={{ x: isRtl ? 20 : -20, opacity: 0 }}
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 0.6 }}
                         >
-                          <label htmlFor="inquiryType" className={`block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300 font-inter ${textAlign}`}>
+                          <label htmlFor="inquiryType" className={`block text-xs font-medium mb-0.5 text-gray-700 dark:text-gray-300 font-inter ${textAlign}`}>
                             {t.inquiryType} <span className="text-red-500">*</span>
                           </label>
                           <select
                             id="inquiryType"
                             name="inquiryType"
                             required
-                            className={`w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent font-inter ${textAlign}`}
+                            className={`w-full border border-gray-300 dark:border-gray-600 rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent font-inter ${textAlign}`}
                             value={formData.inquiryType}
                             onChange={handleChange}
                           >
@@ -307,26 +314,26 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
                         </motion.div>
                         
                         <motion.div 
-                          className="col-span-2"
+                          className="col-span-1 sm:col-span-2"
                           initial={{ x: isRtl ? 20 : -20, opacity: 0 }}
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 0.7 }}
                         >
-                          <label htmlFor="message" className={`block text-xs font-medium mb-1 text-gray-700 dark:text-gray-300 font-inter ${textAlign}`}>
+                          <label htmlFor="message" className={`block text-xs font-medium mb-0.5 text-gray-700 dark:text-gray-300 font-inter ${textAlign}`}>
                             {t.message}
                           </label>
                           <textarea
                             id="message"
                             name="message"
                             rows={2}
-                            className={`w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent font-inter ${textAlign}`}
+                            className={`w-full border border-gray-300 dark:border-gray-600 rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent font-inter ${textAlign}`}
                             value={formData.message}
                             onChange={handleChange}
                           ></textarea>
                         </motion.div>
                         
                         <motion.div 
-                          className="col-span-2 pt-1"
+                          className="col-span-1 sm:col-span-2 pt-1"
                           initial={{ y: 20, opacity: 0 }}
                           animate={{ y: 0, opacity: 1 }}
                           transition={{ delay: 0.8 }}
@@ -334,13 +341,13 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
                           <button
                             type="submit"
                             disabled={isSubmitting}
-                            className={`button-primary w-full py-2 rounded-lg flex items-center justify-center gap-2 dark:bg-ev-blue-dark dark:text-gray-100 ${
+                            className={`button-primary w-full py-1.5 sm:py-2 rounded-lg flex items-center justify-center gap-2 dark:bg-ev-blue-dark dark:text-gray-100 text-xs sm:text-sm ${
                               isSubmitting ? "opacity-70 cursor-not-allowed" : ""
                             }`}
                           >
                             {isSubmitting ? (
                               <span className="flex items-center justify-center">
-                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white dark:text-gray-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <svg className="animate-spin -ml-1 mr-1 sm:mr-2 h-3 sm:h-4 w-3 sm:w-4 text-white dark:text-gray-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
@@ -348,7 +355,7 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
                               </span>
                             ) : (
                               <>
-                                <Send className="h-4 w-4" />
+                                <Send className="h-3 sm:h-4 w-3 sm:w-4" />
                                 {t.submit}
                               </>
                             )}
