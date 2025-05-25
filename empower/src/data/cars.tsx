@@ -1,10 +1,3 @@
-// import gs3Image from "../../public/cars/gs3.jpeg"
-// import aionImage from "../../public/cars/aion-tiny.jpg"
-// import aionFullImage from "../../public/cars/aion-full-tiny.jpg"
-// import aionBackImage from "../../public/cars/aion-back-tiny.jpg"
-// import hyptecImage from "../../public/cars/hyptec.png"
-
-
 // export interface CarColor {
 //   name: string;
 //   value: string;
@@ -195,13 +188,6 @@
 //   },
 // ];
 
-
-// import gs3Image from "../../public/cars/gs3.jpeg";
-// import aionImage from "../../public/cars/aion-tiny.jpg";
-// import aionFullImage from "../../public/cars/aion-full-tiny.jpg";
-// import aionBackImage from "../../public/cars/aion-back-tiny.jpg";
-// import hyptecImage from "../../public/cars/hyptec.png";
-
 // Define interfaces for the car data structure
 export interface Car {
   id: string;
@@ -230,14 +216,14 @@ export interface Car {
 export interface CarColor {
   name: string;
   value: string;
-  image: string;
+  image: string[];
 }
 
 // Function to fetch cars from Strapi CMS
 // cars.tsx (fetchCars function)
 export const fetchCars = async (): Promise<Car[]> => {
   try {
-    const response = await fetch(`${process.env.REACT_APP_STRAPI_API_URL}/api/cars?populate[images][populate]=image&populate=mainImage&populate[colors][populate]=*`, {
+    const response = await fetch(`${process.env.REACT_APP_STRAPI_API_URL}/api/cars?populate[colors][populate]=*&populate[mainImage][populate]=*`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -272,7 +258,7 @@ export const fetchCars = async (): Promise<Car[]> => {
         id: item.id.toString(),
         make: item.make,
         model: item.model,
-        year: item.year,
+        year: item.year,     
         price: item.price,
         description: parseDescription(item.description), // Parse rich text to string
         shortDescription: item.shortDescription,
@@ -280,9 +266,11 @@ export const fetchCars = async (): Promise<Car[]> => {
           ? item.colors.map((color: any) => ({
               name: color.name,
               value: color.value,
-              image: color.image?.url
-                ? `${process.env.REACT_APP_STRAPI_API_URL}${color.image.url}`
-                : "",
+              image: color.image
+                ? color.image.map(
+                    (img: any) => `${process.env.REACT_APP_STRAPI_API_URL}${img.url}`
+                  )
+                : [],
             }))
           : [],
         specs: item.specs || {

@@ -38,38 +38,37 @@ const CarDetail = () => {
   const chargingRef = useRef<HTMLDivElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
 
-  // CarDetail.tsx (partial update to focus on useEffect)
-useEffect(() => {
-  const loadCar = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const cars = await fetchCars();
-      const foundCar = cars.find((c) => c.id === id); // id is now a string (e.g., "5")
-      if (foundCar) {
-        setCar(foundCar);
-        console.log(`Found car: ${JSON.stringify(foundCar)}`);
-        setSelectedColor(foundCar.colors[0]);
-        setTimeout(() => {
-          carNameRef.current?.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-        }, 100);
-        setTimeout(() => {
-          setShowSpecsAnimation(true);
-        }, 1000);
-      } else {
-        setCar(undefined);
+  useEffect(() => {
+    const loadCar = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const cars = await fetchCars();
+        const foundCar = cars.find((c) => c.id === id);
+        if (foundCar) {
+          setCar(foundCar);
+          console.log(`Found car: ${JSON.stringify(foundCar)}`);
+          setSelectedColor(foundCar.colors[0] || null);
+          setTimeout(() => {
+            carNameRef.current?.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }, 100);
+          setTimeout(() => {
+            setShowSpecsAnimation(true);
+          }, 1000);
+        } else {
+          setCar(undefined);
+        }
+      } catch (err) {
+        setError("Failed to load car details. Please try again later.");
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      setError("Failed to load car details. Please try again later.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  loadCar();
-}, [id]);
+    };
+    loadCar();
+  }, [id]);
 
   if (isLoading) {
     return (
@@ -168,7 +167,7 @@ useEffect(() => {
           </nav>
         </motion.div>
 
-        {/* Car Title Section - Scroll target */}
+        {/* Car Title Section */}
         <motion.div
           ref={carNameRef}
           className="mb-8"
@@ -215,9 +214,9 @@ useEffect(() => {
           </div>
         </motion.div>
 
-        {/* Main Content Layout - Redesigned for e-commerce feel */}
+        {/* Main Content Layout */}
         <div className="space-y-8">
-          {/* Product Images Section - Full width */}
+          {/* Product Images Section */}
           <motion.div
             className="w-full"
             initial={{ opacity: 0, scale: 0.95 }}
@@ -256,20 +255,16 @@ useEffect(() => {
               </button>
             </div>
 
-            {/* Image Gallery & 360° View - Full width container */}
+            {/* Image Gallery & 360° View */}
             <div className="relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 h-[70vh] min-h-[500px]">
               <ImageGallery
-                images={
-                  selectedColor
-                    ? [selectedColor.image, ...car.interior]
-                    : car.images
-                }
+                images={selectedColor ? selectedColor.image : [car.mainImage]}
                 alt={`${car.make} ${car.model}`}
               />
               <CarSpinView carId={car.id} isActive={viewMode === "spin"} />
             </div>
 
-            {/* Color Selector - Below images */}
+            {/* Color Selector */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -280,7 +275,7 @@ useEffect(() => {
             </motion.div>
           </motion.div>
 
-          {/* Product Information Grid - E-commerce style */}
+          {/* Product Information Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column: Overview and Quick Actions */}
             <div className="lg:col-span-2 space-y-8">
@@ -333,7 +328,7 @@ useEffect(() => {
               </motion.div>
             </div>
 
-            {/* Right Column: Purchase Actions - E-commerce style sidebar */}
+            {/* Right Column: Purchase Actions */}
             <div className="space-y-6">
               {/* Price and Actions Card */}
               <motion.div

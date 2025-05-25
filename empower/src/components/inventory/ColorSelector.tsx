@@ -1,4 +1,3 @@
-
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CarColor } from "@/data/cars";
@@ -11,7 +10,7 @@ interface ColorSelectorProps {
 export default function ColorSelector({ colors, onChange }: ColorSelectorProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [animating, setAnimating] = useState(false);
-  const selectedColor = useMemo(() => colors[selectedIndex], [colors, selectedIndex]);
+  const selectedColor = useMemo(() => colors[selectedIndex] || colors[0], [colors, selectedIndex]);
   
   const handleColorChange = (index: number) => {
     if (index === selectedIndex || animating) return;
@@ -20,11 +19,9 @@ export default function ColorSelector({ colors, onChange }: ColorSelectorProps) 
     setSelectedIndex(index);
     onChange(colors[index]);
     
-    // Reset animating state after animation completes
     setTimeout(() => setAnimating(false), 500);
   };
 
-  // Auto-scroll effect for the color name
   useEffect(() => {
     const interval = setTimeout(() => {
       const element = document.getElementById('color-name-display');

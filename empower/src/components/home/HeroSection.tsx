@@ -72,12 +72,12 @@ export default function HeroSection() {
             </div>
           </div> */}
           {/* Scroll Indicator */}
-          <div className="hidden md:block absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce-small">
+          {/* <div className="hidden md:block absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce-small">
             <div className="text-center text-white/70 text-xs mb-2">{t.scrollIndicator}</div>
             <div className="w-8 h-12 rounded-full border-2 border-white flex items-start justify-center p-1 mx-auto">
               <div className="w-1 h-2 rounded-full bg-white animate-slide-down"></div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

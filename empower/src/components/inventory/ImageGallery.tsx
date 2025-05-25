@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 interface ImageGalleryProps {
@@ -10,17 +9,26 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  console.log("Imagesssssss", images)
-  
+  console.log("Images:", images);
+
+  // Handle case when images array is empty
+  if (!images || images.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-[400px] bg-gray-100 dark:bg-gray-800 rounded-lg">
+        <p className="text-muted-foreground">No images available</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       {/* Main Image */}
-      <div 
+      <div
         className="relative h-[400px] rounded-lg overflow-hidden"
         // onClick={() => setLightboxOpen(true)}
       >
-        <img 
-          src={images[currentImageIndex]} 
+        <img
+          src={images[currentImageIndex]}
           alt={`${alt} - Image ${currentImageIndex + 1}`}
           className="w-full h-full object-cover"
         />
@@ -30,7 +38,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
           </span>
         </div> */}
       </div>
-      
+
       {/* Thumbnails */}
       <div className="flex gap-2 overflow-x-auto pb-2">
         {images.map((image, index) => (
@@ -51,10 +59,10 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
           </button>
         ))}
       </div>
-      
+
       {/* Lightbox */}
       {lightboxOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
           onClick={() => setLightboxOpen(false)}
         >
@@ -64,7 +72,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
               alt={`${alt} - Lightbox Image ${currentImageIndex + 1}`}
               className="max-w-full max-h-[80vh] object-contain"
             />
-            
+
             {/* Navigation Arrows */}
             {images.length > 1 && (
               <>
@@ -72,7 +80,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
                   className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-12 bg-white/10 hover:bg-white/20 rounded-full p-2"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setCurrentImageIndex((prev) => 
+                    setCurrentImageIndex((prev) =>
                       prev === 0 ? images.length - 1 : prev - 1
                     );
                   }}
@@ -96,9 +104,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
                   className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-12 bg-white/10 hover:bg-white/20 rounded-full p-2"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setCurrentImageIndex((prev) => 
-                      (prev + 1) % images.length
-                    );
+                    setCurrentImageIndex((prev) => (prev + 1) % images.length);
                   }}
                 >
                   <svg
@@ -113,12 +119,12 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
                     strokeLinejoin="round"
                     className="text-white"
                   >
-                    <path d="m9 18 6-6-6-6" />
+                    <path d="9 18 6-6-6-6" />
                   </svg>
                 </button>
               </>
             )}
-            
+
             {/* Close Button */}
             <button
               className="absolute top-0 right-0 transform translate-x-12 -translate-y-12 bg-white/10 hover:bg-white/20 rounded-full p-2"
