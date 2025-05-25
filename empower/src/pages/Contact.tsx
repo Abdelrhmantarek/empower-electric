@@ -13,40 +13,69 @@ const Contact = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
 
-    // Simulate form submission
-    setTimeout(() => {
-      console.log("Submitted contact form:", formData);
-      setIsSubmitting(false);
-      setIsSubmitted(true);
+    const payload = {
+      data: {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        subject: formData.subject,
+        message: formData.message,
+      },
+    };
 
-      // Reset form after successful submission
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        subject: "",
-        message: "",
+    console.log('Submitting payload:', JSON.stringify(payload, null, 2));
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_STRAPI_API_URL}/api/contact-submissions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${process.env.REACT_APP_STRAPI_API_TOKEN}`
+        },
+        body: JSON.stringify(payload),
       });
 
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setIsSubmitted(false);
-      }, 5000);
-    }, 1500);
+      const responseData = await response.json();
+      console.log('Response from Strapi:', JSON.stringify(responseData, null, 2));
+
+      if (response.ok) {
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+
+        // Reset form after successful submission
+        setTimeout(() => {
+          setFormData({
+            name: "",
+            email: "",
+            phone: "",
+            subject: "",
+            message: "",
+          });
+          setIsSubmitted(false);
+        }, 5000);
+      } else {
+        setError('Failed to submit the form. Please try again.');
+        setIsSubmitting(false);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setError('An error occurred. Please check the console and try again.');
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -225,6 +254,10 @@ const Contact = () => {
                   possible.
                 </p>
               </div>
+            ) : error ? (
+              <div className="text-center py-6 text-red-600 dark:text-red-400">
+                {error}
+              </div>
             ) : (
               <>
                 <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
@@ -342,6 +375,7 @@ const Contact = () => {
                         {isSubmitting ? "Sending..." : "Send Message"}
                       </button>
                     </div>
+                    {error && <p className="text-red-600 dark:text-red-400 text-center">{error}</p>}
                   </div>
                 </form>
               </>

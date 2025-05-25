@@ -82,15 +82,36 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    setTimeout(() => {
-      console.log("Submitted form data:", { car: car.id, ...formData });
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+
+  try {
+    const response = await fetch(`${process.env.REACT_APP_STRAPI_API_URL}/api/form-submissions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${process.env.REACT_APP_STRAPI_API_TOKEN}`
+      },
+      body: JSON.stringify({
+        data: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          inquiryType: formData.inquiryType,
+          message: formData.message,
+          car: car.make, // Include car ID if relevant
+          createAt: new Date().toISOString(),
+        },
+      }),
+    });
+    const responseData = await response.json();
+      console.log('Response from Strapi:', responseData);
+
+    if (response.ok) {
       setIsSubmitting(false);
       setIsSubmitted(true);
-      
+
       setTimeout(() => {
         setFormData({
           name: "",
@@ -102,8 +123,13 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
         setIsSubmitted(false);
         onClose();
       }, 3000);
-    }, 1000);
-  };
+    } else {
+      console.error('Failed to submit form');
+    }
+  } catch (error) {
+    console.error('Error submitting form:', error);
+  }
+};
   
   if (!isOpen) return null;
   

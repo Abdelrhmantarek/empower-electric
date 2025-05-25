@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Layout from "@/components/Layout";
-import { fetchCars, Car as CarType } from "@/data/cars"; // Import fetchCars instead of static cars
+import { fetchCars, Car as CarType } from "@/data/cars";
 import { useLanguage } from "@/components/Layout";
 
 // Date helper functions
@@ -92,6 +92,7 @@ const translations = {
     loading: "Loading vehicles...",
     error: "Failed to load vehicles. Please try again later.",
     noVehicles: "No vehicles available for test drive at the moment.",
+    submissionError: "Failed to schedule test drive. Please try again.",
   },
   ar: {
     testDriveTitle: "حجز تجربة قيادة",
@@ -130,6 +131,7 @@ const translations = {
     loading: "جارٍ تحميل السيارات...",
     error: "فشل في تحميل السيارات. الرجاء المحاولة مرة أخرى لاحقًا.",
     noVehicles: "لا توجد سيارات متاحة لتجربة القيادة في الوقت الحالي.",
+    submissionError: "فشل في جدولة تجربة القيادة. الرجاء المحاولة مرة أخرى.",
   },
 };
 
@@ -142,7 +144,7 @@ const TestDrive = () => {
   const isRtl = language === "ar";
   const textAlign = isRtl ? "text-right" : "text-left";
 
-  const [cars, setCars] = useState<CarType[]>([]); // State to store fetched cars
+  const [cars, setCars] = useState<CarType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedCar, setSelectedCar] = useState<CarType | null>(null);
@@ -189,8 +191,6 @@ const TestDrive = () => {
     };
 
     loadCars();
-
-    // Scroll to top when component mounts
     window.scrollTo(0, 0);
   }, [carId, t.error]);
 
@@ -202,7 +202,6 @@ const TestDrive = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // If car model is selected, find and set the selected car
     if (name === "carModel" && value) {
       const car = cars.find((c) => c.id === value);
       setSelectedCar(car || null);
@@ -233,22 +232,94 @@ const TestDrive = () => {
     window.scrollTo({ top: 375, behavior: "smooth" });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsSubmitting(true);
+      setError(null);
 
-    // Simulate form submission
-    setTimeout(() => {
-      console.log("Submitted test drive form:", formData);
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 1500);
-  };
+      // Prepare the car details as a text field
+      const carText = selectedCar
+        ? `${selectedCar.year} ${selectedCar.make} ${selectedCar.model}`
+        : "Unknown Vehicle";
+
+      // Prepare the JSON data for the test drive submission
+      const jsonData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        car: carText,
+        date: formData.date,
+        time: formData.time,
+        comments: formData.comments,
+      };
+
+      try {
+        // Step 1: Create the test drive entry with text data (JSON request)
+        console.log("Submitting test drive data to Strapi (JSON)...");
+        console.log("Data:", JSON.stringify(jsonData, null, 2));
+
+        const createResponse = await fetch(`${process.env.REACT_APP_STRAPI_API_URL}/api/test-drive-submissions`, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${process.env.REACT_APP_STRAPI_API_TOKEN}`
+          },
+          body: JSON.stringify({ data: jsonData }),
+        });
+
+        const createResponseData = await createResponse.json();
+        console.log("Create Response from Strapi:", JSON.stringify(createResponseData, null, 2));
+
+        if (!createResponse.ok) {
+          const errorMessage = createResponseData.error?.message || t.submissionError;
+          const errorDetails = createResponseData.error?.details || {};
+          throw new Error(`Failed to create entry: ${errorMessage}. Details: ${JSON.stringify(errorDetails)}`);
+        }
+
+        // Step 2: If a file is provided, upload it to the created entry
+        if (formData.licenseFile) {
+          const entryId = createResponseData.data.id; // Get the ID of the newly created entry
+          console.log(`Uploading license file for entry ID ${entryId}...`);
+
+          const fileFormData = new FormData();
+          fileFormData.append("files", formData.licenseFile);
+          fileFormData.append("ref", "api::test-drive-submission.test-drive-submission"); // Strapi collection API ID
+          fileFormData.append("refId", entryId); // ID of the created entry
+          fileFormData.append("field", "licenseFile"); // Field to attach the file to
+
+          for (const [key, value] of fileFormData.entries()) {
+            console.log(`${key}: ${value instanceof File ? `[File: ${value.name}]` : value}`);
+          }
+
+          const uploadResponse = await fetch("http://localhost:1337/api/upload", {
+            method: "POST",
+            body: fileFormData,
+          });
+
+          const uploadResponseData = await uploadResponse.json();
+          console.log("Upload Response from Strapi:", JSON.stringify(uploadResponseData, null, 2));
+
+          if (!uploadResponse.ok) {
+            const uploadErrorMessage = uploadResponseData.error?.message || "Failed to upload file";
+            console.warn(`File upload failed: ${uploadErrorMessage}`);
+            // Note: We won't fail the entire submission if the file upload fails
+          }
+        }
+
+        // If we reach here, the submission is successful
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (err) {
+        console.error("Error submitting form:", err);
+        setError(`Submission failed: ${err.message || t.submissionError}`);
+        setIsSubmitting(false);
+      }
+};
 
   return (
     <Layout>
-      {/* Header */}
       <div className="bg-gradient-to-r from-ev-blue to-ev-charcoal text-white py-16 md:py-24">
         <div className="container max-w-5xl mx-auto px-4">
           <div className={`text-center ${textAlign}`}>
@@ -846,7 +917,7 @@ const TestDrive = () => {
                           />
                         </div>
 
-                        <div>
+                        {/* <div>
                           <label
                             htmlFor="licenseFile"
                             className={`block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300 ${textAlign}`}
@@ -866,7 +937,7 @@ const TestDrive = () => {
                           >
                             {t.fileFormats}
                           </p>
-                        </div>
+                        </div> */}
 
                         <div
                           className={`mt-10 flex justify-between ${
@@ -904,6 +975,11 @@ const TestDrive = () => {
                             )}
                           </button>
                         </div>
+                        {error && (
+                          <p className={`text-red-600 dark:text-red-400 text-center mt-4 ${textAlign}`}>
+                            {error}
+                          </p>
+                        )}
                       </div>
                     </motion.div>
                   )}
