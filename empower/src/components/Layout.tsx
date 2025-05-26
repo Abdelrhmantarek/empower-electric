@@ -28,7 +28,29 @@ export const LanguageContext = createContext<LanguageContextType>({
   setLanguage: () => {},
 });
 
-export const useLanguage = () => useContext(LanguageContext);
+// export const useLanguage = () => useContext(LanguageContext);
+
+export const useLanguage = () => {
+  const [language, setLanguage] = useState<'en' | 'ar'>(
+    () => (localStorage.getItem('preferredLanguage') as 'en' | 'ar') || 'en'
+  );
+
+  // This effect ensures all components get the updated language immediately
+  useEffect(() => {
+    const updateLanguage = () => {
+      const lang = localStorage.getItem('preferredLanguage') as 'en' | 'ar';
+      if (lang && lang !== language) {
+        setLanguage(lang);
+      }
+    };
+
+    // Custom event listener for language changes
+    window.addEventListener('languageChange', updateLanguage);
+    return () => window.removeEventListener('languageChange', updateLanguage);
+  }, [language]);
+
+  return { language, setLanguage };
+};
 
 export default function Layout({
   children,

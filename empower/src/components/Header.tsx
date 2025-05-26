@@ -71,12 +71,15 @@ export default function Header({ transparentHeader = false }: HeaderProps) {
   }, []);
 
   const navLinks = [
-    { name: translations[language].home, path: "/" },
-    { name: translations[language].inventory, path: "/inventory" },
-    { name: translations[language].testDrive, path: "/test-drive" },
-    { name: translations[language].about, path: "/about" },
-    { name: translations[language].contact, path: "/contact" },
-  ];
+  { name: translations[language].home, path: "/" },
+  { name: translations[language].inventory, path: "/inventory" },
+  { name: translations[language].testDrive, path: "/test-drive" },
+  { name: translations[language].about, path: "/about" },
+  { name: translations[language].contact, path: "/contact" },
+];
+
+// Reverse the array if language is Arabic
+const orderedNavLinks = language === 'ar' ? [...navLinks].reverse() : navLinks;
 
   const isActive = (path: string) => {
     if (path === "/" && location.pathname === "/") return true;
@@ -132,7 +135,7 @@ export default function Header({ transparentHeader = false }: HeaderProps) {
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden md:flex mx-auto">
             <NavigationMenuList className="gap-3">
-              {navLinks.map((link, index) => (
+              {orderedNavLinks .map((link, index) => (
                 <motion.div key={link.name} variants={itemVariants}>
                   <NavigationMenuItem>
                     <Link
@@ -204,7 +207,7 @@ export default function Header({ transparentHeader = false }: HeaderProps) {
               initial="hidden"
               animate="visible"
             >
-              {navLinks.map((link, index) => (
+              {orderedNavLinks .map((link, index) => (
                 <motion.li
                   key={link.name}
                   variants={itemVariants}
