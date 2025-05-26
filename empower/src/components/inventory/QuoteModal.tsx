@@ -133,11 +133,6 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
   
   if (!isOpen) return null;
   
-  const formattedPrice = new Intl.NumberFormat(language === 'ar' ? 'ar-SA' : 'en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0
-  }).format(car.price);
   
   return (
     <AnimatePresence>
@@ -190,7 +185,6 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
                   <div className="flex items-center gap-2 text-gray-200 dark:text-gray-100 text-xs">
                     <span>{car.year}</span>
                     <span>•</span>
-                    <span className="font-semibold text-ev-accent">{formattedPrice}</span>
                   </div>
                 </motion.div>
                 
@@ -333,7 +327,6 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
                             value={formData.inquiryType}
                             onChange={handleChange}
                           >
-                            <option value="price">{t.getPrice}</option>
                             <option value="availability">{t.availability}</option>
                             <option value="question">{t.askQuestion}</option>
                           </select>

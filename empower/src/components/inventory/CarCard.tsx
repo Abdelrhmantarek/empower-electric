@@ -31,14 +31,6 @@ export default function CarCard({ car, onRequestQuote }: CarCardProps) {
   const t = translations[language];
   const isRtl = language === "ar";
 
-  const formattedPrice = new Intl.NumberFormat(
-    language === "ar" ? "ar-SA" : "en-US",
-    {
-      style: "currency",
-      currency: "USD",
-      maximumFractionDigits: 0,
-    }
-  ).format(car.price);
 
   return (
     <>
@@ -61,7 +53,6 @@ export default function CarCard({ car, onRequestQuote }: CarCardProps) {
             <h3 className="text-xl font-bold">
               {car.make} {car.model}
             </h3>
-            <span className="text-lg font-semibold text-ev-blue">{formattedPrice}</span>
           </div>
 
           <p className={`text-sm text-muted-foreground mb-4 ${isRtl ? "text-right" : "text-left"}`}>{car.shortDescription}</p>

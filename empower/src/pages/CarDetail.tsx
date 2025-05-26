@@ -120,12 +120,6 @@ const CarDetail = () => {
     );
   }
 
-  const formattedPrice = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(car.price);
-
   const handleColorChange = (color: CarColor) => {
     setSelectedColor(color);
   };
@@ -180,14 +174,6 @@ const CarDetail = () => {
           </h1>
 
           <div className="flex flex-wrap items-center gap-4 mt-1">
-            <motion.span
-              className="text-3xl font-semibold"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              {formattedPrice}
-            </motion.span>
 
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -330,19 +316,13 @@ const CarDetail = () => {
 
             {/* Right Column: Purchase Actions */}
             <div className="space-y-6">
-              {/* Price and Actions Card */}
+              {/* Actions Card */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.8 }}
                 className="bg-white dark:bg-gray-900 p-8 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm sticky top-8"
               >
-                <div className="text-center mb-8">
-                  <div className="text-4xl font-bold text-ev-blue mb-2">
-                    {formattedPrice}
-                  </div>
-                  <div className="text-muted-foreground">Starting Price</div>
-                </div>
 
                 {/* Call to Action Buttons */}
                 <div className="space-y-4">
@@ -377,16 +357,16 @@ const CarDetail = () => {
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Delivery</span>
-                      <span className="font-medium">2-4 weeks</span>
+                      <span className="font-medium">{car.specs.delivery}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Warranty</span>
-                      <span className="font-medium">8 years</span>
+                      <span className="font-medium">{car.specs.warranty}</span>
                     </div>
-                    <div className="flex justify-between">
+                    {/* <div className="flex justify-between">
                       <span className="text-muted-foreground">Financing</span>
                       <span className="font-medium">Available</span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </motion.div>

@@ -25,8 +25,6 @@ export default function HighlightsSection() {
           acceleration: car.specs.acceleration,
           topSpeed: car.specs.topSpeed,
         },
-        lease: `Lease From $${(car.price / 1000).toFixed(0)}/mo With Zero Down`,
-        price: `$${(car.price).toLocaleString()}`,
       })).filter(car => car.image); // Ensure only cars with images are included
       setCarHighlights(formattedHighlights);
     };
@@ -178,14 +176,6 @@ export default function HighlightsSection() {
                                 View Details
                                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                               </span>
-                              <div className="text-right">
-                                <p className="text-2xl font-bold text-foreground">
-                                  {car.price}
-                                </p>
-                                <p className="text-xs text-muted-foreground">
-                                  Starting Price
-                                </p>
-                              </div>
                             </div>
                           )}
                         </div>

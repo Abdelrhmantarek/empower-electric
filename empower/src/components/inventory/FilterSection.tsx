@@ -16,7 +16,6 @@ const translations = {
     search: "Search Electric Vehicles...",
     make: "Manufacturer",
     model: "Model",
-    price: "Price Range ($)",
     range: "Range (mi)",
     color: "Color",
     year: "Year",
@@ -25,8 +24,6 @@ const translations = {
     drivetrain: "Drivetrain",
     sortBy: "Sort By",
     all: "All",
-    minPrice: "Min Price",
-    maxPrice: "Max Price",
     minRange: "Min Range",
     maxRange: "Max Range",
     minBattery: "Min Battery",
@@ -37,8 +34,6 @@ const translations = {
     applyFilters: "Apply Filters",
     sortOptions: {
       featured: "Featured",
-      priceLow: "Price: Low to High",
-      priceHigh: "Price: High to Low",
       rangeHigh: "Range: High to Low",
       newest: "Newest First",
     },
@@ -54,7 +49,6 @@ const translations = {
     search: "ابحث عن السيارات الكهربائية...",
     make: "الصانع",
     model: "الطراز",
-    price: "نطاق السعر ($)",
     range: "المدى (كم)",
     color: "اللون",
     year: "السنة",
@@ -63,8 +57,6 @@ const translations = {
     drivetrain: "نظام الدفع",
     sortBy: "ترتيب حسب",
     all: "الكل",
-    minPrice: "الحد الأدنى للسعر",
-    maxPrice: "الحد الأقصى للسعر",
     minRange: "الحد الأدنى للمدى",
     maxRange: "الحد الأقصى للمدى",
     minBattery: "الحد الأدنى للبطارية",
@@ -75,8 +67,6 @@ const translations = {
     applyFilters: "تطبيق الفلاتر",
     sortOptions: {
       featured: "مميز",
-      priceLow: "السعر: من الأقل إلى الأعلى",
-      priceHigh: "السعر: من الأعلى إلى الأقل",
       rangeHigh: "المدى: من الأعلى إلى الأقل",
       newest: "الأحدث أولاً",
     },
@@ -101,8 +91,6 @@ const FilterSection: React.FC<FilterSectionProps> = ({
   const [filters, setFilters] = useState({
     make: "all",
     model: "all",
-    priceMin: "",
-    priceMax: "",
     rangeMin: "",
     rangeMax: "",
     color: "all",
@@ -171,8 +159,6 @@ const FilterSection: React.FC<FilterSectionProps> = ({
     setFilters({
       make: "all",
       model: "all",
-      priceMin: "",
-      priceMax: "",
       rangeMin: "",
       rangeMax: "",
       color: "all",
@@ -296,32 +282,6 @@ const FilterSection: React.FC<FilterSectionProps> = ({
                 </select>
               </motion.div>
 
-              {/* Price Range */}
-              <motion.div variants={inputVariants} whileHover="hover">
-                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                  {t.price}
-                </label>
-                <div className="flex space-x-3 rtl:space-x-reverse">
-                  <input
-                    type="number"
-                    placeholder={t.minPrice}
-                    value={filters.priceMin}
-                    onChange={(e) =>
-                      handleFilterChange("priceMin", e.target.value)
-                    }
-                    className="w-1/2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
-                  />
-                  <input
-                    type="number"
-                    placeholder={t.maxPrice}
-                    value={filters.priceMax}
-                    onChange={(e) =>
-                      handleFilterChange("priceMax", e.target.value)
-                    }
-                    className="w-1/2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
-                  />
-                </div>
-              </motion.div>
 
               {/* Range */}
               <motion.div variants={inputVariants} whileHover="hover">
@@ -475,8 +435,6 @@ const FilterSection: React.FC<FilterSectionProps> = ({
                   className="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
                 >
                   <option value="featured">{t.sortOptions.featured}</option>
-                  <option value="price-low">{t.sortOptions.priceLow}</option>
-                  <option value="price-high">{t.sortOptions.priceHigh}</option>
                   <option value="range-high">{t.sortOptions.rangeHigh}</option>
                   <option value="newest">{t.sortOptions.newest}</option>
                 </select>

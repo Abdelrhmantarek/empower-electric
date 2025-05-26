@@ -1,8 +1,10 @@
-
 import Layout from "@/components/Layout";
 import { Link } from "react-router-dom";
 import { useEffect } from 'react';
 import mission from "../../public/about/mission.png"; // Importing the mission image
+import first_about from "../../public/about/first_about_us.png"; // Importing the first about image
+import second_about from "../../public/about/second_about_us.png"; // Importing the second about image
+import third_about from "../../public/about/third_about_us.png"; // Importing the third about image
 
 const About = () => {
   useEffect(() => {
@@ -114,6 +116,70 @@ const About = () => {
                   <p className="text-muted-foreground">
                     Continuing to grow our inventory with the most advanced electric vehicles and expanding our service offerings to meet the evolving needs of EV owners.
                   </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Our Achievements */}
+        <div className="mb-20">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Our Achievements</h2>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-12 text-center">
+            Discover the milestones that highlight Empower EV's leadership in sustainable mobility.
+          </p>
+          <div className="space-y-16">
+            {/* Achievement 1: Image Right, Text Left */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div className="order-1 lg:order-1">
+                <h3 className="text-xl font-semibold mb-2 text-ev-blue">Flagship Showroom Opening</h3>
+                <p className="text-muted-foreground">
+                  In 2021, we opened our state-of-the-art flagship showroom in Los Angeles, designed to showcase the latest in electric vehicle technology with a focus on customer experience.
+                </p>
+              </div>
+              <div className="order-2 lg:order-2">
+                <div className="w-full h-80 rounded-lg overflow-hidden">
+                  <img
+                    src={first_about}
+                    alt="Flagship Showroom Opening"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+            {/* Achievement 2: Image Left, Text Right */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div className="order-2 lg:order-1">
+                <div className="w-full h-80 rounded-lg overflow-hidden">
+                  <img
+                    src={second_about}
+                    alt="EV Dealership of the Year"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+              <div className="order-1 lg:order-2">
+                <h3 className="text-xl font-semibold mb-2 text-ev-blue">EV Dealership of the Year</h3>
+                <p className="text-muted-foreground">
+                  Recognized in 2023 as the "EV Dealership of the Year" for our outstanding service, innovative approach, and commitment to advancing electric mobility.
+                </p>
+              </div>
+            </div>
+            {/* Achievement 3: Image Right, Text Left */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div className="order-1 lg:order-1">
+                <h3 className="text-xl font-semibold mb-2 text-ev-blue">Carbon Neutral Operations</h3>
+                <p className="text-muted-foreground">
+                  Achieved carbon-neutral certification in 2023, reflecting our dedication to sustainable operations and reducing environmental impact across all our facilities.
+                </p>
+              </div>
+              <div className="order-2 lg:order-2">
+                <div className="w-full h-80 rounded-lg overflow-hidden">
+                  <img
+                    src={third_about}
+                    alt="Carbon Neutral Certification"
+                    className="w zwykle h-full object-cover"
+                  />
                 </div>
               </div>
             </div>

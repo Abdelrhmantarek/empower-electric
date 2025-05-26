@@ -82,14 +82,6 @@ const Inventory = () => {
       result = result.filter((car) => car.model === filters.model);
     }
 
-    // Apply price filter
-    if (filters.priceMin) {
-      result = result.filter((car) => car.price >= Number(filters.priceMin));
-    }
-    if (filters.priceMax) {
-      result = result.filter((car) => car.price <= Number(filters.priceMax));
-    }
-
     // Apply range filter
     if (filters.rangeMin) {
       result = result.filter(
@@ -148,12 +140,6 @@ const Inventory = () => {
 
     // Apply sorting
     switch (sort) {
-      case "price-low":
-        result.sort((a, b) => a.price - b.price);
-        break;
-      case "price-high":
-        result.sort((a, b) => b.price - a.price);
-        break;
       case "range-high":
         result.sort((a, b) => parseInt(b.specs.range) - parseInt(a.specs.range));
         break;
@@ -190,8 +176,6 @@ const Inventory = () => {
     setActiveFilters({
       make: "all",
       model: "all",
-      priceMin: "",
-      priceMax: "",
       rangeMin: "",
       rangeMax: "",
       color: "all",
@@ -208,8 +192,6 @@ const Inventory = () => {
       {
         make: "all",
         model: "all",
-        priceMin: "",
-        priceMax: "",
         rangeMin: "",
         rangeMax: "",
         color: "all",

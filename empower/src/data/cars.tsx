@@ -194,7 +194,6 @@ export interface Car {
   make: string;
   model: string;
   year: number;
-  price: number;
   description: string; // Should be a string
   shortDescription: string;
   colors: CarColor[];
@@ -205,6 +204,8 @@ export interface Car {
     power: string;
     battery: string;
     seating: string;
+    warranty: string; 
+    delivery?: string; 
   };
   images: string[];
   featured: boolean;
@@ -259,7 +260,6 @@ export const fetchCars = async (): Promise<Car[]> => {
         make: item.make,
         model: item.model,
         year: item.year,     
-        price: item.price,
         description: parseDescription(item.description), // Parse rich text to string
         shortDescription: item.shortDescription,
         colors: item.colors
@@ -280,6 +280,8 @@ export const fetchCars = async (): Promise<Car[]> => {
           power: "N/A",
           battery: "N/A",
           seating: "N/A",
+          delivery: "N/A",
+          warranty: "N/A",
         },
         images: item.images
           ? item.images.map(
