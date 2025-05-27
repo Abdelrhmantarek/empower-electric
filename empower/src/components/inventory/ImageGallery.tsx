@@ -24,7 +24,7 @@ export default function ImageGallery({ images, alt }: ImageGalleryProps) {
     <div className="space-y-4">
       {/* Main Image */}
       <div
-        className="relative h-[500px] rounded-lg overflow-hidden"
+        className="relative h-[450px] rounded-lg overflow-hidden"
         // onClick={() => setLightboxOpen(true)}
       >
         <img
