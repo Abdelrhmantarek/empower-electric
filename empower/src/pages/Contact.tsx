@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "@/components/Layout";
 import { Phone, Mail, MapPin } from "lucide-react";
+import emailjs from "@emailjs/browser"; 
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,11 @@ const Contact = () => {
     subject: "",
     message: "",
   });
+
+  // Add useEffect for EmailJS initialization
+  useEffect(() => {
+    emailjs.init(`${process.env.REACT_APP_EMAILJS_USER_ID}`); // Replace with your EmailJS User ID (e.g., user_ghi789)
+  }, []);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -53,6 +59,23 @@ const Contact = () => {
       console.log('Response from Strapi:', JSON.stringify(responseData, null, 2));
 
       if (response.ok) {
+        // Send email via EmailJS
+        const emailParams = {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || "Not provided",
+          subject: formData.subject,
+          message: formData.message,
+          submission_date: new Date().toLocaleString("en-US"),
+        };
+
+        await emailjs.send(
+          process.env.REACT_APP_EMAILJS_SERVICE_ID,
+          process.env.REACT_APP_EMAILJS_TEMPLATE_CONTACT_ID,
+          emailParams
+        );
+        console.log("Email sent successfully!");
+
         setIsSubmitting(false);
         setIsSubmitted(true);
 

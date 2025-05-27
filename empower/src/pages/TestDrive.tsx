@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Layout from "@/components/Layout";
 import { fetchCars, Car as CarType } from "@/data/cars";
 import { useLanguage } from "@/components/Layout";
+import emailjs from "@emailjs/browser";
 
 const formatDate = (date: Date, locale: string) => {
   return date.toLocaleDateString(locale === "ar" ? "en-US" : "en-US", {
@@ -150,6 +151,11 @@ const TestDrive = () => {
 
   const [availableDates, setAvailableDates] = useState<Date[]>([]);
   const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>([]);
+
+  // Add to useEffect for initialization
+  useEffect(() => {
+    emailjs.init(`${process.env.REACT_APP_EMAILJS_USER_ID}`); 
+  }, []);
 
   // Fetch cars
   useEffect(() => {
@@ -428,6 +434,28 @@ const TestDrive = () => {
           [key]: [...(prev[key] || []), formData.time],
         }));
       }
+
+      // Send email via EmailJS
+      const emailParams = {
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        car_make: selectedCar?.make || "Unknown",
+        car_model: selectedCar?.model || "Unknown",
+        car_year: selectedCar?.year || "Unknown",
+        date: formData.date,
+        time: formData.time,
+        comments: formData.comments || "No comments provided",
+        submission_date: new Date().toLocaleString(language === "ar" ? "ar-SA" : "en-US"),
+      };
+
+      await emailjs.send(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_TESTDRIVE_ID,
+        emailParams
+      );
+      console.log("Email sent successfully!");
 
       // If we reach here, the submission is successful
       setIsSubmitting(false);
