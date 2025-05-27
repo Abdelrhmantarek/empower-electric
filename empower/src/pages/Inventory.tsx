@@ -124,7 +124,9 @@ const Inventory = () => {
 
     // Apply drivetrain filter
     if (filters.drivetrain && filters.drivetrain !== "all") {
-      result = result.filter((car) => car.drivetrain === filters.drivetrain);
+      result = result.filter(
+        (car) => car.drivetrain === filters.drivetrain
+      );
     }
 
     // Apply search filter
