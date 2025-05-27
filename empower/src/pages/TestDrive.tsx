@@ -8,53 +8,31 @@ import {
   Clock,
   ChevronRight,
   ChevronLeft,
-  MapPin,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Layout from "@/components/Layout";
 import { fetchCars, Car as CarType } from "@/data/cars";
 import { useLanguage } from "@/components/Layout";
 
-// Date helper functions
-const generateAvailableDates = () => {
-  const dates = [];
-  const today = new Date();
-
-  for (let i = 1; i <= 14; i++) {
-    const date = new Date();
-    date.setDate(today.getDate() + i);
-    dates.push(date);
-  }
-
-  return dates;
-};
-
 const formatDate = (date: Date, locale: string) => {
-  return date.toLocaleDateString(locale === "ar" ? "ar-SA" : "en-US", {
+  return date.toLocaleDateString(locale === "ar" ? "en-US" : "en-US", {
     weekday: "short",
     month: "short",
     day: "numeric",
   }).replace(/(\w+), (\w+) (\d+)/, "$1, $2 $3");
 };
 
-const generateTimeSlots = () => {
-  const slots = [];
-
-  for (let hour = 9; hour <= 17; hour++) {
-    const hourString = hour > 12 ? `${hour - 12}:00 PM` : `${hour}:00 AM`;
-    slots.push(hourString);
-
-    if (hour < 17) {
-      const halfHourString = hour > 12 ? `${hour - 12}:30 PM` : `${hour}:30 AM`;
-      slots.push(halfHourString);
-    }
-  }
-
-  return slots;
+const formatTime = (hour: number, minute: number) => {
+  const period = hour >= 12 ? "PM" : "AM";
+  const adjustedHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+  const minuteString = minute === 0 ? "00" : minute.toString();
+  return `${adjustedHour}:${minuteString} ${period}`;
 };
 
 const translations = {
   en: {
+    noDatesAvailable: "No available dates for this vehicle.",
+    noTimesAvailable: "No available time slots for this date.",
     testDriveTitle: "Book a Test Drive",
     testDriveSubtitle:
       "Experience the thrill of driving an electric vehicle. Fill out the form below to schedule your test drive.",
@@ -96,6 +74,8 @@ const translations = {
     timeBooked: "This time slot is already booked for this vehicle.",
   },
   ar: {
+    noDatesAvailable: "لا توجد تواريخ متاحة لهذه السيارة.",
+    noTimesAvailable: "لا توجد أوقات متاحة لهذا التاريخ.",
     testDriveTitle: "حجز تجربة قيادة",
     testDriveSubtitle:
       "استمتع بتجربة قيادة السيارات الكهربائية. املأ النموذج أدناه لجدولة تجربة القيادة الخاصة بك.",
@@ -168,8 +148,8 @@ const TestDrive = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const availableDates = generateAvailableDates();
-  const timeSlots = generateTimeSlots();
+  const [availableDates, setAvailableDates] = useState<Date[]>([]);
+  const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>([]);
 
   // Fetch cars
   useEffect(() => {
@@ -200,64 +180,145 @@ const TestDrive = () => {
 
   // Fetch booked slots for the selected car and date
   useEffect(() => {
-    const fetchBookedSlots = async () => {
-      if (!selectedCar || !selectedDate) return;
+  const fetchBookedSlots = async () => {
+    if (!selectedCar || !selectedDate) return;
 
-      const carText = `${selectedCar.year} ${selectedCar.make} ${selectedCar.model}`;
-      const dateText = formatDate(selectedDate, language);
+    const carText = `${selectedCar.year} ${selectedCar.make} ${selectedCar.model}`;
+    const dateText = formatDate(selectedDate, language);
 
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_STRAPI_API_URL}/api/test-drive-submissions?filters[car][$eq]=${encodeURIComponent(carText)}&filters[date][$eq]=${encodeURIComponent(dateText)}`,
-          {
-            method: "GET",
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${process.env.REACT_APP_STRAPI_API_TOKEN}`,
-            },
-          }
-        );
+    try {
+      const url = `${process.env.REACT_APP_STRAPI_API_URL}/api/test-drive-submissions?filters[car][$eq]=${encodeURIComponent(carText)}&filters[date][$eq]=${encodeURIComponent(dateText)}`;
+      console.log("Fetching booked slots from:", url);
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch booked slots: ${response.statusText}`);
-        }
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.REACT_APP_STRAPI_API_TOKEN}`,
+        },
+      });
 
-        const responseData = await response.json();
-        console.log("Strapi booked slots response:", JSON.stringify(responseData, null, 2));
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("API error response:", JSON.stringify(errorData, null, 2));
+        throw new Error(`Failed to fetch booked slots: ${errorData.error?.message || response.statusText}`);
+      }
 
-        // Safely extract booked times
-        const bookedTimes = Array.isArray(responseData.data)
+      const responseData = await response.json();
+      console.log("Strapi booked slots response:", JSON.stringify(responseData, null, 2));
+
+      const bookedTimes = Array.isArray(responseData.data)
         ? responseData.data
             .filter((submission: any) => submission.time)
             .map((submission: any) => submission.time)
         : [];
 
-        setBookedSlots((prev) => ({
-          ...prev,
-          [`${carText}|${dateText}`]: bookedTimes,
-        }));
-      } catch (err: any) {
-        console.error("Error fetching booked slots:", err);
-        setError(t.submissionError);
-      }
-    };
-
-    fetchBookedSlots();
-  }, [selectedCar, selectedDate, language, t.submissionError]);
-
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-
-    if (name === "carModel" && value) {
-      const car = cars.find((c) => c.id === value);
-      setSelectedCar(car || null);
+      setBookedSlots((prev) => ({
+        ...prev,
+        [`${carText}|${dateText}`]: bookedTimes,
+      }));
+    } catch (err: any) {
+      console.error("Error fetching booked slots:", err.message);
+      setError(`${t.submissionError}: ${err.message}`);
     }
   };
+
+  fetchBookedSlots();
+}, [selectedCar, selectedDate, language, t.submissionError]);
+
+  useEffect(() => {
+  const fetchAvailabilityConfig = async () => {
+    if (!selectedCar) return;
+
+    const carText = `${selectedCar.year} ${selectedCar.make} ${selectedCar.model}`;
+    try {
+      const url = `${process.env.REACT_APP_STRAPI_API_URL}/api/test-drive-availability-configs?filters[car][$eq]=${encodeURIComponent(carText)}`;
+      console.log("Fetching availability config from:", url);
+
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.REACT_APP_STRAPI_API_TOKEN}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("API error response:", JSON.stringify(errorData, null, 2));
+        throw new Error(`Failed to fetch availability config: ${errorData.error?.message || response.statusText}`);
+      }
+
+      const responseData = await response.json();
+      console.log("Strapi availability config response:", JSON.stringify(responseData, null, 2));
+
+      // Extract config
+      const config = responseData.data[0];
+
+      if (!config) {
+        setAvailableDates([]);
+        setAvailableTimeSlots([]);
+        return;
+      }
+
+      // Generate dates
+      const startDate = new Date(config.startDate);
+      const endDate = new Date(config.endDate);
+      const dates: Date[] = [];
+      const currentDate = new Date(startDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Normalize today for comparison
+
+      while (currentDate <= endDate) {
+        if (currentDate >= today) {
+          dates.push(new Date(currentDate));
+        }
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+      setAvailableDates(dates);
+
+      // Generate time slots if a date is selected
+      // if (selectedDate) {
+        const timeSlots: string[] = [];
+        let hour = config.startHour;
+        let minute = 0;
+
+        while (hour < config.endHour || (hour === config.endHour && minute === 0)) {
+          timeSlots.push(formatTime(hour, minute));
+          minute += config.intervalMinutes;
+          if (minute >= 60) {
+            hour += Math.floor(minute / 60);
+            minute = minute % 60;
+          }
+        }
+        setAvailableTimeSlots(timeSlots);
+      // }
+    } catch (err: any) {
+      console.error("Error fetching availability config:", err.message);
+      setError(`${t.submissionError}: ${err.message}`);
+    }
+  };
+
+  fetchAvailabilityConfig();
+}, [selectedCar, selectedDate, language, t.submissionError]);
+
+
+  const handleInputChange = (
+  e: React.ChangeEvent<
+    HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+  >
+) => {
+  const { name, value } = e.target;
+  setFormData((prev) => ({ ...prev, [name]: value }));
+
+  if (name === "carModel" && value) {
+    const car = cars.find((c) => c.id === value);
+    setSelectedCar(car || null);
+    setSelectedDate(null);
+    setAvailableTimeSlots([]);
+    setFormData((prev) => ({ ...prev, date: "", time: "" }));
+  }
+};
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -266,12 +327,13 @@ const TestDrive = () => {
   };
 
   const handleDateSelect = (date: Date) => {
-    setSelectedDate(date);
-    setFormData({
-      ...formData,
-      date: formatDate(date, language),
-    });
-  };
+  setSelectedDate(date);
+  setFormData({
+    ...formData,
+    date: formatDate(date, language),
+    time: "", // Clear time when date changes
+  });
+};
 
   const handleNext = () => {
     setStep(step + 1);
@@ -728,111 +790,97 @@ const TestDrive = () => {
                       </p>
 
                       {selectedCar && (
-                        <div
-                          className={`bg-gray-100 dark:bg-gray-700/30 rounded-xl p-4 flex ${
-                            isRtl ? "flex-row-reverse" : ""
-                          } items-center mb-8`}
-                        >
-                          <img
-                            src={selectedCar.mainImage}
-                            alt={`${selectedCar.make} ${selectedCar.model}`}
-                            className={`w-20 h-20 object-cover rounded-md ${
-                              isRtl ? "ml-4" : "mr-4"
-                            }`}
-                          />
-                          <div>
-                            <h3 className="font-medium text-gray-800 dark:text-gray-200">
-                              {selectedCar.year} {selectedCar.make}{" "}
-                              {selectedCar.model}
-                            </h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                              {selectedCar.shortDescription}
-                            </p>
-                          </div>
-                        </div>
-                      )}
+  <div
+    className={`bg-gray-100 dark:bg-gray-700/30 rounded-xl p-4 flex ${isRtl ? "flex-row-reverse" : ""} items-center mb-8`}
+  >
+    <img
+      src={selectedCar.mainImage}
+      alt={`${selectedCar.make} ${selectedCar.model}`}
+      className={`w-20 h-20 object-cover rounded-md ${isRtl ? "ml-4" : "mr-4"}`}
+    />
+    <div>
+      <h3 className="font-medium text-gray-800 dark:text-gray-200">
+        {selectedCar.year} {selectedCar.make} {selectedCar.model}
+      </h3>
+      <p className="text-sm text-gray-500 dark:text-gray-400">
+        {selectedCar.shortDescription}
+      </p>
+    </div>
+  </div>
+)}
 
                       <div className="mb-8">
-                        <label
-                          className={`block font-medium mb-4 text-gray-700 dark:text-gray-300 ${textAlign}`}
-                        >
-                          {t.selectDate}
-                        </label>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-2">
-                          {availableDates.map((date, index) => (
-                            <button
-                              key={index}
-                              type="button"
-                              onClick={() => handleDateSelect(date)}
-                              className={`p-3 text-center rounded-lg border transition-all ${
-                                selectedDate &&
-                                selectedDate.toDateString() ===
-                                  date.toDateString()
-                                  ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
-                                  : "border-gray-200 dark:border-gray-700 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20"
-                              }`}
-                            >
-                              <div className="text-xs text-gray-500 dark:text-gray-400">
-                                {date.toLocaleDateString(
-                                  language === "ar" ? "ar-SA" : "en-US",
-                                  { weekday: "short" }
-                                )}
-                              </div>
-                              <div className="font-medium text-gray-800 dark:text-gray-200">
-                                {date.toLocaleDateString(
-                                  language === "ar" ? "ar-SA" : "en-US",
-                                  { day: "numeric" }
-                                )}
-                              </div>
-                              <div className="text-xs text-gray-500 dark:text-gray-400">
-                                {date.toLocaleDateString(
-                                  language === "ar" ? "ar-SA" : "en-US",
-                                  { month: "short" }
-                                )}
-                              </div>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
+  <label className={`block font-medium mb-4 text-gray-700 dark:text-gray-300 ${textAlign}`}>
+    {t.selectDate}
+  </label>
+  {availableDates.length === 0 ? (
+    <p className="text-gray-500 dark:text-gray-400">{t.noDatesAvailable}</p>
+  ) : (
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+      {availableDates.map((date, index) => (
+        <button
+          key={index}
+          type="button"
+          onClick={() => handleDateSelect(date)}
+          className={`p-3 text-center rounded-lg border transition-all ${
+            selectedDate && selectedDate.toDateString() === date.toDateString()
+              ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
+              : "border-gray-200 dark:border-gray-700 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+          }`}
+        >
+          <div className="text-xs text-gray-500 dark:text-gray-400">
+            {date.toLocaleDateString(language === "ar" ? "ar-SA" : "en-US", { weekday: "short" })}
+          </div>
+          <div className="font-medium text-gray-800 dark:text-gray-200">
+            {date.toLocaleDateString(language === "ar" ? "ar-SA" : "en-US", { day: "numeric" })}
+          </div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">
+            {date.toLocaleDateString(language === "ar" ? "ar-SA" : "en-US", { month: "short" })}
+          </div>
+        </button>
+      ))}
+    </div>
+  )}
+</div>
 
                       <div className="mb-8">
-                        <label
-                          className={`block font-medium mb-4 text-gray-700 dark:text-gray-300 ${textAlign}`}
-                        >
-                          {t.selectTime}
-                        </label>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                          {timeSlots.map((time, index) => {
-                            const isBooked =
-                              selectedCar &&
-                              selectedDate &&
-                              bookedSlots[
-                                `${selectedCar.year} ${selectedCar.make} ${selectedCar.model}|${formData.date}`
-                              ]?.includes(time);
-                            return (
-                              <button
-                                key={index}
-                                type="button"
-                                onClick={() =>
-                                  !isBooked && setFormData({ ...formData, time })
-                                }
-                                disabled={isBooked}
-                                className={`p-3 text-center rounded-lg border transition-all flex items-center justify-center gap-2 ${
-                                  formData.time === time
-                                    ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
-                                    : isBooked
-                                    ? "border-gray-400 bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed"
-                                    : "border-gray-200 dark:border-gray-700 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20"
-                                }`}
-                                title={isBooked ? t.timeBooked : undefined}
-                              >
-                                <Clock size={16} />
-                                <span>{time}</span>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
+  <label className={`block font-medium mb-4 text-gray-700 dark:text-gray-300 ${textAlign}`}>
+    {t.selectTime}
+  </label>
+  {availableTimeSlots.length === 0 ? (
+    <p className="text-gray-500 dark:text-gray-400">{t.noTimesAvailable}</p>
+  ) : (
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+      {availableTimeSlots.map((time, index) => {
+        const isBooked =
+          selectedCar &&
+          formData.date &&
+          bookedSlots[
+            `${selectedCar.year} ${selectedCar.make} ${selectedCar.model}|${formData.date}`
+          ]?.includes(time);
+        return (
+          <button
+            key={index}
+            type="button"
+            onClick={() => !isBooked && setFormData({ ...formData, time })}
+            disabled={isBooked}
+            className={`p-3 text-center rounded-lg border transition-all flex items-center justify-center gap-2 ${
+              formData.time === time
+                ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
+                : isBooked
+                ? "border-gray-400 bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+                : "border-gray-200 dark:border-gray-700 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+            }`}
+            title={isBooked ? t.timeBooked : undefined}
+          >
+            <Clock size={16} />
+            <span>{time}</span>
+          </button>
+        );
+      })}
+    </div>
+  )}
+</div>
 
                       <div
                         className={`mt-10 flex justify-between ${
@@ -842,7 +890,7 @@ const TestDrive = () => {
                         <button
                           type="button"
                           onClick={handlePrevious}
-                          className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 px-5 py-3 rounded-full font-semibold transition-all duration-200"
+                          className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 px-5 py-3 rounded-full font-semibold transition-all duration-200 flex items-center gap-2"
                         >
                           {isRtl ? (
                             <ChevronRight size={18} />
