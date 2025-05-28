@@ -1,8 +1,10 @@
-import { useLanguage } from "../Layout"; // Add useLanguage hook
+import { useLanguage } from "../Layout";
 
 export default function BenefitsSection() {
-  const { language } = useLanguage(); // Add language context
-  const t = translations[language]; // Use translations based on language
+  const { language } = useLanguage();
+  const t = translations[language];
+  const isRtl = language === "ar"; // Determine if the language is Arabic (RTL)
+  const iconDirection = isRtl ? "transform scale-x-[-1]" : ""; // Mirror icons for RTL
 
   const benefits = [
     {
@@ -11,7 +13,7 @@ export default function BenefitsSection() {
       description: "zeroEmissionsDesc",
       icon: (
         <svg
-          className="w-10 h-10 text-ev-accent"
+          className={`w-10 h-10 text-ev-accent ${iconDirection}`} // Apply RTL transformation
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -32,7 +34,7 @@ export default function BenefitsSection() {
       description: "lowerOperatingCostsDesc",
       icon: (
         <svg
-          className="w-10 h-10 text-ev-accent"
+          className={`w-10 h-10 text-ev-accent ${iconDirection}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -53,7 +55,7 @@ export default function BenefitsSection() {
       description: "cuttingEdgeTechnologyDesc",
       icon: (
         <svg
-          className="w-10 h-10 text-ev-accent"
+          className={`w-10 h-10 text-ev-accent ${iconDirection}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -74,7 +76,7 @@ export default function BenefitsSection() {
       description: "instantTorqueDesc",
       icon: (
         <svg
-          className="w-10 h-10 text-ev-accent"
+          className={`w-10 h-10 text-ev-accent ${iconDirection}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -95,7 +97,7 @@ export default function BenefitsSection() {
       description: "reducedNoisePollutionDesc",
       icon: (
         <svg
-          className="w-10 h-10 text-ev-accent"
+          className={`w-10 h-10 text-ev-accent ${iconDirection}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -116,7 +118,7 @@ export default function BenefitsSection() {
       description: "taxIncentivesDesc",
       icon: (
         <svg
-          className="w-10 h-10 text-ev-accent"
+          className={`w-10 h-10 text-ev-accent ${iconDirection}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -149,7 +151,8 @@ export default function BenefitsSection() {
           {benefits.map((benefit) => (
             <div
               key={benefit.id}
-              className="bg-background p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+              className="bg-background p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow flex"
+              dir={isRtl ? "rtl" : "ltr"} // Set text direction for RTL/LTR
             >
               <div className="flex flex-col items-start">
                 <div className="mb-4">{benefit.icon}</div>
@@ -164,7 +167,7 @@ export default function BenefitsSection() {
   );
 }
 
-// Add translations object (merge with existing translations)
+// Translations object (already exists, included for reference)
 const translations = {
   en: {
     benefitsTitle: "Benefits of Electric Vehicles",
@@ -181,13 +184,6 @@ const translations = {
     reducedNoisePollutionDesc: "Enjoy a quieter, more peaceful driving experience with electric vehicles' near-silent operation.",
     taxIncentives: "Tax Incentives",
     taxIncentivesDesc: "Take advantage of federal and state tax credits and incentives designed to encourage EV adoption.",
-    title: "Drive The <span>Future</span> Today",
-    description: "Experience premium electric vehicles with cutting-edge technology, exceptional performance, and zero emissions.",
-    exploreButton: "Explore Our Stock",
-    testDriveButton: "Book a Test Drive",
-    scrollIndicator: "Scroll down to explore",
-    featuredModels: "Featured Models",
-    discoverModels: "Discover our premium selection of cutting-edge electric vehicles that redefine the future of transportation"
   },
   ar: {
     benefitsTitle: "فوائد السيارات الكهربائية",
@@ -204,12 +200,5 @@ const translations = {
     reducedNoisePollutionDesc: "استمتع بتجربة قيادة هادئة ومريحة أكثر مع تشغيل السيارات الكهربائية الهادئ جدًا.",
     taxIncentives: "حوافز ضريبية",
     taxIncentivesDesc: "استفد من الائتمانات الضريبية الفيدرالية والولائية والحوافز المصممة لتشجيع اعتماد السيارات الكهربائية.",
-    title: "قد <span>المستقبل</span> اليوم",
-    description: "استمتع بتجربة السيارات الكهربائية الفاخرة مع تكنولوجيا متطورة، أداء استثنائي، وانبعاثات صفرية.",
-    exploreButton: "استكشف مخزوننا",
-    testDriveButton: "احجز تجربة قيادة",
-    scrollIndicator: "مرر لأسفل لاستكشاف المزيد",
-    featuredModels: "النماذج المميزة",
-    discoverModels: "اكتشف مجموعتنا المميزة من السيارات الكهربائية المتطورة التي تعيد تعريف مستقبل النقل"
-  }
+  },
 };

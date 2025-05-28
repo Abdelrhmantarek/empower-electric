@@ -1,9 +1,97 @@
 import { useState, useEffect } from "react";
 import Layout from "@/components/Layout";
 import { Phone, Mail, MapPin } from "lucide-react";
-import emailjs from "@emailjs/browser"; 
+import emailjs from "@emailjs/browser";
+import { useLanguage } from "@/components/Layout";
+
+// Define translations for English (en) and Arabic (ar)
+const translations = {
+  en: {
+    pageTitle: "Contact Us",
+    pageDescription: "Have questions about our electric vehicles or services? We're here to help you find the perfect EV for your needs.",
+    getInTouch: "Get In Touch",
+    phone: "Phone",
+    salesPhone: "Sales: (555) 123-4567",
+    servicePhone: "Service: (555) 765-4321",
+    email: "Email",
+    salesEmail: "Sales: sales@empowerev.com",
+    supportEmail: "Support: support@empowerev.com",
+    location: "Location",
+    locationDetails: "123 EV Boulevard<br />Electric City, EC 12345<br />United States",
+    businessHours: "Business Hours",
+    mondayFriday: "Monday - Friday:",
+    mondayFridayHours: "9:00 AM - 7:00 PM",
+    saturday: "Saturday:",
+    saturdayHours: "10:00 AM - 6:00 PM",
+    sunday: "Sunday:",
+    sundayHours: "11:00 AM - 4:00 PM",
+    connectWithUs: "Connect With Us",
+    sendMessage: "Send Us a Message",
+    nameLabel: "Name",
+    emailLabel: "Email",
+    phoneLabel: "Phone Number",
+    subjectLabel: "Subject",
+    selectSubject: "Select a subject",
+    generalInquiry: "General Inquiry",
+    sales: "Sales",
+    service: "Service",
+    feedback: "Feedback",
+    messageLabel: "Message",
+    sendButton: "Send Message",
+    sending: "Sending...",
+    successMessage: "Message Sent Successfully!",
+    successDescription: "Thank you for reaching out. We'll get back to you as soon as possible.",
+    errorMessage: "Failed to submit the form. Please try again.",
+    serverErrorMessage: "An error occurred. Please check the console and try again.",
+    ourLocation: "Our Location",
+    required: "*",
+  },
+  ar: {
+    pageTitle: "اتصل بنا",
+    pageDescription: "هل لديك أسئلة حول سياراتنا الكهربائية أو خدماتنا؟ نحن هنا لمساعدتك في العثور على السيارة الكهربائية المثالية لاحتياجاتك.",
+    getInTouch: "تواصلوا معنا",
+    phone: "الهاتف",
+    salesPhone: "المبيعات: (555) 123-4567",
+    servicePhone: "الخدمة: (555) 765-4321",
+    email: "البريد الإلكتروني",
+    salesEmail: "المبيعات: sales@empowerev.com",
+    supportEmail: "الدعم: support@empowerev.com",
+    location: "الموقع",
+    locationDetails: "123 شارع السيارات الكهربائية<br />مدينة الكهرباء، EC 12345<br />الولايات المتحدة",
+    businessHours: "ساعات العمل",
+    mondayFriday: "الإثنين - الجمعة:",
+    mondayFridayHours: "9:00 صباحًا - 7:00 مساءً",
+    saturday: "السبت:",
+    saturdayHours: "10:00 صباحًا - 6:00 مساءً",
+    sunday: "الأحد:",
+    sundayHours: "11:00 صباحًا - 4:00 مساءً",
+    connectWithUs: "تواصلوا معنا",
+    sendMessage: "أرسل لنا رسالة",
+    nameLabel: "الاسم",
+    emailLabel: "البريد الإلكتروني",
+    phoneLabel: "رقم الهاتف",
+    subjectLabel: "الموضوع",
+    selectSubject: "اختر موضوعًا",
+    generalInquiry: "استفسار عام",
+    sales: "المبيعات",
+    service: "الخدمة",
+    feedback: "التعليقات",
+    messageLabel: "الرسالة",
+    sendButton: "إرسال الرسالة",
+    sending: "جارٍ الإرسال...",
+    successMessage: "تم إرسال الرسالة بنجاح!",
+    successDescription: "شكرًا لتواصلك معنا. سنرد عليك في أقرب وقت ممكن.",
+    errorMessage: "فشل في إرسال النموذج. الرجاء المحاولة مرة أخرى.",
+    serverErrorMessage: "حدث خطأ. يرجى التحقق من وحدة التحكم والمحاولة مرة أخرى.",
+    ourLocation: "موقعنا",
+    required: "*",
+  },
+};
 
 const Contact = () => {
+  const { language } = useLanguage();
+  const t = translations[language];
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -12,14 +100,13 @@ const Contact = () => {
     message: "",
   });
 
-  // Add useEffect for EmailJS initialization
   useEffect(() => {
-    emailjs.init(`${process.env.REACT_APP_EMAILJS_USER_ID}`); // Replace with your EmailJS User ID (e.g., user_ghi789)
+    emailjs.init(`${process.env.REACT_APP_EMAILJS_USER_ID}`);
   }, []);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -43,30 +130,32 @@ const Contact = () => {
       },
     };
 
-    console.log('Submitting payload:', JSON.stringify(payload, null, 2));
+    console.log("Submitting payload:", JSON.stringify(payload, null, 2));
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_STRAPI_API_URL}/api/contact-submissions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          "Authorization": `Bearer ${process.env.REACT_APP_STRAPI_API_TOKEN}`
-        },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_STRAPI_API_URL}/api/contact-submissions`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_STRAPI_API_TOKEN}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const responseData = await response.json();
-      console.log('Response from Strapi:', JSON.stringify(responseData, null, 2));
+      console.log("Response from Strapi:", JSON.stringify(responseData, null, 2));
 
       if (response.ok) {
-        // Send email via EmailJS
         const emailParams = {
           name: formData.name,
           email: formData.email,
           phone: formData.phone || "Not provided",
           subject: formData.subject,
           message: formData.message,
-          submission_date: new Date().toLocaleString("en-US"),
+          submission_date: new Date().toLocaleString(language === "ar" ? "ar-SA" : "en-US"),
         };
 
         await emailjs.send(
@@ -79,7 +168,6 @@ const Contact = () => {
         setIsSubmitting(false);
         setIsSubmitted(true);
 
-        // Reset form after successful submission
         setTimeout(() => {
           setFormData({
             name: "",
@@ -91,12 +179,12 @@ const Contact = () => {
           setIsSubmitted(false);
         }, 5000);
       } else {
-        setError('Failed to submit the form. Please try again.');
+        setError(t.errorMessage);
         setIsSubmitting(false);
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      setError('An error occurred. Please check the console and try again.');
+      console.error("Error submitting form:", error);
+      setError(t.serverErrorMessage);
       setIsSubmitting(false);
     }
   };
@@ -107,18 +195,17 @@ const Contact = () => {
         {/* Page Title */}
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Contact Us
+            {t.pageTitle}
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Have questions about our electric vehicles or services? We're here
-            to help you find the perfect EV for your needs.
+            {t.pageDescription}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Information */}
           <div>
-            <h2 className="text-2xl font-bold mb-6">Get In Touch</h2>
+            <h2 className="text-2xl font-bold mb-6">{t.getInTouch}</h2>
 
             <div className="space-y-6">
               <div className="flex items-start">
@@ -126,13 +213,9 @@ const Contact = () => {
                   <Phone className="h-6 w-6 text-ev-blue" />
                 </div>
                 <div>
-                  <h3 className="font-medium mb-1">Phone</h3>
-                  <p className="text-muted-foreground mb-1">
-                    Sales: (555) 123-4567
-                  </p>
-                  <p className="text-muted-foreground">
-                    Service: (555) 765-4321
-                  </p>
+                  <h3 className="font-medium mb-1">{t.phone}</h3>
+                  <p className="text-muted-foreground mb-1">{t.salesPhone}</p>
+                  <p className="text-muted-foreground">{t.servicePhone}</p>
                 </div>
               </div>
 
@@ -141,13 +224,9 @@ const Contact = () => {
                   <Mail className="h-6 w-6 text-ev-blue" />
                 </div>
                 <div>
-                  <h3 className="font-medium mb-1">Email</h3>
-                  <p className="text-muted-foreground mb-1">
-                    Sales: sales@empowerev.com
-                  </p>
-                  <p className="text-muted-foreground">
-                    Support: support@empowerev.com
-                  </p>
+                  <h3 className="font-medium mb-1">{t.email}</h3>
+                  <p className="text-muted-foreground mb-1">{t.salesEmail}</p>
+                  <p className="text-muted-foreground">{t.supportEmail}</p>
                 </div>
               </div>
 
@@ -156,34 +235,31 @@ const Contact = () => {
                   <MapPin className="h-6 w-6 text-ev-blue" />
                 </div>
                 <div>
-                  <h3 className="font-medium mb-1">Location</h3>
-                  <p className="text-muted-foreground">
-                    123 EV Boulevard
-                    <br />
-                    Electric City, EC 12345
-                    <br />
-                    United States
-                  </p>
+                  <h3 className="font-medium mb-1">{t.location}</h3>
+                  <p
+                    className="text-muted-foreground"
+                    dangerouslySetInnerHTML={{ __html: t.locationDetails }}
+                  />
                 </div>
               </div>
             </div>
 
             <div className="mt-8">
-              <h3 className="text-xl font-medium mb-4">Business Hours</h3>
+              <h3 className="text-xl font-medium mb-4">{t.businessHours}</h3>
               <div className="bg-muted p-4 rounded-lg">
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="text-muted-foreground">Monday - Friday:</div>
-                  <div>9:00 AM - 7:00 PM</div>
-                  <div className="text-muted-foreground">Saturday:</div>
-                  <div>10:00 AM - 6:00 PM</div>
-                  <div className="text-muted-foreground">Sunday:</div>
-                  <div>11:00 AM - 4:00 PM</div>
+                  <div className="text-muted-foreground">{t.mondayFriday}</div>
+                  <div>{t.mondayFridayHours}</div>
+                  <div className="text-muted-foreground">{t.saturday}</div>
+                  <div>{t.saturdayHours}</div>
+                  <div className="text-muted-foreground">{t.sunday}</div>
+                  <div>{t.sundayHours}</div>
                 </div>
               </div>
             </div>
 
             <div className="mt-8">
-              <h3 className="text-xl font-medium mb-4">Connect With Us</h3>
+              <h3 className="text-xl font-medium mb-4">{t.connectWithUs}</h3>
               <div className="flex space-x-4">
                 <a
                   href="#"
@@ -270,11 +346,10 @@ const Contact = () => {
                   </svg>
                 </div>
                 <h2 className="text-2xl font-bold text-green-800 dark:text-green-300 mb-2">
-                  Message Sent Successfully!
+                  {t.successMessage}
                 </h2>
                 <p className="text-green-700 dark:text-green-400">
-                  Thank you for reaching out. We'll get back to you as soon as
-                  possible.
+                  {t.successDescription}
                 </p>
               </div>
             ) : error ? (
@@ -283,7 +358,7 @@ const Contact = () => {
               </div>
             ) : (
               <>
-                <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
+                <h2 className="text-2xl font-bold mb-6">{t.sendMessage}</h2>
 
                 <form onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 gap-6">
@@ -293,7 +368,7 @@ const Contact = () => {
                           htmlFor="name"
                           className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
                         >
-                          Name <span className="text-red-500">*</span>
+                          {t.nameLabel} <span className="text-red-500">{t.required}</span>
                         </label>
                         <input
                           id="name"
@@ -311,7 +386,7 @@ const Contact = () => {
                           htmlFor="email"
                           className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
                         >
-                          Email <span className="text-red-500">*</span>
+                          {t.emailLabel} <span className="text-red-500">{t.required}</span>
                         </label>
                         <input
                           id="email"
@@ -331,7 +406,7 @@ const Contact = () => {
                           htmlFor="phone"
                           className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
                         >
-                          Phone Number
+                          {t.phoneLabel}
                         </label>
                         <input
                           id="phone"
@@ -348,7 +423,7 @@ const Contact = () => {
                           htmlFor="subject"
                           className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
                         >
-                          Subject <span className="text-red-500">*</span>
+                          {t.subjectLabel} <span className="text-red-500">{t.required}</span>
                         </label>
                         <select
                           id="subject"
@@ -358,11 +433,11 @@ const Contact = () => {
                           onChange={handleChange}
                           className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent"
                         >
-                          <option value="">Select a subject</option>
-                          <option value="general">General Inquiry</option>
-                          <option value="sales">Sales</option>
-                          <option value="service">Service</option>
-                          <option value="feedback">Feedback</option>
+                          <option value="">{t.selectSubject}</option>
+                          <option value="general">{t.generalInquiry}</option>
+                          <option value="sales">{t.sales}</option>
+                          <option value="service">{t.service}</option>
+                          <option value="feedback">{t.feedback}</option>
                         </select>
                       </div>
                     </div>
@@ -372,7 +447,7 @@ const Contact = () => {
                         htmlFor="message"
                         className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
                       >
-                        Message <span className="text-red-500">*</span>
+                        {t.messageLabel} <span className="text-red-500">{t.required}</span>
                       </label>
                       <textarea
                         id="message"
@@ -395,10 +470,14 @@ const Contact = () => {
                             : ""
                         }`}
                       >
-                        {isSubmitting ? "Sending..." : "Send Message"}
+                        {isSubmitting ? t.sending : t.sendButton}
                       </button>
                     </div>
-                    {error && <p className="text-red-600 dark:text-red-400 text-center">{error}</p>}
+                    {error && (
+                      <p className="text-red-600 dark:text-red-400 text-center">
+                        {error}
+                      </p>
+                    )}
                   </div>
                 </form>
               </>
@@ -408,7 +487,7 @@ const Contact = () => {
 
         {/* Map */}
         <div className="mt-16">
-          <h2 className="text-2xl font-bold mb-6">Our Location</h2>
+          <h2 className="text-2xl font-bold mb-6">{t.ourLocation}</h2>
           <div className="aspect-video rounded-lg overflow-hidden border">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d424146.10283158156!2d-118.80171792351112!3d34.02070294688781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c75ddc27da13%3A0xe22fdf6f254608f4!2sLos%20Angeles%2C%20CA%2C%20USA!5e0!3m2!1sen!2s!4v1658458343948!5m2!1sen!2s"
@@ -418,7 +497,7 @@ const Contact = () => {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Empower EV Dealership Location"
+              title={language === "ar" ? "موقع معرض Empower EV" : "Empower EV Dealership Location"}
             ></iframe>
           </div>
         </div>
