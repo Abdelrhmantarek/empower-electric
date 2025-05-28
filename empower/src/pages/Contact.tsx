@@ -12,9 +12,8 @@ const translations = {
     getInTouch: "Get In Touch",
     phone: "Phone",
     salesPhone: "TEL: +(967) 1-218140",
-    servicePhone: "FAX : +(967) 1-218150",
+    servicePhone: "FAX: +(967) 1-218150",
     email: "Email",
-    // salesEmail: "Sales: sales@empowerev.com",
     supportEmail: "info@emtiazpower.com",
     location: "Location",
     locationDetails: "ZUBAIRY STREET,<br />IN FRONT OF MINISTRY OF OIL,<br /> SANA’A, REPUBLIC OF YEMEN.",
@@ -51,13 +50,12 @@ const translations = {
     pageDescription: "هل لديك أسئلة حول سياراتنا الكهربائية أو خدماتنا؟ نحن هنا لمساعدتك في العثور على السيارة الكهربائية المثالية لاحتياجاتك.",
     getInTouch: "تواصلوا معنا",
     phone: "الهاتف",
-    salesPhone: "المبيعات: +(967) 1-218140 ",
+    salesPhone: "المبيعات: +(967) 1-218140",
     servicePhone: "الخدمة: +(967) 1-218150",
     email: "البريد الإلكتروني",
-    // salesEmail: "المبيعات: info@emtiazpower.com",
     supportEmail: "الدعم: info@emtiazpower.com",
     location: "الموقع",
-    locationDetails: "،شارع الزبيري<br />،أمام وزارة النفط<br />صنعاء - الجمهورية اليمينة",
+    locationDetails: "شارع الزبيري،<br />أمام وزارة النفط،<br />صنعاء - الجمهورية اليمنية",
     businessHours: "ساعات العمل",
     mondayFriday: "الإثنين - الجمعة:",
     mondayFridayHours: "9:00 صباحًا - 7:00 مساءً",
@@ -155,7 +153,10 @@ const Contact = () => {
           phone: formData.phone || "Not provided",
           subject: formData.subject,
           message: formData.message,
-          submission_date: new Date().toLocaleString(language === "ar" ? "ar-SA" : "en-US"),
+          submission_date: new Date().toLocaleString(language === "ar" ? "ar-SA" : "en-US", {
+            dateStyle: "medium",
+            timeStyle: "short",
+          }),
         };
 
         await emailjs.send(
@@ -191,7 +192,7 @@ const Contact = () => {
 
   return (
     <Layout>
-      <div className="section-container">
+      <div className="section-container" dir={language === "ar" ? "rtl" : "ltr"} lang={language}>
         {/* Page Title */}
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
@@ -205,35 +206,35 @@ const Contact = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Information */}
           <div>
-            <h2 className="text-2xl font-bold mb-6">{t.getInTouch}</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">{t.getInTouch}</h2>
 
             <div className="space-y-6">
-              <div className="flex items-start">
-                <div className="bg-ev-blue/10 dark:bg-ev-blue/20 rounded-full p-3 mr-4">
-                  <Phone className="h-6 w-6 text-ev-blue" />
+              <div className="flex items-start flex-row">
+                <div className="bg-ev-blue/10 dark:bg-ev-blue/20 rounded-full p-3 me-4">
+                  <Phone className="h-6 w-6 text-ev-blue rtl:scale-x-[-1]" aria-label={t.phone} />
                 </div>
-                <div>
+                <div className="text-start">
                   <h3 className="font-medium mb-1">{t.phone}</h3>
                   <p className="text-muted-foreground mb-1">{t.salesPhone}</p>
                   <p className="text-muted-foreground">{t.servicePhone}</p>
                 </div>
               </div>
 
-              <div className="flex items-start">
-                <div className="bg-ev-blue/10 dark:bg-ev-blue/20 rounded-full p-3 mr-4">
-                  <Mail className="h-6 w-6 text-ev-blue" />
+              <div className="flex items-start flex-row">
+                <div className="bg-ev-blue/10 dark:bg-ev-blue/20 rounded-full p-3 me-4">
+                  <Mail className="h-6 w-6 text-ev-blue rtl:scale-x-[-1]" aria-label={t.email} />
                 </div>
-                <div>
+                <div className="text-start">
                   <h3 className="font-medium mb-1">{t.email}</h3>
                   <p className="text-muted-foreground">{t.supportEmail}</p>
                 </div>
               </div>
 
-              <div className="flex items-start">
-                <div className="bg-ev-blue/10 dark:bg-ev-blue/20 rounded-full p-3 mr-4">
-                  <MapPin className="h-6 w-6 text-ev-blue" />
+              <div className="flex items-start flex-row">
+                <div className="bg-ev-blue/10 dark:bg-ev-blue/20 rounded-full p-3 me-4">
+                  <MapPin className="h-6 w-6 text-ev-blue" aria-label={t.location} />
                 </div>
-                <div>
+                <div className="text-start">
                   <h3 className="font-medium mb-1">{t.location}</h3>
                   <p
                     className="text-muted-foreground"
@@ -244,25 +245,26 @@ const Contact = () => {
             </div>
 
             <div className="mt-8">
-              <h3 className="text-xl font-medium mb-4">{t.businessHours}</h3>
+              <h3 className="text-xl font-medium mb-4 text-center">{t.businessHours}</h3>
               <div className="bg-muted p-4 rounded-lg">
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="text-muted-foreground">{t.mondayFriday}</div>
-                  <div>{t.mondayFridayHours}</div>
-                  <div className="text-muted-foreground">{t.saturday}</div>
-                  <div>{t.saturdayHours}</div>
-                  <div className="text-muted-foreground">{t.sunday}</div>
-                  <div>{t.sundayHours}</div>
+                  <div className="text-muted-foreground text-start">{t.mondayFriday}</div>
+                  <div className="text-end">{t.mondayFridayHours}</div>
+                  <div className="text-muted-foreground text-start">{t.saturday}</div>
+                  <div className="text-end">{t.saturdayHours}</div>
+                  <div className="text-muted-foreground text-start">{t.sunday}</div>
+                  <div className="text-end">{t.sundayHours}</div>
                 </div>
               </div>
             </div>
 
             <div className="mt-8">
-              <h3 className="text-xl font-medium mb-4">{t.connectWithUs}</h3>
-              <div className="flex space-x-4">
+              <h3 className="text-xl font-medium mb-4 text-center">{t.connectWithUs}</h3>
+              <div className="flex space-x-4 space-x-reverse justify-center">
                 <a
                   href="#"
                   className="bg-ev-blue text-white p-3 rounded-full hover:bg-ev-blue-light transition-colors"
+                  aria-label={language === "ar" ? "فيسبوك" : "Facebook"}
                 >
                   <svg
                     className="w-5 h-5"
@@ -280,6 +282,7 @@ const Contact = () => {
                 <a
                   href="#"
                   className="bg-ev-blue text-white p-3 rounded-full hover:bg-ev-blue-light transition-colors"
+                  aria-label={language === "ar" ? "تويتر" : "Twitter"}
                 >
                   <svg
                     className="w-5 h-5"
@@ -293,6 +296,7 @@ const Contact = () => {
                 <a
                   href="#"
                   className="bg-ev-blue text-white p-3 rounded-full hover:bg-ev-blue-light transition-colors"
+                  aria-label={language === "ar" ? "إنستغرام" : "Instagram"}
                 >
                   <svg
                     className="w-5 h-5"
@@ -310,6 +314,7 @@ const Contact = () => {
                 <a
                   href="#"
                   className="bg-ev-blue text-white p-3 rounded-full hover:bg-ev-blue-light transition-colors"
+                  aria-label={language === "ar" ? "لينكدإن" : "LinkedIn"}
                 >
                   <svg
                     className="w-5 h-5"
@@ -365,7 +370,7 @@ const Contact = () => {
                       <div>
                         <label
                           htmlFor="name"
-                          className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+                          className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300 text-start"
                         >
                           {t.nameLabel} <span className="text-red-500">{t.required}</span>
                         </label>
@@ -376,14 +381,15 @@ const Contact = () => {
                           required
                           value={formData.name}
                           onChange={handleChange}
-                          className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent"
+                          className="w-full border border-gray-300 dark:border-gray-600 rounded-md ps-3 pe-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent"
+                          style={{ textAlign: language === "ar" ? "right" : "left" }}
                         />
                       </div>
 
                       <div>
                         <label
                           htmlFor="email"
-                          className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+                          className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300 text-start"
                         >
                           {t.emailLabel} <span className="text-red-500">{t.required}</span>
                         </label>
@@ -394,7 +400,8 @@ const Contact = () => {
                           required
                           value={formData.email}
                           onChange={handleChange}
-                          className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent"
+                          className="w-full border border-gray-300 dark:border-gray-600 rounded-md ps-3 pe-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent"
+                          style={{ textAlign: language === "ar" ? "right" : "left" }}
                         />
                       </div>
                     </div>
@@ -403,7 +410,7 @@ const Contact = () => {
                       <div>
                         <label
                           htmlFor="phone"
-                          className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+                          className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300 text-start"
                         >
                           {t.phoneLabel}
                         </label>
@@ -413,14 +420,15 @@ const Contact = () => {
                           type="tel"
                           value={formData.phone}
                           onChange={handleChange}
-                          className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent"
+                          className="w-full border border-gray-300 dark:border-gray-600 rounded-md ps-3 pe-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent"
+                          style={{ textAlign: language === "ar" ? "right" : "left" }}
                         />
                       </div>
 
                       <div>
                         <label
                           htmlFor="subject"
-                          className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+                          className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300 text-start"
                         >
                           {t.subjectLabel} <span className="text-red-500">{t.required}</span>
                         </label>
@@ -430,7 +438,8 @@ const Contact = () => {
                           required
                           value={formData.subject}
                           onChange={handleChange}
-                          className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent"
+                          className="w-full border border-gray-300 dark:border-gray-600 rounded-md ps-3 pe-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent"
+                          style={{ textAlign: language === "ar" ? "right" : "left" }}
                         >
                           <option value="">{t.selectSubject}</option>
                           <option value="general">{t.generalInquiry}</option>
@@ -444,7 +453,7 @@ const Contact = () => {
                     <div>
                       <label
                         htmlFor="message"
-                        className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
+                        className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300 text-start"
                       >
                         {t.messageLabel} <span className="text-red-500">{t.required}</span>
                       </label>
@@ -455,7 +464,8 @@ const Contact = () => {
                         required
                         value={formData.message}
                         onChange={handleChange}
-                        className="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent"
+                        className="w-full border border-gray-300 dark:border-gray-600 rounded-md ps-3 pe-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-ev-blue focus:border-transparent"
+                        style={{ textAlign: language === "ar" ? "right" : "left" }}
                       ></textarea>
                     </div>
 
