@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CarColor } from "@/data/cars";
+import { useLanguage } from "@/components/Layout";
 
 interface ColorSelectorProps {
   colors: CarColor[];
@@ -8,9 +9,24 @@ interface ColorSelectorProps {
 }
 
 export default function ColorSelector({ colors, onChange }: ColorSelectorProps) {
+  const { language } = useLanguage(); // Get current language
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [animating, setAnimating] = useState(false);
   const selectedColor = useMemo(() => colors[selectedIndex] || colors[0], [colors, selectedIndex]);
+
+  // Translations object
+  const translations = {
+    en: {
+      chooseColor: "Choose a Color",
+      colorLabel: "Color"
+    },
+    ar: {
+      chooseColor: "اختر لونًا",
+      colorLabel: "اللون"
+    }
+  };
+
+  const t = translations[language]; // Get translations for current language
   
   const handleColorChange = (index: number) => {
     if (index === selectedIndex || animating) return;
@@ -37,13 +53,13 @@ export default function ColorSelector({ colors, onChange }: ColorSelectorProps) 
   return (
     <div className="space-y-3">
       <motion.h3 
-        className="text-lg font-medium flex items-center gap-2"
+        className="text-lg font-bold flex items-center gap-2"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
         <span className="h-1 w-6 bg-gradient-to-r from-ev-blue to-ev-accent rounded-full"></span>
-        Choose a Color
+        {t.chooseColor}
       </motion.h3>
       
       <div className="relative">
@@ -90,7 +106,7 @@ export default function ColorSelector({ colors, onChange }: ColorSelectorProps) 
               id="color-name-display"
               className="flex flex-col relative"
             >
-              <span className="text-xs uppercase tracking-wider text-muted-foreground">Color</span>
+              <span className="text-xs font-black uppercase tracking-wider text-muted-foreground">{t.colorLabel}</span>
               <span className="text-xl font-semibold relative">
                 {selectedColor.name}
                 <motion.div 

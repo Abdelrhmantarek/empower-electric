@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/components/Layout";
 import {
   Car as CarIcon,
   Battery,
@@ -22,7 +23,93 @@ import ColorSelector from "@/components/inventory/ColorSelector";
 import QuoteModal from "@/components/inventory/QuoteModal";
 import { fetchCars, Car, CarColor } from "@/data/cars";
 
+const translations = {
+  en: {
+    loading: "Loading...",
+    errorTitle: "Error",
+    notFoundTitle: "Vehicle Not Found",
+    notFoundMessage: "The vehicle you're looking for doesn't exist or has been removed.",
+    returnToInventory: "Return to Inventory",
+    home: "Home",
+    inventory: "Inventory",
+    range: "Range",
+    featured: "Featured",
+    gallery: "Gallery",
+    spinView: "360° View",
+    overview: "Overview",
+    year: "Year",
+    acceleration: "0-60 mph",
+    seating: "Seating",
+    requestQuote: "Request a Quote",
+    bookTestDrive: "Book a Test Drive",
+    delivery: "Delivery",
+    warranty: "Warranty",
+    technicalSpecs: "Technical Specifications",
+    topSpeed: "Top Speed",
+    power: "Power",
+    battery: "Battery",
+    chargingExperience: "Charging Experience",
+    fastCharging: "Fast Charging",
+    supercharger: "Supercharger (150kW)",
+    homeCharging: "Home Charging",
+    wallConnector: "Wall Connector (11kW)",
+    efficiency: "Efficiency",
+    chargePorts: "Charge ports",
+    preconditioning: "Pre-conditioning",
+    electricFreedom: "Experience Electric Freedom",
+    rapidCharging: "Rapid Charging",
+    longRange: "Long Range",
+    instantAcceleration: "Instant Acceleration",
+    readyFuture: "Ready to experience the future?",
+    electricRevolution: "Join the electric revolution with the"
+  },
+  ar: {
+    loading: "جار التحميل...",
+    errorTitle: "خطأ",
+    notFoundTitle: "السيارة غير موجودة",
+    notFoundMessage: "السيارة التي تبحث عنها غير موجودة أو تمت إزالتها.",
+    returnToInventory: "العودة إلى المخزون",
+    home: "الرئيسية",
+    inventory: "المخزون",
+    range: "المدى",
+    featured: "مميز",
+    gallery: "المعرض",
+    spinView: "عرض 360°",
+    overview: "نظرة عامة",
+    year: "السنة",
+    acceleration: "0-60 ميل في الساعة",
+    seating: "المقاعد",
+    requestQuote: "طلب عرض سعر",
+    bookTestDrive: "حجز تجربة قيادة",
+    delivery: "التوصيل",
+    warranty: "الضمان",
+    technicalSpecs: "المواصفات الفنية",
+    topSpeed: "السرعة القصوى",
+    power: "القوة",
+    battery: "البطارية",
+    chargingExperience: "تجربة الشحن",
+    fastCharging: "الشحن السريع",
+    supercharger: "الشاحن السريع (150kW)",
+    homeCharging: "الشحن المنزلي",
+    wallConnector: "حائط الشحن (11kW)",
+    efficiency: "الكفاءة",
+    chargePorts: "منافذ الشحن",
+    preconditioning: "التكييف المسبق",
+    electricFreedom: "اختبر حرية الكهرباء",
+    rapidCharging: "شحن سريع",
+    longRange: "مدى طويل",
+    instantAcceleration: "تسارع فوري",
+    readyFuture: "هل أنت مستعد لتجربة المستقبل؟",
+    electricRevolution: "انضم إلى ثورة الكهرباء مع"
+  }
+};
+
+
 const CarDetail = () => {
+
+  const { language } = useLanguage();
+  const t = translations[language];
+
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [car, setCar] = useState<Car | undefined>(undefined);
@@ -74,7 +161,7 @@ const CarDetail = () => {
     return (
       <Layout>
         <div className="section-container flex justify-center items-center h-96">
-          <div className="animate-pulse text-xl">Loading...</div>
+          <div className="animate-pulse text-xl">{t.loading}</div>
         </div>
       </Layout>
     );
@@ -84,7 +171,7 @@ const CarDetail = () => {
     return (
       <Layout>
         <div className="section-container text-center py-20">
-          <h2 className="text-2xl font-bold mb-4">Error</h2>
+          <h2 className="text-2xl font-bold mb-4">{t.errorTitle}</h2>
           <p className="text-muted-foreground mb-8">{error}</p>
           <button
             onClick={() => window.location.reload()}
@@ -101,9 +188,9 @@ const CarDetail = () => {
     return (
       <Layout>
         <div className="section-container text-center py-20">
-          <h2 className="text-2xl font-bold mb-4">Vehicle Not Found</h2>
+          <h2 className="text-2xl font-bold mb-4">{t.notFoundTitle}</h2>
           <p className="text-muted-foreground mb-8">
-            The vehicle you're looking for doesn't exist or has been removed.
+            {t.notFoundMessage}
           </p>
           <button
             onClick={(e) => {
@@ -113,7 +200,7 @@ const CarDetail = () => {
             }}
             className="button-primary"
           >
-            Return to Inventory
+            {t.returnToInventory}
           </button>
         </div>
       </Layout>
@@ -132,7 +219,10 @@ const CarDetail = () => {
 
   return (
     <Layout>
-      <div className="section-container">
+      <div 
+        dir={language === 'ar' ? "rtl" : "ltr"}
+        className={`section-container ${language === 'ar' ? 'text-right' : 'text-left'}`}
+      >
         {/* Breadcrumbs */}
         <motion.div
           className="pt-8 mb-6"
@@ -143,18 +233,18 @@ const CarDetail = () => {
           <nav className="flex text-sm">
             <button
               onClick={(e) => handleNavigation(e, "/")}
-              className="text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground rtl:mr-2"
             >
-              Home
+              {t.home}
             </button>
             <span className="mx-2 text-muted-foreground">/</span>
             <button
               onClick={(e) => handleNavigation(e, "/inventory")}
-              className="text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground rtl:mr-2"
             >
-              Inventory
+              {t.inventory}
             </button>
-            <span className="mx-2 text-muted-foreground">/</span>
+            <span className="mx-2 text-muted-foreground rtl:mx-0">/</span>
             <span className="text-foreground">
               {car.make} {car.model}
             </span>
@@ -173,7 +263,9 @@ const CarDetail = () => {
             {car.year} {car.make} {car.model}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-4 mt-1">
+          <div 
+            className={`flex flex-wrap items-center gap-4 mt-1 ${language === 'ar' ? 'flex-row-reverse' : ''}`}
+          >
 
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -183,7 +275,7 @@ const CarDetail = () => {
             >
               <div className="h-5 w-[1px] bg-border"></div>
               <span className="text-muted-foreground text-lg">
-                {car.specs.range} Range
+                {t.range}: {car.specs.range}
               </span>
             </motion.div>
 
@@ -194,7 +286,7 @@ const CarDetail = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.6 }}
               >
-                Featured
+                {t.featured}
               </motion.span>
             )}
           </div>
@@ -210,7 +302,7 @@ const CarDetail = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             {/* View Mode Selector */}
-            <div className="flex mb-6 gap-2">
+            <div className={`flex mb-6 gap-2 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -220,10 +312,10 @@ const CarDetail = () => {
                   viewMode === "photos"
                     ? "bg-ev-blue text-white shadow-lg"
                     : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
-                }`}
+                } ${language === 'ar' ? 'flex-row-reverse' : ''}`}
               >
                 <LayoutGrid size={20} />
-                <span>Gallery</span>
+                <span>{t.gallery}</span>
               </button>
               <button
                 onClick={(e) => {
@@ -234,10 +326,10 @@ const CarDetail = () => {
                   viewMode === "spin"
                     ? "bg-ev-blue text-white shadow-lg"
                     : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
-                }`}
+                } ${language === 'ar' ? 'flex-row-reverse' : ''}`}
               >
                 <RotateCw size={20} />
-                <span>360° View</span>
+                <span>{t.spinView}</span>
               </button>
             </div>
 
@@ -264,7 +356,7 @@ const CarDetail = () => {
           {/* Product Information Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column: Overview and Quick Actions */}
-            <div className="lg:col-span-2 space-y-8">
+            <div className={`lg:col-span-2 space-y-8 ${language === 'ar' ? 'lg:order-2' : ''}`}>
               {/* Overview Section */}
               <motion.div
                 ref={overviewRef}
@@ -276,7 +368,7 @@ const CarDetail = () => {
               >
                 <div className="flex items-center gap-3 mb-6">
                   <div className="h-6 w-1.5 bg-ev-blue rounded-full"></div>
-                  <h2 className="text-3xl font-bold">Overview</h2>
+                  <h2 className="text-3xl font-bold">{t.overview}</h2>
                 </div>
                 <p className="text-muted-foreground leading-relaxed text-lg mb-8">
                   {car.description}
@@ -288,34 +380,34 @@ const CarDetail = () => {
                     <div className="text-2xl font-bold text-ev-blue mb-1">
                       {car.year}
                     </div>
-                    <div className="text-sm text-muted-foreground">Year</div>
+                    <div className="text-sm text-muted-foreground">{t.year}</div>
                   </div>
                   <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-800 text-center">
                     <div className="text-2xl font-bold text-ev-blue mb-1">
                       {car.specs.range}
                     </div>
-                    <div className="text-sm text-muted-foreground">Range</div>
+                    <div className="text-sm text-muted-foreground">{t.range}</div>
                   </div>
                   <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-800 text-center">
                     <div className="text-2xl font-bold text-ev-blue mb-1">
                       {car.specs.acceleration}
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      0-60 mph
+                      {t.acceleration}
                     </div>
                   </div>
                   <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-800 text-center">
                     <div className="text-2xl font-bold text-ev-blue mb-1">
                       {car.specs.seating}
                     </div>
-                    <div className="text-sm text-muted-foreground">Seating</div>
+                    <div className="text-sm text-muted-foreground">{t.seating}</div>
                   </div>
                 </div>
               </motion.div>
             </div>
 
             {/* Right Column: Purchase Actions */}
-            <div className="space-y-6">
+            <div className={`space-y-6 ${language === 'ar' ? 'lg:order-1' : ''}`}>
               {/* Actions Card */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
@@ -325,9 +417,9 @@ const CarDetail = () => {
               >
 
                 {/* Call to Action Buttons */}
-                <div className="space-y-4">
+                <div className={`space-y-4 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
                   <motion.button
-                    className="w-full bg-ev-blue hover:bg-ev-blue/90 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 group shadow-lg hover:shadow-xl"
+                    className={`w-full bg-ev-blue hover:bg-ev-blue/90 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 group shadow-lg hover:shadow-xl`}
                     onClick={(e) => {
                       e.stopPropagation();
                       setQuoteModalOpen(true);
@@ -335,7 +427,7 @@ const CarDetail = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <span>Request a Quote</span>
+                    <span>{t.requestQuote}</span>
                     <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </motion.button>
 
@@ -347,8 +439,10 @@ const CarDetail = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <span>Book a Test Drive</span>
-                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    <span>{t.bookTestDrive}</span>
+                    <ChevronRight 
+                      className={`w-5 h-5 group-hover:translate-x-1 transition-transform ${language === 'ar' ? 'rotate-180' : ''}`} 
+                    />
                   </motion.button>
                 </div>
 
@@ -356,11 +450,11 @@ const CarDetail = () => {
                 <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Delivery</span>
+                      <span className="text-muted-foreground">{t.delivery}</span>
                       <span className="font-medium">{car.specs.delivery}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Warranty</span>
+                      <span className="text-muted-foreground">{t.warranty}</span>
                       <span className="font-medium">{car.specs.warranty}</span>
                     </div>
                     {/* <div className="flex justify-between">
@@ -384,9 +478,9 @@ const CarDetail = () => {
           transition={{ duration: 0.8 }}
         >
           <div className="flex items-center gap-3 mb-10">
-            <div className="h-8 w-1.5 bg-gradient-to-b from-ev-blue to-ev-accent rounded-full"></div>
+            <div className="h-8 w-1.5 bg-gradient-to-b from-ev-blue to-ev-accent rounded-full rtl:ml-3"></div>
             <h2 className="text-3xl md:text-4xl font-bold">
-              Technical Specifications
+              {t.technicalSpecs}
             </h2>
           </div>
 
@@ -402,7 +496,7 @@ const CarDetail = () => {
               whileHover={{ scale: 1.03 }}
             >
               <Zap className="text-ev-blue mb-6 h-10 w-10 p-2 bg-ev-blue/10 rounded-xl" />
-              <p className="text-sm text-muted-foreground mb-1">Range</p>
+              <p className="text-sm text-muted-foreground mb-1">{t.range}</p>
               <p className="text-3xl font-semibold text-foreground">
                 {car.specs.range}
               </p>
@@ -433,7 +527,7 @@ const CarDetail = () => {
               whileHover={{ scale: 1.03 }}
             >
               <Gauge className="text-ev-blue mb-6 h-10 w-10 p-2 bg-ev-blue/10 rounded-xl" />
-              <p className="text-sm text-muted-foreground mb-1">Acceleration</p>
+              <p className="text-sm text-muted-foreground mb-1">{t.acceleration}</p>
               <p className="text-3xl font-semibold text-foreground">
                 {car.specs.acceleration}
               </p>
@@ -464,7 +558,7 @@ const CarDetail = () => {
               whileHover={{ scale: 1.03 }}
             >
               <ArrowRight className="text-ev-blue mb-6 h-10 w-10 p-2 bg-ev-blue/10 rounded-xl" />
-              <p className="text-sm text-muted-foreground mb-1">Top Speed</p>
+              <p className="text-sm text-muted-foreground mb-1">{t.topSpeed}</p>
               <p className="text-3xl font-semibold text-foreground">
                 {car.specs.topSpeed}
               </p>
@@ -495,7 +589,7 @@ const CarDetail = () => {
               whileHover={{ scale: 1.03 }}
             >
               <CircleGauge className="text-ev-blue mb-6 h-10 w-10 p-2 bg-ev-blue/10 rounded-xl" />
-              <p className="text-sm text-muted-foreground mb-1">Power</p>
+              <p className="text-sm text-muted-foreground mb-1">{t.power}</p>
               <p className="text-3xl font-semibold text-foreground">
                 {car.specs.power}
               </p>
@@ -526,7 +620,7 @@ const CarDetail = () => {
               whileHover={{ scale: 1.03 }}
             >
               <Battery className="text-ev-blue mb-6 h-10 w-10 p-2 bg-ev-blue/10 rounded-xl" />
-              <p className="text-sm text-muted-foreground mb-1">Battery</p>
+              <p className="text-sm text-muted-foreground mb-1">{t.battery}</p>
               <p className="text-3xl font-semibold text-foreground">
                 {car.specs.battery}
               </p>
@@ -557,7 +651,7 @@ const CarDetail = () => {
               whileHover={{ scale: 1.03 }}
             >
               <CarIcon className="text-ev-blue mb-6 h-10 w-10 p-2 bg-ev-blue/10 rounded-xl" />
-              <p className="text-sm text-muted-foreground mb-1">Seating</p>
+              <p className="text-sm text-muted-foreground mb-1">{t.seating}</p>
               <p className="text-3xl font-semibold text-foreground">
                 {car.specs.seating}
               </p>
@@ -590,22 +684,22 @@ const CarDetail = () => {
         >
           <div className="flex items-center gap-3 mb-8">
             <motion.div
-              className="p-3 bg-gradient-to-br from-ev-blue/20 to-ev-accent/20 rounded-lg"
+              className="p-3 bg-gradient-to-br from-ev-blue/20 to-ev-accent/20 rounded-lg rtl:ml-3"
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.8 }}
             >
               <Clock className="text-ev-accent h-6 w-6" />
             </motion.div>
-            <h3 className="text-2xl font-semibold">Charging Experience</h3>
+            <h3 className="text-2xl font-semibold">{t.chargingExperience}</h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-6">
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="font-medium">Fast Charging</h4>
+                  <h4 className="font-medium">{t.fastCharging}</h4>
                   <p className="text-muted-foreground text-sm mt-1">
-                    Supercharger (150kW)
+                    {t.supercharger}
                   </p>
                 </div>
                 <div className="flex items-baseline gap-1">
@@ -647,9 +741,9 @@ const CarDetail = () => {
 
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h4 className="font-medium">Home Charging</h4>
+                  <h4 className="font-medium">{t.homeCharging}</h4>
                   <p className="text-muted-foreground text-sm mt-1">
-                    Wall Connector (11kW)
+                    {t.wallConnector}
                   </p>
                 </div>
                 <div className="flex items-baseline gap-1">
@@ -691,7 +785,7 @@ const CarDetail = () => {
                 <CirclePercent className="text-ev-accent h-5 w-5" />
               </div>
               <div>
-                <h4 className="font-medium">Efficiency</h4>
+                <h4 className="font-medium">{t.efficiency}</h4>
                 <p className="text-sm text-muted-foreground">4.3 miles/kWh</p>
               </div>
             </motion.div>
@@ -705,7 +799,7 @@ const CarDetail = () => {
                 <Circle className="text-ev-blue h-5 w-5" />
               </div>
               <div>
-                <h4 className="font-medium">Charge ports</h4>
+                <h4 className="font-medium">{t.chargePorts}</h4>
                 <p className="text-sm text-muted-foreground">CCS & Type 2</p>
               </div>
             </motion.div>
@@ -719,7 +813,7 @@ const CarDetail = () => {
                 <Zap className="text-ev-blue h-5 w-5" />
               </div>
               <div>
-                <h4 className="font-medium">Pre-conditioning</h4>
+                <h4 className="font-medium">{t.preconditioning}</h4>
                 <p className="text-sm text-muted-foreground">Smart routing</p>
               </div>
             </motion.div>
@@ -736,9 +830,9 @@ const CarDetail = () => {
           transition={{ duration: 0.8, delay: 1.8 }}
         >
           <div className="flex items-center gap-3 mb-10">
-            <div className="h-8 w-1.5 bg-gradient-to-b from-ev-accent to-ev-blue rounded-full"></div>
+            <div className="h-8 w-1.5 bg-gradient-to-b from-ev-accent to-ev-blue rounded-full rtl:ml-3"></div>
             <h2 className="text-3xl md:text-4xl font-bold">
-              Experience Electric Freedom
+              {t.electricFreedom}
             </h2>
           </div>
 
@@ -759,7 +853,7 @@ const CarDetail = () => {
               </div>
 
               <h3 className="text-xl font-semibold mb-3 relative">
-                Rapid Charging
+                {t.rapidCharging}
               </h3>
               <p className="text-muted-foreground relative">
                 Charge up to 80% in just 30 minutes with fast-charging stations
@@ -785,7 +879,7 @@ const CarDetail = () => {
               </div>
 
               <h3 className="text-xl font-semibold mb-3 relative">
-                Long Range
+                {t.longRange}
               </h3>
               <p className="text-muted-foreground relative">
                 Drive up to {car.specs.range} on a single charge, perfect for
@@ -811,7 +905,7 @@ const CarDetail = () => {
               </div>
 
               <h3 className="text-xl font-semibold mb-3 relative">
-                Instant Acceleration
+                {t.instantAcceleration}
               </h3>
               <p className="text-muted-foreground relative">
                 Experience thrilling {car.specs.acceleration} acceleration with
@@ -830,10 +924,10 @@ const CarDetail = () => {
             transition={{ duration: 0.8, delay: 2 }}
           >
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Ready to experience the future?
+              {t.readyFuture}
             </h3>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-              Join the electric revolution with the {car.year} {car.make}{" "}
+              {t.electricRevolution} {car.year} {car.make}{" "}
               {car.model}. Schedule a test drive today or request a personalized
               quote.
             </p>
@@ -848,7 +942,7 @@ const CarDetail = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Request a Quote
+                {t.requestQuote}
               </motion.button>
 
               <motion.button
@@ -859,7 +953,7 @@ const CarDetail = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Book a Test Drive
+                {t.bookTestDrive}
               </motion.button>
             </div>
           </motion.div>

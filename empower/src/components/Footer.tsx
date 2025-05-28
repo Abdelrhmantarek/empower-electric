@@ -14,7 +14,7 @@ const translations = {
     about: "About Us",
     contact: "Contact",
     contactUs: "Contact Us",
-    address: "ZUBAIRY STREET,<br />IN FRONT OF MINISTRY OF OIL,<br /> SANA’A, REPUBLIC OF YEMEN.",
+    address: "ZUBAIRY STREET, IN FRONT OF MINISTRY OF OIL, SANA’A, REPUBLIC OF YEMEN.",
     businessHours: "Business Hours",
     monday: "Monday - Friday",
     saturday: "Saturday",
@@ -32,8 +32,6 @@ const translations = {
     emailPlaceholder: "Your email address",
     subscribe: "Subscribe",
     allRights: "All rights reserved.",
-    privacyPolicy: "Privacy Policy",
-    terms: "Terms of Service",
     sitemap: "Sitemap",
     aboutUsText: "EmpowerEV is dedicated to providing the best electric vehicle experience with a focus on sustainability, innovation, and customer satisfaction."
   },
@@ -63,8 +61,6 @@ const translations = {
     emailPlaceholder: "عنوان بريدك الإلكتروني",
     subscribe: "اشترك",
     allRights: "جميع الحقوق محفوظة.",
-    privacyPolicy: "سياسة الخصوصية",
-    terms: "شروط الخدمة",
     sitemap: "خريطة الموقع",
     aboutUsText: "EmpowerEV مكرسة لتوفير أفضل تجربة للسيارات الكهربائية مع التركيز على الاستدامة والابتكار ورضا العملاء."
   }
@@ -231,14 +227,6 @@ export default function Footer() {
           <p className={`text-xs text-gray-400 font-medium ${textAlign}`}>
             © {currentYear} EmpowerEV. {t.allRights}
           </p>
-          <div className={`flex space-x-5 ${isRtl ? 'space-x-reverse' : ''}`}>
-            <a href="#" className="text-gray-400 hover:text-ev-accent transition-colors text-xs font-medium">
-              {t.privacyPolicy}
-            </a>
-            <a href="#" className="text-gray-400 hover:text-ev-accent transition-colors text-xs font-medium">
-              {t.terms}
-            </a>
-          </div>
         </div>
       </div>
     </footer>

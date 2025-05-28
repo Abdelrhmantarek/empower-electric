@@ -357,7 +357,7 @@ const Contact = () => {
               </div>
             ) : (
               <>
-                <h2 className="text-2xl font-bold mb-6">{t.sendMessage}</h2>
+                <h2 className="text-2xl font-bold mb-6 text-center">{t.sendMessage}</h2>
 
                 <form onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 gap-6">
@@ -486,7 +486,7 @@ const Contact = () => {
 
         {/* Map */}
         <div className="mt-16">
-          <h2 className="text-2xl font-bold mb-6">{t.ourLocation}</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center">{t.ourLocation}</h2>
           <div className="aspect-video rounded-lg overflow-hidden border">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d1673.400926093519!2d44.18215108901525!3d15.332009120934389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z2IzYtNin2LHYuSDYp9mE2LLYqNmK2LHZiiDYjNij2YXYp9mFINmI2LLYp9ix2Kkg2KfZhNmG2YHYtyDYtdmG2LnYp9ihIC0g2KfZhNis2YXZh9mI2LHZitipINin2YTZitmF2YbZitip!5e1!3m2!1sen!2seg!4v1748455891794!5m2!1sen!2seg"
