@@ -428,7 +428,7 @@ const CarDetail = () => {
                     whileTap={{ scale: 0.98 }}
                   >
                     <span>{t.requestQuote}</span>
-                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    <ChevronRight className={`w-5 h-5 group-hover:translate-x-1 transition-transform ${language === 'ar' ? 'rotate-180' : ''}`} />
                   </motion.button>
 
                   <motion.button
