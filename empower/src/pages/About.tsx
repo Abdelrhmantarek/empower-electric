@@ -29,15 +29,9 @@ const About = () => {
         {/* Who We Are */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6">{t.whoWeAre}</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">{t.whoWeAre}</h2>
             <p className="text-muted-foreground mb-4">
               {t.whoWeAreDesc1}
-            </p>
-            <p className="text-muted-foreground mb-4">
-              {t.whoWeAreDesc2}
-            </p>
-            <p className="text-muted-foreground">
-              {t.whoWeAreDesc3}
             </p>
           </div>
           <div className="relative h-[400px] rounded-xl overflow-hidden">
@@ -280,11 +274,9 @@ const About = () => {
 const translations = {
   en: {
     ourMission: "Our Mission",
-    missionDescription: "At Empower EV, we're dedicated to accelerating the transition to sustainable mobility by providing premium electric vehicles and exceptional customer experiences.",
+    missionDescription: "Empower aims to promote the use of electric vehicles as a sustainable and eco-friendly option by offering a variety of high-quality electric vehicles, providing excellent after-sales services, and raising awareness about the benefits of electric transportation.",
     whoWeAre: "Who We Are",
-    whoWeAreDesc1: "Founded in 2020, Empower EV has rapidly become a leader in the electric vehicle market. Our team consists of industry experts, EV enthusiasts, and sustainability advocates who share a passion for the future of transportation.",
-    whoWeAreDesc2: "We believe that transitioning to electric vehicles is not just about reducing emissions—it's about creating a better driving experience with cutting-edge technology, exceptional performance, and elegant design.",
-    whoWeAreDesc3: "As a specialized EV dealership, we curate only the finest electric vehicles, ensuring that each model in our inventory meets our high standards for quality, performance, and sustainability.",
+    whoWeAreDesc1: "Empower is the first specialized agency for electric vehicles in Yemen, leading the way to the future in this field. It offers a wide and diverse range of electric cars that meets various preferences and needs, from com- pact city cars to luxurious and high-performance models",
     ourJourney: "Our Journey",
     foundation: "Foundation",
     foundationDesc: "Empower EV was founded with a vision to make premium electric vehicles more accessible through exceptional service and expertise.",
@@ -302,8 +294,8 @@ const translations = {
     flagshipShowroomDesc: "In 2021, we opened our state-of-the-art flagship showroom in Los Angeles, designed to showcase the latest in electric vehicle technology with a focus on customer experience.",
     evDealershipAward: "EV Dealership of the Year",
     evDealershipAwardDesc: "Recognized in 2023 as the 'EV Dealership of the Year' for our outstanding service, innovative approach, and commitment to advancing electric mobility.",
-    carbonNeutral: "Carbon Neutral Operations",
-    carbonNeutralDesc: "Achieved carbon-neutral certification in 2023, reflecting our dedication to sustainable operations and reducing environmental impact across all our facilities.",
+    carbonNeutral: "Our Engineers",
+    carbonNeutralDesc: "Empower Electric Cars is one of the leading companies with a team of specialized engineers in this field. The team includes engineers with the expertise and skills necessary to efficiently maintain electric vehicles.",
     certificationsTitle: "Our Certifications & Partners",
     certifiedEVSpecialist: "Certified EV Specialist",
     certifiedEVSpecialistDesc: "Industry recognized certification for electric vehicle sales and service",
@@ -369,11 +361,9 @@ const translations = {
   },
   ar: {
     ourMission: "مهمتنا",
-    missionDescription: "في Empower EV، نحن ملتزمون بتسريع الانتقال إلى التنقل المستدام من خلال توفير سيارات كهربائية فاخرة وتجارب عملاء استثنائية.",
+    missionDescription: "تهدف شركة إمباور إلى تعزيز استخدام المركبات الكهربائية كخيار مستدام وصديق للبيئة من خلال تقديم مجموعة متنوعة من المركبات الكهربائية عالية الجودة، وتوفير خدمات ما بعد البيع الممتازة، وزيادة الوعي حول فوائد النقل الكهربائي.",
     whoWeAre: "من نحن",
-    whoWeAreDesc1: "تأسست Empower EV في عام 2020، وأصبحت بسرعة رائدة في سوق السيارات الكهربائية. يتكون فريقنا من خبراء الصناعة، وعشاق السيارات الكهربائية، ودعاة الاستدامة الذين يتشاركون شغفًا بمستقبل النقل.",
-    whoWeAreDesc2: "نؤمن أن الانتقال إلى السيارات الكهربائية لا يتعلق فقط بتقليل الانبعاثات—بل يتعلق بإنشاء تجربة قيادة أفضل باستخدام التكنولوجيا المتطورة، والأداء الاستثنائي، والتصميم الأنيق.",
-    whoWeAreDesc3: "كوكيل متخصص في السيارات الكهربائية، نحن نختار فقط أفضل السيارات الكهربائية، مع التأكد من أن كل طراز في مخزوننا يلبي معاييرنا العالية للجودة والأداء والاستدامة.",
+    whoWeAreDesc1: "إمباور هي أول وكالة متخصصة بالسيارات الكهربائية في اليمن، رائدة في هذا المجال. تقدم تشكيلة واسعة ومتنوعة من السيارات الكهربائية التي تلبي مختلف الأذواق والاحتياجات، من سيارات المدينة الصغيرة إلى السيارات الفاخرة عالية الأداء.",
     ourJourney: "رحلتنا",
     foundation: "التأسيس",
     foundationDesc: "تأسست Empower EV برؤية لجعل السيارات الكهربائية الفاخرة أكثر سهولة من خلال خدمة وخبرة استثنائية.",
@@ -391,8 +381,8 @@ const translations = {
     flagshipShowroomDesc: "في عام 2021، افتتحنا صالة عرضنا الرئيسية الحديثة في لوس أنجلوس، المصممة لعرض أحدث ما في تكنولوجيا السيارات الكهربائية مع التركيز على تجربة العملاء.",
     evDealershipAward: "وكيل السيارات الكهربائية للعام",
     evDealershipAwardDesc: "تم الاعتراف بنا في عام 2023 كـ 'وكيل السيارات الكهربائية للعام' لخدمتنا المتميزة، ونهجنا المبتكر، والتزامنا بتطوير التنقل الكهربائي.",
-    carbonNeutral: "عمليات محايدة للكربون",
-    carbonNeutralDesc: "حصلنا على شهادة محايدة للكربون في عام 2023، مما يعكس التزامنا بالعمليات المستدامة وتقليل التأثير البيئي عبر جميع مرافقنا.",
+    carbonNeutral: "مهندسونا",
+    carbonNeutralDesc: "تُعد شركة إمباور للسيارات الكهربائية من الشركات الرائدة في هذا المجال، حيث تضم فريقًا من المهندسين المتخصصين ذوي الخبرة والمهارات اللازمة لصيانة السيارات الكهربائية بكفاءة.",
     certificationsTitle: "شهاداتنا وشركاؤنا",
     certifiedEVSpecialist: "أخصائي سيارات كهربائية معتمد",
     certifiedEVSpecialistDesc: "شهادة معترف بها في الصناعة لمبيعات وخدمة السيارات الكهربائية",
