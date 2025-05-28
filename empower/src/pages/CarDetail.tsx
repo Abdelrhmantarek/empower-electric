@@ -334,7 +334,7 @@ const CarDetail = () => {
             </div>
 
             {/* Image Gallery & 360° View */}
-            <div className="relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 w-full max-h-[80vh] lg:max-h-[550px] mx-auto">
+            <div className="relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 w-full h-[80vh] max-h-[550px] min-h-[300px] mx-auto">
               <ImageGallery
                 images={selectedColor ? selectedColor.image : [car.mainImage]}
                 alt={`${car.make} ${car.model}`}
