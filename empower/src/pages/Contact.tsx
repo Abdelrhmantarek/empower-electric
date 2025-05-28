@@ -244,23 +244,39 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="mt-8">
-              <h3 className="text-xl font-medium mb-4 text-center">{t.businessHours}</h3>
-              <div className="bg-muted p-4 rounded-lg">
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="text-muted-foreground text-start">{t.mondayFriday}</div>
-                  <div className="text-end">{t.mondayFridayHours}</div>
-                  <div className="text-muted-foreground text-start">{t.saturday}</div>
-                  <div className="text-end">{t.saturdayHours}</div>
-                  <div className="text-muted-foreground text-start">{t.sunday}</div>
-                  <div className="text-end">{t.sundayHours}</div>
+            <div className="mt-8 mx-auto max-w-md" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+              <h3 className="text-xl font-semibold mb-4 text-center">{t.businessHours}</h3>
+              <div className="bg-muted p-6 rounded-lg shadow-sm">
+                <div className="grid grid-cols-[1fr,auto] gap-y-3">
+                  <div className={`${language === 'ar' ? 'text-right' : 'text-left'} text-muted-foreground`}>
+                    {t.mondayFriday}
+                  </div>
+                  <div className={`${language === 'ar' ? 'text-left' : 'text-right'}`}>
+                    {t.mondayFridayHours}
+                  </div>
+
+                  <div className={`${language === 'ar' ? 'text-right' : 'text-left'} text-muted-foreground`}>
+                    {t.saturday}
+                  </div>
+                  <div className={`${language === 'ar' ? 'text-left' : 'text-right'}`}>
+                    {t.saturdayHours}
+                  </div>
+
+                  <div className={`${language === 'ar' ? 'text-right' : 'text-left'} text-muted-foreground`}>
+                    {t.sunday}
+                  </div>
+                  <div className={`${language === 'ar' ? 'text-left' : 'text-right'}`}>
+                    {t.sundayHours}
+                  </div>
                 </div>
               </div>
             </div>
 
+
+
             <div className="mt-8">
               <h3 className="text-xl font-medium mb-4 text-center">{t.connectWithUs}</h3>
-              <div className="flex space-x-4 space-x-reverse justify-center">
+              <div className={`flex ${language === "ar" ? "space-x-4 space-x-reverse" : "space-x-4"} justify-center`}>
                 <a
                   href="#"
                   className="bg-ev-blue text-white p-3 rounded-full hover:bg-ev-blue-light transition-colors"
@@ -327,6 +343,8 @@ const Contact = () => {
                 </a>
               </div>
             </div>
+
+
           </div>
 
           {/* Contact Form */}
