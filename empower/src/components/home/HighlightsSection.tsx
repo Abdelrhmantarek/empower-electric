@@ -3,13 +3,16 @@ import { ChevronRight, ChevronLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import { fetchCars } from "@/data/cars"; // Import fetchCars instead of static cars
+import { fetchCars } from "@/data/cars";
+import { useLanguage } from "../Layout"; // Add useLanguage hook
 
 export default function HighlightsSection() {
   const [carHighlights, setCarHighlights] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { language } = useLanguage(); // Add language context
+  const t = translations[language]; // Use translations based on language
 
   useEffect(() => {
     const loadCars = async () => {
@@ -25,7 +28,7 @@ export default function HighlightsSection() {
           acceleration: car.specs.acceleration,
           topSpeed: car.specs.topSpeed,
         },
-      })).filter(car => car.image); // Ensure only cars with images are included
+      })).filter(car => car.image);
       setCarHighlights(formattedHighlights);
     };
     loadCars();
@@ -66,7 +69,7 @@ export default function HighlightsSection() {
   }, [isAnimating, carHighlights.length]);
 
   if (carHighlights.length === 0) {
-    return <div>Loading...</div>; // Placeholder while data is fetched
+    return <div>Loading...</div>;
   }
 
   return (
@@ -81,12 +84,12 @@ export default function HighlightsSection() {
         <div className="text-center mb-16 px-4">
           <div className="inline-block">
             <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-ev-blue via-ev-accent to-ev-blue-light bg-clip-text text-transparent animate-fade-in">
-              Featured Models
+              {t.featuredModels}
             </h2>
             <div className="h-1 w-32 bg-gradient-to-r from-ev-accent to-ev-blue mx-auto rounded-full animate-scale-in"></div>
           </div>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            Discover our premium selection of cutting-edge electric vehicles that redefine the future of transportation
+            {t.discoverModels}
           </p>
         </div>
 
@@ -173,7 +176,7 @@ export default function HighlightsSection() {
                           {isActive && (
                             <div className="flex justify-between items-center animate-fade-in" style={{ animationDelay: "0.3s" }}>
                               <span className="button-primary group inline-flex items-center">
-                                View Details
+                                {t.viewDetails}
                                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                               </span>
                             </div>
@@ -247,3 +250,27 @@ export default function HighlightsSection() {
     </section>
   );
 }
+
+// Add translations object (merge with existing HeroSection translations)
+const translations = {
+  en: {
+    featuredModels: "Featured Models",
+    discoverModels: "Discover our premium selection of cutting-edge electric vehicles that redefine the future of transportation",
+    title: "Drive The <span>Future</span> Today",
+    description: "Experience premium electric vehicles with cutting-edge technology, exceptional performance, and zero emissions.",
+    exploreButton: "Explore Our Stock",
+    testDriveButton: "Book a Test Drive",
+    scrollIndicator: "Scroll down to explore",
+    viewDetails: "View Details"
+  },
+  ar: {
+    featuredModels: "النماذج المميزة",
+    discoverModels: "اكتشف مجموعتنا المميزة من السيارات الكهربائية المتطورة التي تعيد تعريف مستقبل النقل",
+    title: "قد <span>المستقبل</span> اليوم",
+    description: "استمتع بتجربة السيارات الكهربائية الفاخرة مع تكنولوجيا متطورة، أداء استثنائي، وانبعاثات صفرية.",
+    exploreButton: "استكشف مخزوننا",
+    testDriveButton: "احجز تجربة قيادة",
+    scrollIndicator: "مرر لأسفل لاستكشاف المزيد",
+    viewDetails: "عرض التفاصيل"
+  }
+};

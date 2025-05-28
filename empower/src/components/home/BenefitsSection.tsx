@@ -1,10 +1,14 @@
+import { useLanguage } from "../Layout"; // Add useLanguage hook
+
 export default function BenefitsSection() {
+  const { language } = useLanguage(); // Add language context
+  const t = translations[language]; // Use translations based on language
+
   const benefits = [
     {
       id: 1,
-      title: "Zero Emissions",
-      description:
-        "Drive with a clear conscience knowing your vehicle produces zero tailpipe emissions, helping to create cleaner air for everyone.",
+      title: "zeroEmissions",
+      description: "zeroEmissionsDesc",
       icon: (
         <svg
           className="w-10 h-10 text-ev-accent"
@@ -24,9 +28,8 @@ export default function BenefitsSection() {
     },
     {
       id: 2,
-      title: "Lower Operating Costs",
-      description:
-        "Electric vehicles typically cost less to maintain and operate than traditional combustion engines, saving you money long-term.",
+      title: "lowerOperatingCosts",
+      description: "lowerOperatingCostsDesc",
       icon: (
         <svg
           className="w-10 h-10 text-ev-accent"
@@ -46,9 +49,8 @@ export default function BenefitsSection() {
     },
     {
       id: 3,
-      title: "Cutting-Edge Technology",
-      description:
-        "Experience the latest innovations in autonomous driving features, connectivity, and infotainment systems.",
+      title: "cuttingEdgeTechnology",
+      description: "cuttingEdgeTechnologyDesc",
       icon: (
         <svg
           className="w-10 h-10 text-ev-accent"
@@ -68,9 +70,8 @@ export default function BenefitsSection() {
     },
     {
       id: 4,
-      title: "Instant Torque",
-      description:
-        "Electric motors deliver 100% of their torque immediately, providing superior acceleration and a thrilling driving experience.",
+      title: "instantTorque",
+      description: "instantTorqueDesc",
       icon: (
         <svg
           className="w-10 h-10 text-ev-accent"
@@ -90,9 +91,8 @@ export default function BenefitsSection() {
     },
     {
       id: 5,
-      title: "Reduced Noise Pollution",
-      description:
-        "Enjoy a quieter, more peaceful driving experience with electric vehicles' near-silent operation.",
+      title: "reducedNoisePollution",
+      description: "reducedNoisePollutionDesc",
       icon: (
         <svg
           className="w-10 h-10 text-ev-accent"
@@ -112,9 +112,8 @@ export default function BenefitsSection() {
     },
     {
       id: 6,
-      title: "Tax Incentives",
-      description:
-        "Take advantage of federal and state tax credits and incentives designed to encourage EV adoption.",
+      title: "taxIncentives",
+      description: "taxIncentivesDesc",
       icon: (
         <svg
           className="w-10 h-10 text-ev-accent"
@@ -139,11 +138,10 @@ export default function BenefitsSection() {
       <div className="section-container">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Benefits of Electric Vehicles
+            {t.benefitsTitle}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Discover why electric vehicles are the smarter choice for today and
-            tomorrow
+            {t.benefitsDescription}
           </p>
         </div>
 
@@ -155,8 +153,8 @@ export default function BenefitsSection() {
             >
               <div className="flex flex-col items-start">
                 <div className="mb-4">{benefit.icon}</div>
-                <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
-                <p className="text-muted-foreground">{benefit.description}</p>
+                <h3 className="text-xl font-bold mb-2">{t[benefit.title]}</h3>
+                <p className="text-muted-foreground">{t[benefit.description]}</p>
               </div>
             </div>
           ))}
@@ -165,3 +163,53 @@ export default function BenefitsSection() {
     </section>
   );
 }
+
+// Add translations object (merge with existing translations)
+const translations = {
+  en: {
+    benefitsTitle: "Benefits of Electric Vehicles",
+    benefitsDescription: "Discover why electric vehicles are the smarter choice for today and tomorrow",
+    zeroEmissions: "Zero Emissions",
+    zeroEmissionsDesc: "Drive with a clear conscience knowing your vehicle produces zero tailpipe emissions, helping to create cleaner air for everyone.",
+    lowerOperatingCosts: "Lower Operating Costs",
+    lowerOperatingCostsDesc: "Electric vehicles typically cost less to maintain and operate than traditional combustion engines, saving you money long-term.",
+    cuttingEdgeTechnology: "Cutting-Edge Technology",
+    cuttingEdgeTechnologyDesc: "Experience the latest innovations in autonomous driving features, connectivity, and infotainment systems.",
+    instantTorque: "Instant Torque",
+    instantTorqueDesc: "Electric motors deliver 100% of their torque immediately, providing superior acceleration and a thrilling driving experience.",
+    reducedNoisePollution: "Reduced Noise Pollution",
+    reducedNoisePollutionDesc: "Enjoy a quieter, more peaceful driving experience with electric vehicles' near-silent operation.",
+    taxIncentives: "Tax Incentives",
+    taxIncentivesDesc: "Take advantage of federal and state tax credits and incentives designed to encourage EV adoption.",
+    title: "Drive The <span>Future</span> Today",
+    description: "Experience premium electric vehicles with cutting-edge technology, exceptional performance, and zero emissions.",
+    exploreButton: "Explore Our Stock",
+    testDriveButton: "Book a Test Drive",
+    scrollIndicator: "Scroll down to explore",
+    featuredModels: "Featured Models",
+    discoverModels: "Discover our premium selection of cutting-edge electric vehicles that redefine the future of transportation"
+  },
+  ar: {
+    benefitsTitle: "فوائد السيارات الكهربائية",
+    benefitsDescription: "اكتشف لماذا تُعتبر السيارات الكهربائية الخيار الأذكى لليوم والغد",
+    zeroEmissions: "انبعاثات صفرية",
+    zeroEmissionsDesc: "استمتع بالقيادة بضمير مرتاح عالمًا أن سيارتك لا تنبعث منها أي انبعاثات عادم، مما يساعد في تحسين جودة الهواء للجميع.",
+    lowerOperatingCosts: "تكاليف تشغيل أقل",
+    lowerOperatingCostsDesc: "السيارات الكهربائية عادةً ما تكون أقل تكلفة في الصيانة والتشغيل مقارنة بالمحركات التقليدية، مما يوفر لك المال على المدى الطويل.",
+    cuttingEdgeTechnology: "تكنولوجيا متطورة",
+    cuttingEdgeTechnologyDesc: "استمتع بالابتكارات الأحدث في ميزات القيادة الذاتية، الاتصال، وأنظمة الترفيه.",
+    instantTorque: "عزم فوري",
+    instantTorqueDesc: "المحركات الكهربائية تقدم 100% من عزمها فورًا، مما يوفر تسارعًا متفوقًا وتجربة قيادة مثيرة.",
+    reducedNoisePollution: "تلوث صوتي أقل",
+    reducedNoisePollutionDesc: "استمتع بتجربة قيادة هادئة ومريحة أكثر مع تشغيل السيارات الكهربائية الهادئ جدًا.",
+    taxIncentives: "حوافز ضريبية",
+    taxIncentivesDesc: "استفد من الائتمانات الضريبية الفيدرالية والولائية والحوافز المصممة لتشجيع اعتماد السيارات الكهربائية.",
+    title: "قد <span>المستقبل</span> اليوم",
+    description: "استمتع بتجربة السيارات الكهربائية الفاخرة مع تكنولوجيا متطورة، أداء استثنائي، وانبعاثات صفرية.",
+    exploreButton: "استكشف مخزوننا",
+    testDriveButton: "احجز تجربة قيادة",
+    scrollIndicator: "مرر لأسفل لاستكشاف المزيد",
+    featuredModels: "النماذج المميزة",
+    discoverModels: "اكتشف مجموعتنا المميزة من السيارات الكهربائية المتطورة التي تعيد تعريف مستقبل النقل"
+  }
+};

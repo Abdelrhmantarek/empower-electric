@@ -34,7 +34,8 @@ const translations = {
     allRights: "All rights reserved.",
     privacyPolicy: "Privacy Policy",
     terms: "Terms of Service",
-    sitemap: "Sitemap"
+    sitemap: "Sitemap",
+    aboutUsText: "EmpowerEV is dedicated to providing the best electric vehicle experience with a focus on sustainability, innovation, and customer satisfaction."
   },
   ar: {
     quickLinks: "روابط سريعة",
@@ -64,7 +65,8 @@ const translations = {
     allRights: "جميع الحقوق محفوظة.",
     privacyPolicy: "سياسة الخصوصية",
     terms: "شروط الخدمة",
-    sitemap: "خريطة الموقع"
+    sitemap: "خريطة الموقع",
+    aboutUsText: "EmpowerEV مكرسة لتوفير أفضل تجربة للسيارات الكهربائية مع التركيز على الاستدامة والابتكار ورضا العملاء."
   }
 };
 
@@ -75,6 +77,7 @@ export default function Footer() {
   const isRtl = language === "ar";
   const textAlign = isRtl ? "text-right" : "text-left";
   const flexDirection = isRtl ? "flex-row-reverse" : "flex-row";
+  const justifyContent = isRtl ? "justify-end" : "justify-start";
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
@@ -93,11 +96,11 @@ export default function Footer() {
 
   return (
     <footer className="bg-gradient-to-br from-ev-charcoal to-ev-blue-dark text-white">
-      <div className="container mx-auto px-4 md:px-8 pt-8 pb-4"> {/* Changed pt-6 to pt-8 for slight top space */}
+      <div className="container mx-auto px-4 md:px-8 pt-8 pb-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
           {/* Column 1: Logo & About */}
           <div className={`space-y-2 ${textAlign}`}>
-            <Link to="/" className={`flex items-start ${isRtl ? 'justify-end' : 'justify-start'} mt-[-0.5rem]`}>
+            <Link to="/" className={`flex items-start ${justifyContent} mt-[-0.5rem]`}>
               <div className="relative">
                 <img
                   src={logoDark}
@@ -106,10 +109,10 @@ export default function Footer() {
                 />
               </div>
             </Link>
-            <p className="text-gray-200 text-sm leading-relaxed font-medium mt-1">
-              Leading the sustainable driving revolution with cutting-edge electric vehicles. Experience the future of mobility today.
+            <p className={`text-gray-200 text-sm leading-relaxed font-medium mt-1 ${textAlign}`}>
+              {t.aboutUsText}
             </p>
-            <div className="flex gap-3">
+            <div className={`flex gap-3 ${flexDirection}`}>
               <a href="#" className="bg-white/10 hover:bg-ev-blue p-2 rounded-full transition-all duration-300 hover:scale-105" aria-label="Facebook">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
@@ -137,35 +140,35 @@ export default function Footer() {
           <div className={`space-y-4 ${textAlign}`}>
             <h3 className="text-lg font-semibold relative inline-block tracking-tight">
               {t.quickLinks}
-              <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-ev-accent/90"></span>
+              <span className={`absolute -bottom-1 ${isRtl ? 'right-0' : 'left-0'} h-0.5 bg-ev-accent/90`}></span>
             </h3>
             <ul className="space-y-2.5">
               <li>
-                <Link to="/" className={`text-gray-200 hover:text-ev-accent transition-colors flex items-center ${isRtl ? 'flex-row-reverse justify-end' : ''} gap-1.5 text-sm font-medium`}>
+                <Link to="/" className={`text-gray-200 hover:text-ev-accent transition-colors flex items-center ${flexDirection} gap-1.5 text-sm font-medium`}>
                   <ChevronRight className={`h-4 w-4 text-ev-accent ${isRtl ? 'rotate-180' : ''}`} />
                   <span>{t.home}</span>
                 </Link>
               </li>
               <li>
-                <Link to="/inventory" className={`text-gray-200 hover:text-ev-accent transition-colors flex items-center ${isRtl ? 'flex-row-reverse justify-end' : ''} gap-1.5 text-sm font-medium`}>
+                <Link to="/inventory" className={`text-gray-200 hover:text-ev-accent transition-colors flex items-center ${flexDirection} gap-1.5 text-sm font-medium`}>
                   <ChevronRight className={`h-4 w-4 text-ev-accent ${isRtl ? 'rotate-180' : ''}`} />
                   <span>{t.inventory}</span>
                 </Link>
               </li>
               <li>
-                <Link to="/test-drive" className={`text-gray-200 hover:text-ev-accent transition-colors flex items-center ${isRtl ? 'flex-row-reverse justify-end' : ''} gap-1.5 text-sm font-medium`}>
+                <Link to="/test-drive" className={`text-gray-200 hover:text-ev-accent transition-colors flex items-center ${flexDirection} gap-1.5 text-sm font-medium`}>
                   <ChevronRight className={`h-4 w-4 text-ev-accent ${isRtl ? 'rotate-180' : ''}`} />
                   <span>{t.testDrive}</span>
                 </Link>
               </li>
               <li>
-                <Link to="/about" className={`text-gray-200 hover:text-ev-accent transition-colors flex items-center ${isRtl ? 'flex-row-reverse justify-end' : ''} gap-1.5 text-sm font-medium`}>
+                <Link to="/about" className={`text-gray-200 hover:text-ev-accent transition-colors flex items-center ${flexDirection} gap-1.5 text-sm font-medium`}>
                   <ChevronRight className={`h-4 w-4 text-ev-accent ${isRtl ? 'rotate-180' : ''}`} />
                   <span>{t.about}</span>
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className={`text-gray-200 hover:text-ev-accent transition-colors flex items-center ${isRtl ? 'flex-row-reverse justify-end' : ''} gap-1.5 text-sm font-medium`}>
+                <Link to="/contact" className={`text-gray-200 hover:text-ev-accent transition-colors flex items-center ${flexDirection} gap-1.5 text-sm font-medium`}>
                   <ChevronRight className={`h-4 w-4 text-ev-accent ${isRtl ? 'rotate-180' : ''}`} />
                   <span>{t.contact}</span>
                 </Link>
@@ -177,7 +180,7 @@ export default function Footer() {
           <div className={`space-y-4 ${textAlign}`}>
             <h3 className="text-lg font-semibold relative inline-block tracking-tight">
               {t.contactUs}
-              <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-ev-accent/90"></span>
+              <span className={`absolute -bottom-1 ${isRtl ? 'right-0' : 'left-0'} h-0.5 bg-ev-accent/90`}></span>
             </h3>
             <ul className="space-y-3">
               <li className={`flex ${flexDirection} items-start gap-2.5 text-sm font-medium`}>
@@ -199,16 +202,16 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 4: Newsletter & Business Hours */}
+          {/* Column 4: Newsletter */}
           <div className={`space-y-4 ${textAlign}`}>
             <h3 className="text-lg font-semibold relative inline-block tracking-tight">
               {t.newsletter}
-              <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-ev-accent/90"></span>
+              <span className={`absolute -bottom-1 ${isRtl ? 'right-0' : 'left-0'} h-0.5 bg-ev-accent/90`}></span>
             </h3>
-            <p className="text-gray-200 text-sm font-medium">
+            <p className={`text-gray-200 text-sm font-medium ${textAlign}`}>
               {t.newsletterText}
             </p>
-            <div className="flex flex-col space-y-2.5">
+            <div className={`flex flex-col space-y-2.5 ${isRtl ? 'items-end' : 'items-start'}`}>
               <input 
                 type="email" 
                 placeholder={t.emailPlaceholder}
@@ -224,11 +227,11 @@ export default function Footer() {
         <hr className="border-gray-600 my-6" />
 
         {/* Bottom Section */}
-        <div className={`flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0 ${isRtl ? 'flex-row-reverse' : ''}`}>
+        <div className={`flex flex-col md:flex-row ${flexDirection} justify-between items-center space-y-2 md:space-y-0`}>
           <p className={`text-xs text-gray-400 font-medium ${textAlign}`}>
             © {currentYear} EmpowerEV. {t.allRights}
           </p>
-          <div className={`flex space-x-5 rtl:space-x-reverse`}>
+          <div className={`flex space-x-5 ${isRtl ? 'space-x-reverse' : ''}`}>
             <a href="#" className="text-gray-400 hover:text-ev-accent transition-colors text-xs font-medium">
               {t.privacyPolicy}
             </a>
