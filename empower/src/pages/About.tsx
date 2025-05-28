@@ -244,7 +244,7 @@ const About = () => {
           
           <div className="aspect-video rounded-lg overflow-hidden border">
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d424146.10283158156!2d-118.80171792351112!3d34.02070294688781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c75ddc27da13%3A0xe22fdf6f254608f4!2sLos%20Angeles%2C%20CA%2C%20USA!5e0!3m2!1sen!2s!4v1658458343948!5m2!1sen!2s"
+              src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d1673.400926093519!2d44.18215108901525!3d15.332009120934389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z2IzYtNin2LHYuSDYp9mE2LLYqNmK2LHZiiDYjNij2YXYp9mFINmI2LLYp9ix2Kkg2KfZhNmG2YHYtyDYtdmG2LnYp9ihIC0g2KfZhNis2YXZh9mI2LHZitipINin2YTZitmF2YbZitip!5e1!3m2!1sen!2seg!4v1748455891794!5m2!1sen!2seg"
               width="100%"
               height="100%"
               style={{ border: 0 }}

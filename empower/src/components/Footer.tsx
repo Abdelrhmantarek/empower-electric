@@ -14,7 +14,7 @@ const translations = {
     about: "About Us",
     contact: "Contact",
     contactUs: "Contact Us",
-    address: "123 EV Boulevard, Electric City, EC 12345",
+    address: "ZUBAIRY STREET,<br />IN FRONT OF MINISTRY OF OIL,<br /> SANA’A, REPUBLIC OF YEMEN.",
     businessHours: "Business Hours",
     monday: "Monday - Friday",
     saturday: "Saturday",
@@ -45,7 +45,7 @@ const translations = {
     about: "من نحن",
     contact: "اتصل بنا",
     contactUs: "اتصل بنا",
-    address: "١٢٣ شارع السيارات الكهربائية، المدينة الكهربائية، EC 12345",
+    address: ".شارع الزبيري ، أمام وزارة النفط ، صنعاء - الجمهورية اليمنية",
     businessHours: "ساعات العمل",
     monday: "الإثنين - الجمعة",
     saturday: "السبت",
@@ -189,14 +189,14 @@ export default function Footer() {
               </li>
               <li className={`flex ${flexDirection} items-center gap-2.5 text-sm font-medium`}>
                 <Phone className="h-5 w-5 text-ev-accent shrink-0" />
-                <a href="tel:+15551234567" className="text-gray-200 hover:text-ev-accent transition-colors">
-                  (555) 123-4567
+                <a href="tel:+9671-218140" className="text-gray-200 hover:text-ev-accent transition-colors">
+                  +(967) 1-218140
                 </a>
               </li>
               <li className={`flex ${flexDirection} items-center gap-2.5 text-sm font-medium`}>
                 <Mail className="h-5 w-5 text-ev-accent shrink-0" />
-                <a href="mailto:info@empowerev.com" className="text-gray-200 hover:text-ev-accent transition-colors">
-                  info@empowerev.com
+                <a href="mailto:info@emtiazpower.com" className="text-gray-200 hover:text-ev-accent transition-colors">
+                  info@emtiazpower.com
                 </a>
               </li>
             </ul>

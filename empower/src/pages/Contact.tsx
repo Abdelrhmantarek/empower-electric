@@ -11,13 +11,13 @@ const translations = {
     pageDescription: "Have questions about our electric vehicles or services? We're here to help you find the perfect EV for your needs.",
     getInTouch: "Get In Touch",
     phone: "Phone",
-    salesPhone: "Sales: (555) 123-4567",
-    servicePhone: "Service: (555) 765-4321",
+    salesPhone: "TEL: +(967) 1-218140",
+    servicePhone: "FAX : +(967) 1-218150",
     email: "Email",
-    salesEmail: "Sales: sales@empowerev.com",
-    supportEmail: "Support: support@empowerev.com",
+    // salesEmail: "Sales: sales@empowerev.com",
+    supportEmail: "info@emtiazpower.com",
     location: "Location",
-    locationDetails: "123 EV Boulevard<br />Electric City, EC 12345<br />United States",
+    locationDetails: "ZUBAIRY STREET,<br />IN FRONT OF MINISTRY OF OIL,<br /> SANA’A, REPUBLIC OF YEMEN.",
     businessHours: "Business Hours",
     mondayFriday: "Monday - Friday:",
     mondayFridayHours: "9:00 AM - 7:00 PM",
@@ -54,10 +54,10 @@ const translations = {
     salesPhone: "المبيعات: (555) 123-4567",
     servicePhone: "الخدمة: (555) 765-4321",
     email: "البريد الإلكتروني",
-    salesEmail: "المبيعات: sales@empowerev.com",
-    supportEmail: "الدعم: support@empowerev.com",
+    // salesEmail: "المبيعات: info@emtiazpower.com",
+    supportEmail: "الدعم: info@emtiazpower.com",
     location: "الموقع",
-    locationDetails: "123 شارع السيارات الكهربائية<br />مدينة الكهرباء، EC 12345<br />الولايات المتحدة",
+    locationDetails: "،شارع الزبيري<br />،أمام وزارة النفط<br />صنعاء - الجمهورية اليمينة",
     businessHours: "ساعات العمل",
     mondayFriday: "الإثنين - الجمعة:",
     mondayFridayHours: "9:00 صباحًا - 7:00 مساءً",
@@ -225,7 +225,6 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-medium mb-1">{t.email}</h3>
-                  <p className="text-muted-foreground mb-1">{t.salesEmail}</p>
                   <p className="text-muted-foreground">{t.supportEmail}</p>
                 </div>
               </div>
@@ -490,7 +489,7 @@ const Contact = () => {
           <h2 className="text-2xl font-bold mb-6">{t.ourLocation}</h2>
           <div className="aspect-video rounded-lg overflow-hidden border">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d424146.10283158156!2d-118.80171792351112!3d34.02070294688781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c75ddc27da13%3A0xe22fdf6f254608f4!2sLos%20Angeles%2C%20CA%2C%20USA!5e0!3m2!1sen!2s!4v1658458343948!5m2!1sen!2s"
+              src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d1673.400926093519!2d44.18215108901525!3d15.332009120934389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z2IzYtNin2LHYuSDYp9mE2LLYqNmK2LHZiiDYjNij2YXYp9mFINmI2LLYp9ix2Kkg2KfZhNmG2YHYtyDYtdmG2LnYp9ihIC0g2KfZhNis2YXZh9mI2LHZitipINin2YTZitmF2YbZitip!5e1!3m2!1sen!2seg!4v1748455891794!5m2!1sen!2seg"
               width="100%"
               height="100%"
               style={{ border: 0 }}
