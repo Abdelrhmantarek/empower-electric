@@ -347,7 +347,7 @@ const Inventory = () => {
               isGridView
                 ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
                 : "grid-cols-1"
-            }`}
+            } ${isRtl ? "rtl:grid-rtl" : ""}`}  // Add this custom class
           >
             {filteredCars.map((car, index) => (
               <motion.div
@@ -355,6 +355,7 @@ const Inventory = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`w-full ${isRtl ? "rtl:text-right" : ""}`}  // Ensure full width and text alignment
               >
                 <CarCard 
                   car={car} 

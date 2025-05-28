@@ -187,35 +187,66 @@ const FilterSection: React.FC<FilterSectionProps> = ({
   return (
     <div className="mb-8">
       <motion.div
-        className="flex items-center justify-between mb-6 space-x-4 rtl:space-x-reverse"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
+  className="flex items-center justify-between mb-6 space-x-4 rtl:space-x-reverse"
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.3 }}
+>
+  {isRtl ? (
+    <>
+      <motion.button
+        onClick={() => setIsFilterOpen(!isFilterOpen)}
+        className="flex items-center space-x-2 bg-ev-blue text-white px-5 py-3 rounded-xl hover:bg-ev-blue/90 transition-all duration-200 dark:bg-ev-blue/80 dark:hover:bg-ev-blue"
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
       >
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute top-1/2 transform -translate-y-1/2 left-3 h-5 w-5 text-gray-400 dark:text-gray-500" />
-          <motion.input
-            type="text"
-            placeholder={t.search}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className={`w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200 ${
-              isRtl ? "text-right" : ""
-            }`}
-            variants={inputVariants}
-            whileHover="hover"
-            whileFocus="focus"
-          />
-        </div>
-        <motion.button
-          onClick={() => setIsFilterOpen(!isFilterOpen)}
-          className="flex items-center space-x-2 bg-ev-blue text-white px-5 py-3 rounded-xl hover:bg-ev-blue/90 transition-all duration-200 dark:bg-ev-blue/80 dark:hover:bg-ev-blue"
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-        >
-          <SlidersHorizontal className="h-5 w-5" />
-          <span>{t.filters}</span>
-        </motion.button>
+        <SlidersHorizontal className="h-5 w-5" />
+        <span>{t.filters}</span>
+      </motion.button>
+      <div className="relative flex-1 max-w-md">
+        <Search className="absolute top-1/2 transform -translate-y-1/2 right-3 h-5 w-5 text-gray-400 dark:text-gray-500" />
+        <motion.input
+          type="text"
+          placeholder={t.search}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className={`w-full pr-10 pl-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200 ${
+            isRtl ? "text-right" : ""
+          }`}
+          variants={inputVariants}
+          whileHover="hover"
+          whileFocus="focus"
+        />
+      </div>
+    </>
+  ) : (
+    <>
+      <div className="relative flex-1 max-w-md">
+        <Search className="absolute top-1/2 transform -translate-y-1/2 left-3 h-5 w-5 text-gray-400 dark:text-gray-500" />
+        <motion.input
+          type="text"
+          placeholder={t.search}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className={`w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200 ${
+            isRtl ? "text-right" : ""
+          }`}
+          variants={inputVariants}
+          whileHover="hover"
+          whileFocus="focus"
+            />
+          </div>
+          <motion.button
+            onClick={() => setIsFilterOpen(!isFilterOpen)}
+            className="flex items-center space-x-2 bg-ev-blue text-white px-5 py-3 rounded-xl hover:bg-ev-blue/90 transition-all duration-200 dark:bg-ev-blue/80 dark:hover:bg-ev-blue"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            <SlidersHorizontal className="h-5 w-5" />
+            <span>{t.filters}</span>
+          </motion.button>
+        </>
+        )}
       </motion.div>
 
       <AnimatePresence>

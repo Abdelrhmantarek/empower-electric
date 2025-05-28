@@ -31,10 +31,13 @@ export default function CarCard({ car, onRequestQuote }: CarCardProps) {
   const t = translations[language];
   const isRtl = language === "ar";
 
-
   return (
     <>
-      <div className="group bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-ev-blue/5 transition-all duration-500 border border-border/50 hover:border-ev-blue/20">
+      <div 
+        className={`group bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-ev-blue/5 transition-all duration-500 border border-border/50 hover:border-ev-blue/20 ${
+          isRtl ? "text-right" : "text-left"
+        }`}
+      >
         <div className="relative h-52 overflow-hidden">
           <img
             src={car.mainImage}
@@ -42,22 +45,24 @@ export default function CarCard({ car, onRequestQuote }: CarCardProps) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
           />
           {car.featured && (
-            <div className={`absolute top-4 ${isRtl ? "right-4" : "left-4"} bg-ev-accent text-ev-charcoal text-xs font-bold uppercase py-1 px-3 rounded-full`}>
+            <div className={`absolute top-4 ${isRtl ? "left-4" : "right-4"} bg-ev-accent text-ev-charcoal text-xs font-bold uppercase py-1 px-3 rounded-full`}>
               {isRtl ? "مميز" : "Featured"}
             </div>
           )}
         </div>
 
         <div className="p-6">
-          <div className="flex justify-between items-start mb-2">
+          <div className={`flex justify-between items-start mb-2 ${isRtl ? "flex-row-reverse" : ""}`}>
             <h3 className="text-xl font-bold">
               {car.make} {car.model}
             </h3>
           </div>
 
-          <p className={`text-sm text-muted-foreground mb-4 ${isRtl ? "text-right" : "text-left"}`}>{car.shortDescription}</p>
+          <p className={`text-sm text-muted-foreground mb-4 ${isRtl ? "text-right" : "text-left"}`}>
+            {car.shortDescription}
+          </p>
 
-          <div className="flex flex-wrap gap-3 mb-6">
+          <div className={`flex flex-wrap gap-3 mb-6 ${isRtl ? "flex-row-reverse" : ""}`}>
             <div className="bg-muted px-3 py-1 rounded-full text-sm flex items-center gap-1">
               <span className="font-medium">{t.range}:</span> {car.specs.range}
             </div>
@@ -69,9 +74,9 @@ export default function CarCard({ car, onRequestQuote }: CarCardProps) {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className={`flex flex-col sm:flex-row gap-3 ${isRtl ? "sm:flex-row-reverse" : ""}`}>
             <Link
-              to={`/inventory/${car.id}`} // Matches the route in App.tsx
+              to={`/inventory/${car.id}`}
               className="button-primary text-sm py-2.5 group-hover:bg-ev-blue-light"
             >
               {t.viewDetails}
