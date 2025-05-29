@@ -148,20 +148,24 @@ const Contact = () => {
 
       if (response.ok) {
         const emailParams = {
+          form_type: "Contact Us Submission",
+          subject_or_car: formData.subject || "No Subject",
           name: formData.name,
           email: formData.email,
           phone: formData.phone || "Not provided",
-          subject: formData.subject,
+          inquiry_label: t.subjectLabel, // Use translated label
+          inquiry_type: formData.subject,
           message: formData.message,
-          submission_date: new Date().toLocaleString(language === "ar" ? "ar-SA" : "en-US", {
-            dateStyle: "medium",
-            timeStyle: "short",
-          }),
+          submission_date: new Date().toLocaleString(language === "ar" ? "ar-SA" : "en-US"),
+          // Omit car-related fields for Contact Us
+          car_make: "",
+          car_model: "",
+          car_year: "",
         };
 
         await emailjs.send(
           process.env.REACT_APP_EMAILJS_SERVICE_ID,
-          process.env.REACT_APP_EMAILJS_TEMPLATE_CONTACT_ID,
+          process.env.REACT_APP_EMAILJS_TEMPLATE_COMMON_ID,
           emailParams
         );
         console.log("Email sent successfully!");

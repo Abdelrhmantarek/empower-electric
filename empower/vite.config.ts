@@ -16,10 +16,9 @@ export default defineConfig(({ mode }) => {
         'process.env.REACT_APP_STRAPI_API_URL': JSON.stringify(env.REACT_APP_STRAPI_API_URL),
         'process.env.REACT_APP_STRAPI_API_TOKEN': JSON.stringify(env.REACT_APP_STRAPI_API_TOKEN),
         'process.env.REACT_APP_EMAILJS_SERVICE_ID': JSON.stringify(env.REACT_APP_EMAILJS_SERVICE_ID),
-        'process.env.REACT_APP_EMAILJS_TEMPLATE_QUOTE_ID': JSON.stringify(env.REACT_APP_EMAILJS_TEMPLATE_QUOTE_ID),
+        'process.env.REACT_APP_EMAILJS_TEMPLATE_COMMON_ID': JSON.stringify(env.REACT_APP_EMAILJS_TEMPLATE_COMMON_ID),
         'process.env.REACT_APP_EMAILJS_USER_ID': JSON.stringify(env.REACT_APP_EMAILJS_USER_ID),
         'process.env.REACT_APP_EMAILJS_TEMPLATE_TESTDRIVE_ID': JSON.stringify(env.REACT_APP_EMAILJS_TEMPLATE_TESTDRIVE_ID),
-        'process.env.REACT_APP_EMAILJS_TEMPLATE_CONTACT_ID': JSON.stringify(env.REACT_APP_EMAILJS_TEMPLATE_CONTACT_ID),
       },
     plugins: [
       react(),

@@ -135,25 +135,23 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
 
       // Step 2: Send Email via EmailJS after Strapi submission succeeds
       const emailParams = {
+        form_type: "New Quote Request",
+        subject_or_car: `${car.make} ${car.model}`, // For the subject line
         name: formData.name,
         email: formData.email,
-        phone: formData.phone,
-        inquiry_type:
-          formData.inquiryType === "availability"
-            ? t.availability
-            : formData.inquiryType === "question"
-            ? t.askQuestion
-            : t.getPrice,
-        message: formData.message || "No message provided",
+        phone: formData.phone || "Not provided",
+        inquiry_label: "Inquiry Type", // Or use a translated label if needed
+        inquiry_type: "Quote Request",
+        message: formData.message,
+        submission_date: new Date().toLocaleString(language === "ar" ? "ar-SA" : "en-US"),
         car_make: car.make,
         car_model: car.model,
-        car_year: car.year,
-        submission_date: new Date().toLocaleString(language === "ar" ? "ar-SA" : "en-US"),
+        car_year: car.year.toString(),
       };
 
       await emailjs.send(
         process.env.REACT_APP_EMAILJS_SERVICE_ID,
-        process.env.REACT_APP_EMAILJS_TEMPLATE_QUOTE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_COMMON_ID,
         emailParams
       );
       console.log("Email sent successfully!");
