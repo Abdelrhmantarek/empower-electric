@@ -235,10 +235,9 @@ const About = () => {
         {/* Location Map */}
         <div className="mb-12">
           <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">{t.visitDealership}</h2>
-          
           <div className="aspect-video rounded-lg overflow-hidden border">
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d1673.400926093519!2d44.18215108901525!3d15.332009120934389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z2IzYtNin2LHYuSDYp9mE2LLYqNmK2LHZiiDYjNij2YXYp9mFINmI2LLYp9ix2Kkg2KfZhNmG2YHYtyDYtdmG2LnYp9ihIC0g2KfZhNis2YXZh9mI2LHZitipINin2YTZitmF2YbZitip!5e1!3m2!1sen!2seg!4v1748455891794!5m2!1sen!2seg"
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1260.1689281125423!2d44.18200892451583!3d15.342873411917235!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1603db6ebb561185%3A0x1128d2408a881041!2sEmpower%20Cars!5e1!3m2!1sen!2seg!4v1749565058758!5m2!1sen!2seg"
               width="100%"
               height="100%"
               style={{ border: 0 }}

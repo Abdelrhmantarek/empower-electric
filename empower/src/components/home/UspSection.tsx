@@ -1,52 +1,44 @@
 
 import { Link } from "react-router-dom";
-import { ShieldCheck, Award, ThumbsUp, Users } from "lucide-react";
+import { ShieldCheck, Award, ThumbsUp, Users, Plug } from "lucide-react";
 import { useLanguage } from "../Layout";
 
 const translations = {
   en: {
     title: "Why Choose Empower EV?",
     pointOne: {
-      title: "EV Expertise",
-      description: "Our team of certified EV specialists has extensive knowledge of electric vehicle technology, ensuring you receive expert guidance."
+      title: "After-Sales Services",
+      description: "Empower is distinguished by providing comprehensive after-sales services, including maintenance and technical support, to ensure customer satisfaction and the continued high-efficiency performance of their vehicles."
     },
     pointTwo: {
-      title: "Premium Selection",
-      description: "We curate only the finest electric vehicles, offering luxury, performance, and cutting-edge technology in every model."
+      title: "Integrated Maintenance Workshop",
+      description: "The company owns a workshop equipped with the latest equipment and technologies to ensure the provision of efficient and fast maintenance services, guaranteeing the preservation of the vehicles' quality and performance."
     },
     pointThree: {
-      title: "Personalized Service",
-      description: "Experience white-glove service tailored to your needs, from personalized consultations to at-home test drives."
-    },
-    pointFour: {
-      title: "Charging Solutions",
-      description: "We offer comprehensive home charging installation services and guidance on public charging networks."
+      title: "Electric vehicle charging stations",
+      description: "Empower is working on establishing a network of electric vehicle charging stations spread across the country, making it easy for customers to charge their vehicles conveniently and at any time."
     },
     learnMore: "Learn More About Us",
-    testimonial: "Empower EV provided an exceptional experience from start to finish. Their knowledge and passion for electric vehicles was evident throughout the process.",
-    customer: "— Michael T., Satisfied Customer"
+    testimonial: "Empower provided an exceptional experience from start to finish. Their knowledge and passion for electric vehicles was evident throughout the process.",
+    customer: "— Michael T."
   },
   ar: {
     title: "لماذا تختار إمباور إي في؟",
     pointOne: {
-      title: "خبرة السيارات الكهربائية",
-      description: "فريقنا من المتخصصين المعتمدين في السيارات الكهربائية لديه معرفة واسعة بتكنولوجيا المركبات الكهربائية، مما يضمن حصولك على توجيه خبير."
+      title: "خدمات ما بعد البيع",
+      description: "تتميز إمباور بتقديم خدمات ما بعد البيع الشاملة ، بما في ذلك الصيانة و الدعم الفني ، لضمان رضا العملاء و استمرارية أداء سياراتهم بأعلي كفاءة"
     },
     pointTwo: {
-      title: "اختيار متميز",
-      description: "نقوم باختيار أفضل السيارات الكهربائية فقط، مما يوفر الفخامة والأداء والتكنولوجيا المتطورة في كل طراز."
+      title: "ورشة صيانة متكاملة",
+      description: "تمتلك الشركة ورشة عمل مزودة بأحدث المعدات و التقنيات لضمان تقديم خدمات صيانة فعالة و سريعة ، مما يضمن الحفاظ علي جودة السيارات و أدائها "
     },
     pointThree: {
-      title: "خدمة شخصية",
-      description: "استمتع بخدمة راقية مصممة خصيصًا لاحتياجاتك، من الاستشارات الشخصية إلى تجارب القيادة المنزلية."
-    },
-    pointFour: {
-      title: "حلول الشحن",
-      description: "نقدم خدمات تركيب شاملة للشحن المنزلي وإرشادات حول شبكات الشحن العامة."
+      title: "محطات الشحن الكهربائية",
+      description: "تعمل إمباور علي إنشاء شبكة من محطات الشحن الكهربائية المنتشرة في أنحاء الجمهورية ، مما يسهل علي العملاء شحن سياراتهم بسهولة وفي أي وقت"
     },
     learnMore: "تعرف أكثر علينا",
-    testimonial: "قدمت إمباور إي في تجربة استثنائية من البداية إلى النهاية. كانت معرفتهم وشغفهم بالسيارات الكهربائية واضحة طوال العملية.",
-    customer: "— مايكل ت.، عميل راضٍ"
+    testimonial: "قدمت إمباور تجربة استثنائية من البداية إلى النهاية. كانت معرفتهم وشغفهم بالسيارات الكهربائية واضحة طوال العملية.",
+    customer: "— عمار أحمد"
   }
 };
 
@@ -70,7 +62,7 @@ export default function UspSection() {
             <div className="transform transition-all duration-500 hover:translate-y-[-5px]">
               <div className={`flex gap-4 ${isRtl ? "flex-row-reverse" : ""}`}>
                 <div className="bg-ev-blue text-white rounded-full w-14 h-14 flex items-center justify-center shrink-0 shadow-lg shadow-ev-blue/20">
-                  <ShieldCheck className="h-6 w-6" />
+                  <Award className="h-6 w-6" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2">{t.pointOne.title}</h3>
@@ -84,7 +76,7 @@ export default function UspSection() {
             <div className="transform transition-all duration-500 hover:translate-y-[-5px]">
               <div className={`flex gap-4 ${isRtl ? "flex-row-reverse" : ""}`}>
                 <div className="bg-ev-blue text-white rounded-full w-14 h-14 flex items-center justify-center shrink-0 shadow-lg shadow-ev-blue/20">
-                  <Award className="h-6 w-6" />
+                  <ShieldCheck className="h-6 w-6" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2">{t.pointTwo.title}</h3>
@@ -98,7 +90,7 @@ export default function UspSection() {
             <div className="transform transition-all duration-500 hover:translate-y-[-5px]">
               <div className={`flex gap-4 ${isRtl ? "flex-row-reverse" : ""}`}>
                 <div className="bg-ev-blue text-white rounded-full w-14 h-14 flex items-center justify-center shrink-0 shadow-lg shadow-ev-blue/20">
-                  <Users className="h-6 w-6" />
+                  <Plug className="h-6 w-6" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2">{t.pointThree.title}</h3>
@@ -108,20 +100,7 @@ export default function UspSection() {
                 </div>
               </div>
             </div>
-            
-            <div className="transform transition-all duration-500 hover:translate-y-[-5px]">
-              <div className={`flex gap-4 ${isRtl ? "flex-row-reverse" : ""}`}>
-                <div className="bg-ev-blue text-white rounded-full w-14 h-14 flex items-center justify-center shrink-0 shadow-lg shadow-ev-blue/20">
-                  <ThumbsUp className="h-6 w-6" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-2">{t.pointFour.title}</h3>
-                  <p className="text-muted-foreground">
-                    {t.pointFour.description}
-                  </p>
-                </div>
-              </div>
-            </div>
+
           </div>
           
           <div className="pt-4">

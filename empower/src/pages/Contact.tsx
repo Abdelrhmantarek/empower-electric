@@ -11,8 +11,8 @@ const translations = {
     pageDescription: "Have questions about our electric vehicles or services? We're here to help you find the perfect EV for your needs.",
     getInTouch: "Get In Touch",
     phone: "Phone",
-    salesPhone: "TEL: +(967) 1-218140",
-    servicePhone: "FAX: +(967) 1-218150",
+    salesPhone: "+(967) 8-1781550",
+    servicePhone: "+(967) 0-1200077",
     email: "Email",
     supportEmail: "info@emtiazpower.com",
     location: "Location",
@@ -50,8 +50,8 @@ const translations = {
     pageDescription: "هل لديك أسئلة حول سياراتنا الكهربائية أو خدماتنا؟ نحن هنا لمساعدتك في العثور على السيارة الكهربائية المثالية لاحتياجاتك.",
     getInTouch: "تواصلوا معنا",
     phone: "الهاتف",
-    salesPhone: "المبيعات: +(967) 1-218140",
-    servicePhone: "الخدمة: +(967) 1-218150",
+    salesPhone: "8-1781550 (967)+",
+    servicePhone: "0-1200077 (967)+",
     email: "البريد الإلكتروني",
     supportEmail: "الدعم: info@emtiazpower.com",
     location: "الموقع",
@@ -282,7 +282,8 @@ const Contact = () => {
               <h3 className="text-xl font-medium mb-4 text-center">{t.connectWithUs}</h3>
               <div className={`flex ${language === "ar" ? "space-x-4 space-x-reverse" : "space-x-4"} justify-center`}>
                 <a
-                  href="#"
+                  href="https://www.facebook.com/EmpowerCarsYe"
+                  target="_blank"
                   className="bg-ev-blue text-white p-3 rounded-full hover:bg-ev-blue-light transition-colors"
                   aria-label={language === "ar" ? "فيسبوك" : "Facebook"}
                 >
@@ -300,21 +301,8 @@ const Contact = () => {
                   </svg>
                 </a>
                 <a
-                  href="#"
-                  className="bg-ev-blue text-white p-3 rounded-full hover:bg-ev-blue-light transition-colors"
-                  aria-label={language === "ar" ? "تويتر" : "Twitter"}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                  </svg>
-                </a>
-                <a
-                  href="#"
+                  href="https://www.instagram.com/empower_car?igsh=MXJhOGZ0MnZ2YjY0ZQ=="
+                  target="_blank"
                   className="bg-ev-blue text-white p-3 rounded-full hover:bg-ev-blue-light transition-colors"
                   aria-label={language === "ar" ? "إنستغرام" : "Instagram"}
                 >
@@ -332,9 +320,10 @@ const Contact = () => {
                   </svg>
                 </a>
                 <a
-                  href="#"
+                  href="https://www.youtube.com/@EmpowerCarsYe"
+                  target="_blank"
                   className="bg-ev-blue text-white p-3 rounded-full hover:bg-ev-blue-light transition-colors"
-                  aria-label={language === "ar" ? "لينكدإن" : "LinkedIn"}
+                  aria-label={language === "ar" ? "يوتيوب" : "YouTube"}
                 >
                   <svg
                     className="w-5 h-5"
@@ -342,7 +331,7 @@ const Contact = () => {
                     viewBox="0 0 24 24"
                     aria-hidden="true"
                   >
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                   </svg>
                 </a>
               </div>
@@ -521,7 +510,7 @@ const Contact = () => {
           <h2 className="text-2xl font-bold mb-6 text-center">{t.ourLocation}</h2>
           <div className="aspect-video rounded-lg overflow-hidden border">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d1673.400926093519!2d44.18215108901525!3d15.332009120934389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1z2IzYtNin2LHYuSDYp9mE2LLYqNmK2LHZiiDYjNij2YXYp9mFINmI2LLYp9ix2Kkg2KfZhNmG2YHYtyDYtdmG2LnYp9ihIC0g2KfZhNis2YXZh9mI2LHZitipINin2YTZitmF2YbZitip!5e1!3m2!1sen!2seg!4v1748455891794!5m2!1sen!2seg"
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1260.1689281125423!2d44.18200892451583!3d15.342873411917235!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1603db6ebb561185%3A0x1128d2408a881041!2sEmpower%20Cars!5e1!3m2!1sen!2seg!4v1749565058758!5m2!1sen!2seg"
               width="100%"
               height="100%"
               style={{ border: 0 }}
