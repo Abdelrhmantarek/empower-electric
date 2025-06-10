@@ -37,7 +37,7 @@ const About = () => {
           <div className="relative h-[400px] rounded-xl overflow-hidden">
             <img
               src={mission}
-              alt="Empower EV Team"
+              alt="Empower Team"
               className="w-full h-full object-cover"
             />
           </div>
@@ -58,7 +58,7 @@ const About = () => {
                   <span className="text-white text-sm font-bold">1</span>
                 </div>
                 <div className="ml-0 md:ml-auto md:pl-8 md:w-1/2 md:text-right pr-4">
-                  <h3 className="text-xl font-bold mb-2 text-ev-blue">2020</h3>
+                  <h3 className="text-xl font-bold mb-2 text-ev-blue">2023</h3>
                   <h4 className="font-semibold mb-2">{t.foundation}</h4>
                   <p className="text-muted-foreground">
                     {t.foundationDesc}
@@ -71,7 +71,7 @@ const About = () => {
                   <span className="text-white text-sm font-bold">2</span>
                 </div>
                 <div className="md:ml-8 md:w-1/2 md:text-left pl-4">
-                  <h3 className="text-xl font-bold mb-2 text-ev-blue">2021</h3>
+                  <h3 className="text-xl font-bold mb-2 text-ev-blue">2024</h3>
                   <h4 className="font-semibold mb-2">{t.expansion}</h4>
                   <p className="text-muted-foreground">
                     {t.expansionDesc}
@@ -84,7 +84,7 @@ const About = () => {
                   <span className="text-white text-sm font-bold">3</span>
                 </div>
                 <div className="ml-0 md:ml-auto md:pl-8 md:w-1/2 md:text-right pr-4">
-                  <h3 className="text-xl font-bold mb-2 text-ev-blue">2022</h3>
+                  <h3 className="text-xl font-bold mb-2 text-ev-blue">2025</h3>
                   <h4 className="font-semibold mb-2">{t.innovation}</h4>
                   <p className="text-muted-foreground">
                     {t.innovationDesc}
@@ -97,7 +97,7 @@ const About = () => {
                   <span className="text-white text-sm font-bold">4</span>
                 </div>
                 <div className="md:ml-8 md:w-1/2 md:text-left pl-4">
-                  <h3 className="text-xl font-bold mb-2 text-ev-blue">2023</h3>
+                  <h3 className="text-xl font-bold mb-2 text-ev-blue">2025</h3>
                   <h4 className="font-semibold mb-2">{t.recognition}</h4>
                   <p className="text-muted-foreground">
                     {t.recognitionDesc}
@@ -110,7 +110,7 @@ const About = () => {
                   <span className="text-ev-charcoal text-sm font-bold">5</span>
                 </div>
                 <div className="ml-0 md:ml-auto md:pl-8 md:w-1/2 md:text-right pr-4">
-                  <h3 className="text-xl font-bold mb-2 text-ev-accent">2024</h3>
+                  <h3 className="text-xl font-bold mb-2 text-ev-accent">2025</h3>
                   <h4 className="font-semibold mb-2">{t.todayBeyond}</h4>
                   <p className="text-muted-foreground">
                     {t.todayBeyondDesc}
@@ -244,7 +244,7 @@ const About = () => {
               allowFullScreen
               loading="lazy" 
               referrerPolicy="no-referrer-when-downgrade"
-              title="Empower EV Dealership Location"
+              title="Empower Dealership Location"
             ></iframe>
           </div>
         </div>
@@ -278,7 +278,7 @@ const translations = {
     whoWeAreDesc1: "Empower is the first specialized agency for electric vehicles in Yemen, leading the way to the future in this field. It offers a wide and diverse range of electric cars that meets various preferences and needs, from com- pact city cars to luxurious and high-performance models",
     ourJourney: "Our Journey",
     foundation: "Foundation",
-    foundationDesc: "Empower EV was founded with a vision to make premium electric vehicles more accessible through exceptional service and expertise.",
+    foundationDesc: "Empower was founded with a vision to make premium electric vehicles more accessible through exceptional service and expertise.",
     expansion: "Expansion",
     expansionDesc: "Opened our flagship showroom featuring state-of-the-art facilities and a curated selection of premium electric vehicles.",
     innovation: "Innovation",
@@ -288,11 +288,11 @@ const translations = {
     todayBeyond: "Today & Beyond",
     todayBeyondDesc: "Continuing to grow our inventory with the most advanced electric vehicles and expanding our service offerings to meet the evolving needs of EV owners.",
     ourAchievements: "Our Achievements",
-    achievementsDescription: "Discover the milestones that highlight Empower EV's leadership in sustainable mobility.",
+    achievementsDescription: "Discover the milestones that highlight Empower leadership in sustainable mobility.",
     flagshipShowroom: "Flagship Showroom Opening",
-    flagshipShowroomDesc: "In 2021, we opened our state-of-the-art flagship showroom in Los Angeles, designed to showcase the latest in electric vehicle technology with a focus on customer experience.",
+    flagshipShowroomDesc: "In 2024, we opened our state-of-the-art flagship showroom in Yemen, designed to showcase the latest in electric vehicle technology with a focus on customer experience.",
     evDealershipAward: "EV Dealership of the Year",
-    evDealershipAwardDesc: "Recognized in 2023 as the 'EV Dealership of the Year' for our outstanding service, innovative approach, and commitment to advancing electric mobility.",
+    evDealershipAwardDesc: "Recognized in 2025 as the 'EV Dealership of the Year' for our outstanding service, innovative approach, and commitment to advancing electric mobility.",
     carbonNeutral: "Our Engineers",
     carbonNeutralDesc: "Empower Electric Cars is one of the leading companies with a team of specialized engineers in this field. The team includes engineers with the expertise and skills necessary to efficiently maintain electric vehicles.",
     certificationsTitle: "Our Certifications & Partners",
@@ -306,7 +306,7 @@ const translations = {
     customerExcellenceDesc: "Top-rated customer service with 98% satisfaction rating",
     visitDealership: "Visit Our Dealership",
     ctaTitle: "Ready to Experience the Electric Revolution?",
-    ctaDescription: "Schedule a test drive today and discover why our customers are making the switch to electric vehicles with Empower EV.",
+    ctaDescription: "Schedule a test drive today and discover why our customers are making the switch to electric vehicles with Empower.",
     bookTestDrive: "Book a Test Drive",
     contactUs: "Contact Us",
     quickLinks: "Quick Links",
@@ -323,7 +323,7 @@ const translations = {
     weekdayHours: "9:00 AM - 7:00 PM",
     saturdayHours: "10:00 AM - 6:00 PM",
     sundayHours: "11:00 AM - 4:00 PM",
-    evServices: "EV Services",
+    evServices: "Services",
     chargingSolutions: "Charging Solutions",
     maintenanceService: "Maintenance Service",
     batteryWarranty: "Battery Warranty",
@@ -365,7 +365,7 @@ const translations = {
     whoWeAreDesc1: "إمباور هي أول وكالة متخصصة بالسيارات الكهربائية في اليمن، رائدة في هذا المجال. تقدم تشكيلة واسعة ومتنوعة من السيارات الكهربائية التي تلبي مختلف الأذواق والاحتياجات، من سيارات المدينة الصغيرة إلى السيارات الفاخرة عالية الأداء.",
     ourJourney: "رحلتنا",
     foundation: "التأسيس",
-    foundationDesc: "تأسست Empower EV برؤية لجعل السيارات الكهربائية الفاخرة أكثر سهولة من خلال خدمة وخبرة استثنائية.",
+    foundationDesc: "تأسست Empower برؤية لجعل السيارات الكهربائية الفاخرة أكثر سهولة من خلال خدمة وخبرة استثنائية.",
     expansion: "التوسع",
     expansionDesc: "افتتحنا صالة العرض الرئيسية التي تضم مرافق حديثة ومجموعة مختارة من السيارات الكهربائية الفاخرة.",
     innovation: "الابتكار",
@@ -375,11 +375,11 @@ const translations = {
     todayBeyond: "اليوم وما بعده",
     todayBeyondDesc: "نواصل توسيع مخزوننا بأحدث السيارات الكهربائية وتوسيع خدماتنا لتلبية الاحتياجات المتطورة لمالكي السيارات الكهربائية.",
     ourAchievements: "إنجازاتنا",
-    achievementsDescription: "اكتشف المعالم التي تبرز ريادة Empower EV في التنقل المستدام.",
+    achievementsDescription: "اكتشف المعالم التي تبرز ريادة Empower في التنقل المستدام.",
     flagshipShowroom: "افتتاح صالة العرض الرئيسية",
-    flagshipShowroomDesc: "في عام 2021، افتتحنا صالة عرضنا الرئيسية الحديثة في لوس أنجلوس، المصممة لعرض أحدث ما في تكنولوجيا السيارات الكهربائية مع التركيز على تجربة العملاء.",
+    flagshipShowroomDesc: "في عام 2024، افتتحنا صالة عرضنا الرئيسية الحديثة في اليمن، المصممة لعرض أحدث ما في تكنولوجيا السيارات الكهربائية مع التركيز على تجربة العملاء.",
     evDealershipAward: "وكيل السيارات الكهربائية للعام",
-    evDealershipAwardDesc: "تم الاعتراف بنا في عام 2023 كـ 'وكيل السيارات الكهربائية للعام' لخدمتنا المتميزة، ونهجنا المبتكر، والتزامنا بتطوير التنقل الكهربائي.",
+    evDealershipAwardDesc: "تم الاعتراف بنا في عام 2025 كـ 'وكيل السيارات الكهربائية للعام' لخدمتنا المتميزة، ونهجنا المبتكر، والتزامنا بتطوير التنقل الكهربائي.",
     carbonNeutral: "مهندسونا",
     carbonNeutralDesc: "تُعد شركة إمباور للسيارات الكهربائية من الشركات الرائدة في هذا المجال، حيث تضم فريقًا من المهندسين المتخصصين ذوي الخبرة والمهارات اللازمة لصيانة السيارات الكهربائية بكفاءة.",
     certificationsTitle: "شهاداتنا وشركاؤنا",
@@ -393,7 +393,7 @@ const translations = {
     customerExcellenceDesc: "خدمة عملاء من الدرجة الأولى مع معدل رضا 98%",
     visitDealership: "زوروا وكالتنا",
     ctaTitle: "هل أنت جاهز لتجربة الثورة الكهربائية؟",
-    ctaDescription: "جدولة اختبار قيادة اليوم واكتشف لماذا يتحول عملاؤنا إلى السيارات الكهربائية مع Empower EV.",
+    ctaDescription: "جدولة اختبار قيادة اليوم واكتشف لماذا يتحول عملاؤنا إلى السيارات الكهربائية مع Empower.",
     bookTestDrive: "حجز اختبار قيادة",
     contactUs: "اتصل بنا",
     quickLinks: "روابط سريعة",

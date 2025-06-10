@@ -18,12 +18,10 @@ const translations = {
     location: "Location",
     locationDetails: "ZUBAIRY STREET,<br />IN FRONT OF MINISTRY OF OIL,<br /> SANA’A, REPUBLIC OF YEMEN.",
     businessHours: "Business Hours",
-    mondayFriday: "Monday - Friday:",
-    mondayFridayHours: "9:00 AM - 7:00 PM",
-    saturday: "Saturday:",
-    saturdayHours: "10:00 AM - 6:00 PM",
-    sunday: "Sunday:",
-    sundayHours: "11:00 AM - 4:00 PM",
+    saturdayThursday: "Saturday - Thursday:",
+    saturdayThursdayHours: "8:00 AM - 4:00 PM",
+    friday: "Friday:",
+    fridayHours: "Closed",
     connectWithUs: "Connect With Us",
     sendMessage: "Send Us a Message",
     nameLabel: "Name",
@@ -57,12 +55,10 @@ const translations = {
     location: "الموقع",
     locationDetails: "شارع الزبيري،<br />أمام وزارة النفط،<br />صنعاء - الجمهورية اليمنية",
     businessHours: "ساعات العمل",
-    mondayFriday: "الإثنين - الجمعة:",
-    mondayFridayHours: "9:00 صباحًا - 7:00 مساءً",
-    saturday: "السبت:",
-    saturdayHours: "10:00 صباحًا - 6:00 مساءً",
-    sunday: "الأحد:",
-    sundayHours: "11:00 صباحًا - 4:00 مساءً",
+    saturdayThursday: "السبت - الخميس:",
+    saturdayThursdayHours: "8:00 صباحًا - 4:00 مساءً",
+    friday: "الجمعة:",
+    fridayHours: "مغلق",
     connectWithUs: "تواصلوا معنا",
     sendMessage: "أرسل لنا رسالة",
     nameLabel: "الاسم",
@@ -253,24 +249,17 @@ const Contact = () => {
               <div className="bg-muted p-6 rounded-lg shadow-sm">
                 <div className="grid grid-cols-[1fr,auto] gap-y-3">
                   <div className={`${language === 'ar' ? 'text-right' : 'text-left'} text-muted-foreground`}>
-                    {t.mondayFriday}
+                    {t.saturdayThursday}
                   </div>
                   <div className={`${language === 'ar' ? 'text-left' : 'text-right'}`}>
-                    {t.mondayFridayHours}
+                    {t.saturdayThursdayHours}
                   </div>
 
                   <div className={`${language === 'ar' ? 'text-right' : 'text-left'} text-muted-foreground`}>
-                    {t.saturday}
+                    {t.friday}
                   </div>
                   <div className={`${language === 'ar' ? 'text-left' : 'text-right'}`}>
-                    {t.saturdayHours}
-                  </div>
-
-                  <div className={`${language === 'ar' ? 'text-right' : 'text-left'} text-muted-foreground`}>
-                    {t.sunday}
-                  </div>
-                  <div className={`${language === 'ar' ? 'text-left' : 'text-right'}`}>
-                    {t.sundayHours}
+                    {t.fridayHours}
                   </div>
                 </div>
               </div>
@@ -517,7 +506,7 @@ const Contact = () => {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title={language === "ar" ? "موقع معرض Empower EV" : "Empower EV Dealership Location"}
+              title={language === "ar" ? "موقع معرض Empower" : "Empower Dealership Location"}
             ></iframe>
           </div>
         </div>

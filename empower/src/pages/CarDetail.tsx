@@ -318,15 +318,8 @@ const CarDetail = () => {
                 <span>{t.gallery}</span>
               </button>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setViewMode("spin");
-                }}
-                className={`px-6 py-3 rounded-lg flex items-center gap-2 transition-colors font-medium ${
-                  viewMode === "spin"
-                    ? "bg-ev-blue text-white shadow-lg"
-                    : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
-                } ${language === 'ar' ? 'flex-row-reverse' : ''}`}
+                disabled
+                className={`px-6 py-3 rounded-lg flex items-center gap-2 transition-colors font-medium bg-gray-100 dark:bg-gray-800 text-muted-foreground cursor-not-allowed ${language === 'ar' ? 'flex-row-reverse' : ''}`}
               >
                 <RotateCw size={20} />
                 <span>{t.spinView}</span>
