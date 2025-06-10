@@ -126,7 +126,7 @@ const orderedNavLinks = language === 'ar' ? [...navLinks].reverse() : navLinks;
           <Link to="/" className="flex items-center z-10">
             <motion.img
               src={isDarkMode ? logoDark : logoWhite} // Switch logo based on theme
-              alt="EmpowerEV Logo"
+              alt="Empower Logo"
               className="h-40 w-50 mt-4" // Adjust size as needed
               variants={logoVariants}
             />

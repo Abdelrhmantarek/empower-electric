@@ -437,6 +437,7 @@ const TestDrive = () => {
 
       // Send email via EmailJS
       const emailParams = {
+        email_subject: `New Test Drive Booking for ${selectedCar?.year || "Unknown"} ${selectedCar?.make || "Unknown"} ${selectedCar?.model || "Unknown"}`,
         first_name: formData.firstName,
         last_name: formData.lastName,
         email: formData.email,

@@ -4,6 +4,7 @@ import { useLanguage } from "./Layout";
 import { useState, useEffect } from "react";
 import logoWhite from "../../public/logo/logo.png";
 import logoDark from "../../public/logo/logo-dark.png";
+import emailjs from "@emailjs/browser"; // Import EmailJS
 
 const translations = {
   en: {
@@ -22,7 +23,7 @@ const translations = {
     weekdayHours: "9:00 AM - 7:00 PM",
     saturdayHours: "10:00 AM - 6:00 PM",
     sundayHours: "11:00 AM - 4:00 PM",
-    evServices: "EV Services",
+    evServices: "Services",
     chargingSolutions: "Charging Solutions",
     maintenanceService: "Maintenance Service",
     batteryWarranty: "Battery Warranty",
@@ -31,9 +32,13 @@ const translations = {
     newsletterText: "Subscribe to get the latest news, promotions and EV insights",
     emailPlaceholder: "Your email address",
     subscribe: "Subscribe",
+    subscribing: "Subscribing...",
+    subscriptionSuccess: "Thank you for subscribing!",
+    subscriptionSuccessText: "You’ll receive updates soon.",
+    subscriptionError: "Failed to subscribe. Please try again.",
     allRights: "All rights reserved.",
     sitemap: "Sitemap",
-    aboutUsText: "EmpowerEV is dedicated to providing the best electric vehicle experience with a focus on sustainability, innovation, and customer satisfaction."
+    aboutUsText: "Empower is dedicated to providing the best electric vehicle experience with a focus on sustainability, innovation, and customer satisfaction."
   },
   ar: {
     quickLinks: "روابط سريعة",
@@ -60,9 +65,13 @@ const translations = {
     newsletterText: "اشترك للحصول على آخر الأخبار والعروض ورؤى السيارات الكهربائية",
     emailPlaceholder: "عنوان بريدك الإلكتروني",
     subscribe: "اشترك",
+    subscribing: "جاري الاشتراك...",
+    subscriptionSuccess: "شكراً لاشتراكك!",
+    subscriptionSuccessText: "ستتلقى التحديثات قريبًا.",
+    subscriptionError: "فشل الاشتراك. حاول مرة أخرى.",
     allRights: "جميع الحقوق محفوظة.",
     sitemap: "خريطة الموقع",
-    aboutUsText: "EmpowerEV مكرسة لتوفير أفضل تجربة للسيارات الكهربائية مع التركيز على الاستدامة والابتكار ورضا العملاء."
+    aboutUsText: "Empower مكرسة لتوفير أفضل تجربة للسيارات الكهربائية مع التركيز على الاستدامة والابتكار ورضا العملاء."
   }
 };
 
@@ -75,6 +84,10 @@ export default function Footer() {
   const flexDirection = isRtl ? "flex-row-reverse" : "flex-row";
   const justifyContent = isRtl ? "justify-end" : "justify-start";
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const checkTheme = () => {
@@ -90,6 +103,69 @@ export default function Footer() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    emailjs.init(`${process.env.REACT_APP_EMAILJS_USER_ID}`);
+  }, []);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      // Step 1: Submit to Strapi
+      const response = await fetch(
+        `${process.env.REACT_APP_STRAPI_API_URL}/api/newsletter-subscriptions`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_STRAPI_API_TOKEN}`,
+          },
+          body: JSON.stringify({
+            data: {
+              email,
+            },
+          }),
+        }
+      );
+      const responseData = await response.json();
+      console.log("Response from Strapi:", responseData);
+
+      if (!response.ok) {
+        throw new Error("Failed to submit subscription to Strapi");
+      }
+
+      // Step 2: Send Thank You Email via EmailJS
+      const emailParams = {
+        email_subject: `Newsletter Subscription Confirmation`,
+        car_make: "",
+        email,
+        submission_date: new Date().toLocaleString(language === "ar" ? "ar-SA" : "en-US"),
+      };
+
+      await emailjs.send(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_TESTDRIVE_ID,
+        emailParams
+      );
+      console.log("Email sent successfully!");
+
+      // Step 3: Update UI
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      setEmail("");
+
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 3000);
+    } catch (error: any) {
+      console.error("Error during subscription:", error);
+      setError(error.message || t.subscriptionError);
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <footer className="bg-gradient-to-br from-ev-charcoal to-ev-blue-dark text-white">
       <div className="container mx-auto px-4 md:px-8 pt-8 pb-4">
@@ -100,7 +176,7 @@ export default function Footer() {
               <div className="relative">
                 <img
                   src={logoDark}
-                  alt="EmpowerEV Logo"
+                  alt="Empower Logo"
                   className={`h-48 w-60 ${isRtl ? 'ml-auto' : 'mr-auto'}`}
                 />
               </div>
@@ -208,14 +284,34 @@ export default function Footer() {
               {t.newsletterText}
             </p>
             <div className={`flex flex-col space-y-2.5 ${isRtl ? 'items-end' : 'items-start'}`}>
-              <input 
-                type="email" 
-                placeholder={t.emailPlaceholder}
-                className={`bg-white/10 px-4 py-2.5 rounded-lg border-0 placeholder:text-gray-400 text-white focus:ring-2 focus:ring-ev-accent text-sm ${textAlign}`}
-              />
-              <button className="bg-ev-accent hover:bg-ev-accent-dark text-ev-charcoal font-medium py-2.5 px-5 rounded-lg transition-all duration-300">
-                {t.subscribe}
-              </button>
+              {isSubmitted ? (
+                <div className="text-center w-full">
+                  <p className="text-green-400 text-sm font-medium">{t.subscriptionSuccess}</p>
+                  <p className="text-gray-300 text-xs">{t.subscriptionSuccessText}</p>
+                </div>
+              ) : error ? (
+                <p className="text-red-500 text-sm text-center w-full">{error}</p>
+              ) : (
+                <form onSubmit={handleSubscribe} className="w-full">
+                  <input
+                    type="email"
+                    placeholder={t.emailPlaceholder}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className={`bg-white/10 px-4 py-2.5 rounded-lg border-0 placeholder:text-gray-400 text-white focus:ring-2 focus:ring-ev-accent text-sm ${textAlign}`}
+                    required
+                  />
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`bg-ev-accent hover:bg-ev-accent-dark text-ev-charcoal font-medium py-2.5 px-5 rounded-lg transition-all duration-300 mt-2 w-full ${
+                      isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    {isSubmitting ? t.subscribing : t.subscribe}
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>
@@ -225,7 +321,7 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className={`flex flex-col md:flex-row ${flexDirection} justify-between items-center space-y-2 md:space-y-0`}>
           <p className={`text-xs text-gray-400 font-medium ${textAlign}`}>
-            © {currentYear} EmpowerEV. {t.allRights}
+            © {currentYear} Empower. {t.allRights}
           </p>
         </div>
       </div>

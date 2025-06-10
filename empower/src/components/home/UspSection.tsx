@@ -5,7 +5,7 @@ import { useLanguage } from "../Layout";
 
 const translations = {
   en: {
-    title: "Why Choose Empower EV?",
+    title: "Why Choose Empower?",
     pointOne: {
       title: "EV Expertise",
       description: "Our team of certified EV specialists has extensive knowledge of electric vehicle technology, ensuring you receive expert guidance."
@@ -23,7 +23,7 @@ const translations = {
       description: "We offer comprehensive home charging installation services and guidance on public charging networks."
     },
     learnMore: "Learn More About Us",
-    testimonial: "Empower EV provided an exceptional experience from start to finish. Their knowledge and passion for electric vehicles was evident throughout the process.",
+    testimonial: "Empower provided an exceptional experience from start to finish. Their knowledge and passion for electric vehicles was evident throughout the process.",
     customer: "— Michael T., Satisfied Customer"
   },
   ar: {
@@ -143,7 +143,7 @@ export default function UspSection() {
         <div className="relative h-[600px] rounded-xl overflow-hidden group perspective">
           <img
             src="https://images.unsplash.com/photo-1571987502227-9231b837d92a?q=80&w=2070&auto=format&fit=crop"
-            alt="Empower EV Dealership"
+            alt="Empower Dealership"
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">

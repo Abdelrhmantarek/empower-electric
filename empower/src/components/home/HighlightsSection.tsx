@@ -20,7 +20,7 @@ export default function HighlightsSection() {
       const formattedHighlights = cars.map(car => ({
         id: car.id,
         name: `${car.make} ${car.model}`,
-        subtitle: car.shortDescription.split(" ").slice(0, 2).join(" ") || "Featured EV",
+        subtitle: car.shortDescription.split(" ").slice(0, 2).join(" ") || "Featured",
         image: car.mainImage,
         description: car.shortDescription,
         specs: {
@@ -28,6 +28,7 @@ export default function HighlightsSection() {
           acceleration: car.specs.acceleration,
           topSpeed: car.specs.topSpeed,
         },
+        colors: car.colors, // Include colors array from the car data
       })).filter(car => car.image);
       setCarHighlights(formattedHighlights);
     };
@@ -88,7 +89,7 @@ export default function HighlightsSection() {
             </h2>
             <div className="h-1 w-32 bg-gradient-to-r from-ev-accent to-ev-blue mx-auto rounded-full animate-scale-in"></div>
           </div>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mt-6 animate-fade-in" style={{ animationDelay: "0.3s" }}>
             {t.discoverModels}
           </p>
         </div>
@@ -179,6 +180,18 @@ export default function HighlightsSection() {
                                 {t.viewDetails}
                                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                               </span>
+                              {car.colors && car.colors.length > 0 && (
+                                <div className="flex gap-2">
+                                  {car.colors.map((color, colorIndex) => (
+                                    <div
+                                      key={colorIndex}
+                                      className="w-10 h-10 rounded-full border border-gray-300"
+                                      style={{ backgroundColor: color.value }}
+                                      title={color.name}
+                                    />
+                                  ))}
+                                </div>
+                              )}
                             </div>
                           )}
                         </div>
