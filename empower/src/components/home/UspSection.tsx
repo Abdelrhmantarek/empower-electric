@@ -20,11 +20,7 @@ const translations = {
     },
     learnMore: "Learn More About Us",
     testimonial: "Empower provided an exceptional experience from start to finish. Their knowledge and passion for electric vehicles was evident throughout the process.",
-<<<<<<< HEAD
-    customer: "— Michael T."
-=======
-    customer: "— Michael T., Satisfied Customer"
->>>>>>> 72c200473ef1165debb70c70f0cd66e7fdc12867
+    customer: "— Amar Ahmed."
   },
   ar: {
     title: "لماذا تختار إمباور إي في؟",
