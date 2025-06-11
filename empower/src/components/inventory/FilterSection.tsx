@@ -341,24 +341,6 @@ const FilterSection: React.FC<FilterSectionProps> = ({
                 </div>
               </motion.div>
 
-              {/* Color Filter */}
-              <motion.div variants={inputVariants} whileHover="hover">
-                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                  {t.color}
-                </label>
-                <select
-                  value={filters.color}
-                  onChange={(e) => handleFilterChange("color", e.target.value)}
-                  className="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
-                >
-                  {colors.map((color) => (
-                    <option key={color} value={color}>
-                      {color === "all" ? t.all : color}
-                    </option>
-                  ))}
-                </select>
-              </motion.div>
-
               {/* Year Filter */}
               <motion.div variants={inputVariants} whileHover="hover">
                 <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
