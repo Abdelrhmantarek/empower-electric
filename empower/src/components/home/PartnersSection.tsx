@@ -1,11 +1,8 @@
-
 import { motion } from "framer-motion";
 import { useLanguage } from "../Layout";
-import byd from "../../../public/partners/byd.png";
-import rivian from "../../../public/partners/rivian.png";
-import lucid from "../../../public/partners/lucid.png";
-import polestar from "../../../public/partners/polestar.png";
-import nio from "../../../public/partners/nio.png";
+import gac from "../../../public/partners/gac.png";
+import aion from "../../../public/partners/aion.png";
+import hyptec from "../../../public/partners/hyptec.png";
 
 const translations = {
   en: {
@@ -18,32 +15,19 @@ const translations = {
   }
 };
 
-// Add partner logos here - these are placeholder URLs that should be replaced with actual logos
 const partners = [
   {
-    name: "Tesla",
-    logo: "https://www.freepnglogos.com/uploads/tesla-logo-png-20.png"
+    name: "GAC MOTOR",
+    logo: gac
   },
   {
-    name: "BYD",
-    logo: byd
+    name: "AION",
+    logo: aion
   },
   {
-    name: "Rivian",
-    logo: rivian
+    name: "HYPTEC",
+    logo: hyptec
   },
-  {
-    name: "Lucid Motors",
-    logo: lucid
-  },
-  {
-    name: "Polestar",
-    logo: polestar
-  },
-  {
-    name: "NIO",
-    logo: nio
-  }
 ];
 
 export default function PartnersSection() {
@@ -81,11 +65,11 @@ export default function PartnersSection() {
         </motion.p>
       </div>
       
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+      <div className="flex flex-wrap justify-center gap-8">
         {partners.map((partner, index) => (
           <motion.div
             key={partner.name}
-            className="flex flex-col items-center"
+            className="flex flex-col items-center w-40 md:w-48 lg:w-56"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -105,7 +89,6 @@ export default function PartnersSection() {
         ))}
       </div>
       
-      {/* Animated connection lines */}
       <div className="relative h-20 mt-12">
         <motion.div 
           className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-ev-blue/30 to-transparent"
