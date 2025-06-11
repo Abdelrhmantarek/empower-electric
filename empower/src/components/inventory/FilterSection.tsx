@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlidersHorizontal, X, Search } from "lucide-react";
 import { useLanguage } from "@/components/Layout";
-import { Car } from "@/data/cars";
+// Correctly import the data fetching function and Car type
+import { fetchCars, Car } from "@/data/cars";
 
 interface FilterSectionProps {
   onFilterChange: (filters: any) => void;
@@ -104,39 +105,36 @@ const FilterSection: React.FC<FilterSectionProps> = ({
   const [sort, setSort] = useState("featured");
   const [search, setSearch] = useState("");
 
-  // Sample data for filters (in a real app, this would come from cars data)
-  const makes = [
-    "all",
-    "Tesla",
-    "Rivian",
-    "Lucid",
-    "BMW",
-    "Mercedes",
-    "Porsche",
-    "Audi",
-  ];
-  const models = [
-    "all",
-    "Model S",
-    "Model 3",
-    "Model Y",
-    "R1T",
-    "Air",
-    "i4",
-    "Taycan",
-    "e-tron",
-  ];
-  const colors = [
-    "all",
-    "Black",
-    "White",
-    "Red",
-    "Blue",
-    "Silver",
-    "Green",
-    "Gray",
-  ];
-  const years = ["all", "2025", "2024", "2023", "2022", "2021", "2020"];
+  // State to hold dynamic filter options
+  const [makes, setMakes] = useState<string[]>(["all"]);
+  const [models, setModels] = useState<string[]>(["all"]);
+  const [years, setYears] = useState<(string | number)[]>(["all"]);
+
+  // Fetch data on component mount
+  useEffect(() => {
+    const loadCarDataForFilters = async () => {
+      const carData = await fetchCars();
+      if (carData && carData.length > 0) {
+        // Create unique lists for filters using Set to avoid duplicates
+        const uniqueMakes = ["all", ...Array.from(new Set(carData.map(car => car.make)))];
+        const uniqueModels = ["all", ...Array.from(new Set(carData.map(car => car.model).filter(model => model)))]; // Filter out empty models
+        const uniqueYears = ["all", ...Array.from(new Set(carData.map(car => car.year)))].sort((a, b) => {
+            if (a === 'all') return -1;
+            if (b === 'all') return 1;
+            return +b - +a; // Sort years in descending order
+        });
+
+        setMakes(uniqueMakes);
+        setModels(uniqueModels);
+        setYears(uniqueYears);
+      }
+    };
+
+    loadCarDataForFilters();
+  }, []);
+
+
+  // Static data for other filters
   const drivetrains = ["all", "awd", "rwd", "fwd"];
 
   useEffect(() => {
@@ -151,8 +149,18 @@ const FilterSection: React.FC<FilterSectionProps> = ({
     onSearchChange(search);
   }, [search, onSearchChange]);
 
+  // THIS IS THE FIXED FUNCTION
   const handleFilterChange = (key: string, value: string) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
+    // By default, the value is a string
+    let processedValue: string | number = value;
+
+    // If we are changing the 'year' filter AND the value is a valid number
+    if (key === 'year' && !isNaN(Number(value))) {
+        // ...then we convert it into a number before saving it.
+        processedValue = Number(value);
+    }
+    
+    setFilters((prev) => ({ ...prev, [key]: processedValue }));
   };
 
   const handleClearFilters = () => {
@@ -187,65 +195,65 @@ const FilterSection: React.FC<FilterSectionProps> = ({
   return (
     <div className="mb-8">
       <motion.div
-  className="flex items-center justify-between mb-6 space-x-4 rtl:space-x-reverse"
-  initial={{ opacity: 0, y: 10 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.3 }}
->
-  {isRtl ? (
-    <>
-      <motion.button
-        onClick={() => setIsFilterOpen(!isFilterOpen)}
-        className="flex items-center space-x-2 bg-ev-blue text-white px-5 py-3 rounded-xl hover:bg-ev-blue/90 transition-all duration-200 dark:bg-ev-blue/80 dark:hover:bg-ev-blue"
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
+        className="flex items-center justify-between mb-6 space-x-4 rtl:space-x-reverse"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
       >
-        <SlidersHorizontal className="h-5 w-5" />
-        <span>{t.filters}</span>
-      </motion.button>
-      <div className="relative flex-1 max-w-md">
-        <Search className="absolute top-1/2 transform -translate-y-1/2 right-3 h-5 w-5 text-gray-400 dark:text-gray-500" />
-        <motion.input
-          type="text"
-          placeholder={t.search}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className={`w-full pr-10 pl-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200 ${
-            isRtl ? "text-right" : ""
-          }`}
-          variants={inputVariants}
-          whileHover="hover"
-          whileFocus="focus"
-        />
-      </div>
-    </>
-  ) : (
-    <>
-      <div className="relative flex-1 max-w-md">
-        <Search className="absolute top-1/2 transform -translate-y-1/2 left-3 h-5 w-5 text-gray-400 dark:text-gray-500" />
-        <motion.input
-          type="text"
-          placeholder={t.search}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className={`w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200 ${
-            isRtl ? "text-right" : ""
-          }`}
-          variants={inputVariants}
-          whileHover="hover"
-          whileFocus="focus"
-            />
-          </div>
-          <motion.button
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="flex items-center space-x-2 bg-ev-blue text-white px-5 py-3 rounded-xl hover:bg-ev-blue/90 transition-all duration-200 dark:bg-ev-blue/80 dark:hover:bg-ev-blue"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            <SlidersHorizontal className="h-5 w-5" />
-            <span>{t.filters}</span>
-          </motion.button>
-        </>
+        {isRtl ? (
+          <>
+            <motion.button
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              className="flex items-center space-x-2 bg-ev-blue text-white px-5 py-3 rounded-xl hover:bg-ev-blue/90 transition-all duration-200 dark:bg-ev-blue/80 dark:hover:bg-ev-blue"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              <SlidersHorizontal className="h-5 w-5" />
+              <span>{t.filters}</span>
+            </motion.button>
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute top-1/2 transform -translate-y-1/2 right-3 h-5 w-5 text-gray-400 dark:text-gray-500" />
+              <motion.input
+                type="text"
+                placeholder={t.search}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className={`w-full pr-10 pl-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200 ${
+                  isRtl ? "text-right" : ""
+                }`}
+                variants={inputVariants}
+                whileHover="hover"
+                whileFocus="focus"
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute top-1/2 transform -translate-y-1/2 left-3 h-5 w-5 text-gray-400 dark:text-gray-500" />
+              <motion.input
+                type="text"
+                placeholder={t.search}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className={`w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200 ${
+                  isRtl ? "text-right" : ""
+                }`}
+                variants={inputVariants}
+                whileHover="hover"
+                whileFocus="focus"
+              />
+            </div>
+            <motion.button
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              className="flex items-center space-x-2 bg-ev-blue text-white px-5 py-3 rounded-xl hover:bg-ev-blue/90 transition-all duration-200 dark:bg-ev-blue/80 dark:hover:bg-ev-blue"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              <SlidersHorizontal className="h-5 w-5" />
+              <span>{t.filters}</span>
+            </motion.button>
+          </>
         )}
       </motion.div>
 
@@ -380,33 +388,6 @@ const FilterSection: React.FC<FilterSectionProps> = ({
                     value={filters.batteryMax}
                     onChange={(e) =>
                       handleFilterChange("batteryMax", e.target.value)
-                    }
-                    className="w-1/2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
-                  />
-                </div>
-              </motion.div>
-
-              {/* Charging Speed */}
-              <motion.div variants={inputVariants} whileHover="hover">
-                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                  {t.charging}
-                </label>
-                <div className="flex space-x-3 rtl:space-x-reverse">
-                  <input
-                    type="number"
-                    placeholder={t.minCharging}
-                    value={filters.chargingMin}
-                    onChange={(e) =>
-                      handleFilterChange("chargingMin", e.target.value)
-                    }
-                    className="w-1/2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
-                  />
-                  <input
-                    type="number"
-                    placeholder={t.maxCharging}
-                    value={filters.chargingMax}
-                    onChange={(e) =>
-                      handleFilterChange("chargingMax", e.target.value)
                     }
                     className="w-1/2 p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
                   />
