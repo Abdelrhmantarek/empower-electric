@@ -259,7 +259,7 @@ export const fetchCars = async (): Promise<Car[]> => {
         id: item.id.toString(),
         make: item.make,
         model: item.model,
-        year: item.year,     
+        year: parseInt(item.year, 10), // Ensure year is a number
         description: parseDescription(item.description), // Parse rich text to string
         shortDescription: item.shortDescription,
         colors: item.colors

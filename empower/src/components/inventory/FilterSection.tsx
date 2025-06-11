@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlidersHorizontal, X, Search } from "lucide-react";
 import { useLanguage } from "@/components/Layout";
-// Correctly import the data fetching function and Car type
+// This code assumes the fetchCars function now returns cars with `year` as a number.
 import { fetchCars, Car } from "@/data/cars";
 
 interface FilterSectionProps {
@@ -95,7 +95,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
     rangeMin: "",
     rangeMax: "",
     color: "all",
-    year: "all",
+    year: "all" as string | number, // Explicitly type to handle "all" or a number
     batteryMin: "",
     batteryMax: "",
     chargingMin: "",
@@ -105,23 +105,20 @@ const FilterSection: React.FC<FilterSectionProps> = ({
   const [sort, setSort] = useState("featured");
   const [search, setSearch] = useState("");
 
-  // State to hold dynamic filter options
   const [makes, setMakes] = useState<string[]>(["all"]);
   const [models, setModels] = useState<string[]>(["all"]);
   const [years, setYears] = useState<(string | number)[]>(["all"]);
 
-  // Fetch data on component mount
   useEffect(() => {
     const loadCarDataForFilters = async () => {
       const carData = await fetchCars();
       if (carData && carData.length > 0) {
-        // Create unique lists for filters using Set to avoid duplicates
         const uniqueMakes = ["all", ...Array.from(new Set(carData.map(car => car.make)))];
-        const uniqueModels = ["all", ...Array.from(new Set(carData.map(car => car.model).filter(model => model)))]; // Filter out empty models
+        const uniqueModels = ["all", ...Array.from(new Set(carData.map(car => car.model).filter(Boolean)))];
         const uniqueYears = ["all", ...Array.from(new Set(carData.map(car => car.year)))].sort((a, b) => {
-            if (a === 'all') return -1;
-            if (b === 'all') return 1;
-            return +b - +a; // Sort years in descending order
+          if (a === 'all') return -1;
+          if (b === 'all') return 1;
+          return +b - +a;
         });
 
         setMakes(uniqueMakes);
@@ -133,8 +130,6 @@ const FilterSection: React.FC<FilterSectionProps> = ({
     loadCarDataForFilters();
   }, []);
 
-
-  // Static data for other filters
   const drivetrains = ["all", "awd", "rwd", "fwd"];
 
   useEffect(() => {
@@ -149,18 +144,18 @@ const FilterSection: React.FC<FilterSectionProps> = ({
     onSearchChange(search);
   }, [search, onSearchChange]);
 
-  // THIS IS THE FIXED FUNCTION
   const handleFilterChange = (key: string, value: string) => {
-    // By default, the value is a string
-    let processedValue: string | number = value;
+    setFilters((prev) => {
+      const newFilters = { ...prev };
 
-    // If we are changing the 'year' filter AND the value is a valid number
-    if (key === 'year' && !isNaN(Number(value))) {
-        // ...then we convert it into a number before saving it.
-        processedValue = Number(value);
-    }
-    
-    setFilters((prev) => ({ ...prev, [key]: processedValue }));
+      if (key === 'year') {
+        newFilters.year = value === 'all' ? 'all' : Number(value);
+      } else {
+        (newFilters as any)[key] = value;
+      }
+      
+      return newFilters;
+    });
   };
 
   const handleClearFilters = () => {
@@ -355,7 +350,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
                   {t.year}
                 </label>
                 <select
-                  value={filters.year}
+                  value={String(filters.year)}
                   onChange={(e) => handleFilterChange("year", e.target.value)}
                   className="w-full p-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-ev-blue transition-all duration-200"
                 >
