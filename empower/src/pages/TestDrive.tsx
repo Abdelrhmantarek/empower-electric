@@ -440,7 +440,7 @@ const TestDrive = () => {
         email_subject: `New Test Drive Booking for ${selectedCar?.year || "Unknown"} ${selectedCar?.make || "Unknown"} ${selectedCar?.model || "Unknown"}`,
         first_name: formData.firstName,
         last_name: formData.lastName,
-        email: formData.email,
+        email: "info@emtiazpower.com",
         phone: formData.phone,
         car_make: selectedCar?.make || "Unknown",
         car_model: selectedCar?.model || "Unknown",

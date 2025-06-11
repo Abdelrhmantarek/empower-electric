@@ -147,7 +147,7 @@ const Contact = () => {
           form_type: "Contact Us Submission",
           subject_or_car: formData.subject || "No Subject",
           name: formData.name,
-          email: formData.email,
+          email: "info@emtiazpower.com",
           phone: formData.phone || "Not provided",
           inquiry_label: t.subjectLabel, // Use translated label
           inquiry_type: formData.subject,

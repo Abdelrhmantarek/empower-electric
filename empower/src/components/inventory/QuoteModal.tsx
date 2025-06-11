@@ -138,7 +138,7 @@ export default function QuoteModal({ car, isOpen, onClose }: QuoteModalProps) {
         form_type: "New Quote Request",
         subject_or_car: `${car.make} ${car.model}`, // For the subject line
         name: formData.name,
-        email: formData.email,
+        email: "info@emtiazpower.com",
         phone: formData.phone || "Not provided",
         inquiry_label: "Inquiry Type", // Or use a translated label if needed
         inquiry_type: "Quote Request",
