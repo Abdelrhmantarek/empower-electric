@@ -297,7 +297,7 @@ export default function Footer() {
                     placeholder={t.emailPlaceholder}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className={`bg-white/10 px-4 py-2.5 rounded-lg border-0 placeholder:text-gray-400 text-white focus:ring-2 focus:ring-ev-accent text-sm ${textAlign}`}
+                    className={`w-full bg-white/10 px-5 py-2.5 rounded-lg border-0 placeholder:text-gray-400 text-white focus:ring-2 focus:ring-ev-accent text-sm ${textAlign}`}
                     required
                   />
                   <button
