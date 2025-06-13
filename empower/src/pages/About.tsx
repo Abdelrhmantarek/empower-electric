@@ -6,6 +6,8 @@ import first_about from "../../public/about/first_about_us.png";
 import second_about from "../../public/about/second_about_us.png";
 import third_about from "../../public/about/third_about_us.png";
 import { useLanguage } from "@/components/Layout"; // Add useLanguage hook
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+
 
 const About = () => {
   const { language } = useLanguage(); // Add language context
@@ -35,10 +37,16 @@ const About = () => {
             </p>
           </div>
           <div className="relative h-[400px] rounded-xl overflow-hidden">
-            <img
+            {/* <img
               src={mission}
               alt="Empower Team"
               className="w-full h-full object-cover"
+            / */}
+
+            <DotLottieReact
+              src="https://lottie.host/534dc64d-7935-47cc-8f6e-70caa1e11fa9/Bbqc6erIBS.lottie"
+              loop
+              autoplay
             />
           </div>
         </div>

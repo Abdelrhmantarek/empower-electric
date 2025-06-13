@@ -444,11 +444,15 @@ const CarDetail = () => {
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">{t.delivery}</span>
-                      <span className="font-medium">{car.specs.delivery}</span>
+                      <span className="font-medium">
+                        {language === "ar" ? car.specs.delivery_ar : car.specs.delivery_en}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">{t.warranty}</span>
-                      <span className="font-medium">{car.specs.warranty}</span>
+                      <span className="font-medium">
+                        {language === "ar" ? car.specs.warranty_ar : car.specs.warranty_en}
+                      </span>
                     </div>
                     {/* <div className="flex justify-between">
                       <span className="text-muted-foreground">Financing</span>

@@ -204,8 +204,10 @@ export interface Car {
     power: string;
     battery: string;
     seating: string;
-    warranty: string; 
-    delivery?: string; 
+    warranty_en: string; 
+    delivery_en?: string; 
+    warranty_ar?: string;
+    delivery_ar?: string;
   };
   images: string[];
   featured: boolean;
