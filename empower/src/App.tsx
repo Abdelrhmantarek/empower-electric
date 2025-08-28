@@ -70,14 +70,14 @@ const App = () => {
                 </PageTransitionWrapper>
               }
             />
-            <Route
+            {/* <Route
               path="/test-drive"
               element={
                 <PageTransitionWrapper>
                   <TestDrive />
                 </PageTransitionWrapper>
               }
-            />
+            /> */}
             <Route
               path="/about"
               element={

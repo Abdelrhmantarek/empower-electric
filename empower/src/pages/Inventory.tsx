@@ -3,8 +3,7 @@ import Layout from "@/components/Layout";
 import CarCard from "@/components/inventory/CarCard";
 import FilterSection from "@/components/inventory/FilterSection";
 import { fetchCars, Car } from "@/data/cars";
-import { Link } from "react-router-dom";
-import { Grid, List } from "lucide-react";
+import { Grid, List, Search } from "lucide-react";
 import { useLanguage } from "@/components/Layout";
 import { motion } from "framer-motion";
 import QuoteModal from "@/components/inventory/QuoteModal";
@@ -19,8 +18,8 @@ const translations = {
     adjustFilters: "Try adjusting your filters or search criteria",
     resetFilters: "Reset Filters",
     testDriveHeading: "Want to test drive one of our vehicles?",
-    bookTestDrive: "Book a Test Drive",
     loading: "Loading...",
+    searchPlaceholder: "Search here...",
   },
   ar: {
     title: "معرضنا",
@@ -31,27 +30,67 @@ const translations = {
     adjustFilters: "حاول تعديل الفلاتر أو معايير البحث الخاصة بك",
     resetFilters: "إعادة ضبط الفلاتر",
     testDriveHeading: "هل تريد تجربة قيادة إحدى سياراتنا؟",
-    bookTestDrive: "احجز تجربة قيادة",
     loading: "جار التحميل...",
+    searchPlaceholder: "ابحث هنا...",
   },
 };
 
+const SearchBar = ({ onSearchChange, language, isRtl, resetFilters, setResetFilters }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const t = translations[language];
+
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value);
+    onSearchChange(e.target.value);
+  };
+
+  // listen for reset filters
+  useEffect(() => {
+    if (resetFilters) {
+      setSearchQuery("");
+      onSearchChange("");
+      setResetFilters(false);
+    }
+  }, [resetFilters, onSearchChange, setResetFilters]);
+
+  return (
+    <motion.div
+      className="mb-8 w-full max-w-2xl mx-auto"
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="relative">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleInputChange}
+          placeholder={t.searchPlaceholder}
+          className={`w-full p-4 pr-12 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-ev-blue ${
+            isRtl ? "text-right" : "text-left"
+          }`}
+        />
+        <Search className="absolute top-1/2 transform -translate-y-1/2 right-4 h-5 w-5 text-gray-400" />
+      </div>
+    </motion.div>
+  );
+};
+
 const Inventory = () => {
-  const [filteredCars, setFilteredCars] = useState<Car[]>([]);
-  const [allCars, setAllCars] = useState<Car[]>([]); // Store all cars fetched from Strapi
+  const [filteredCars, setFilteredCars] = useState([]);
+  const [allCars, setAllCars] = useState([]);
   const [isGridView, setIsGridView] = useState(true);
-  const [activeFilters, setActiveFilters] = useState<any>({});
+  const [activeFilters, setActiveFilters] = useState({});
   const [activeSort, setActiveSort] = useState("featured");
   const [searchQuery, setSearchQuery] = useState("");
   const [resetFilters, setResetFilters] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
   const { language } = useLanguage();
   const t = translations[language];
   const isRtl = language === "ar";
-  const [selectedCarForQuote, setSelectedCarForQuote] = useState<Car | null>(null);
+  const [selectedCarForQuote, setSelectedCarForQuote] = useState(null);
 
-  // Fetch cars when component mounts
   useEffect(() => {
     const loadCars = async () => {
       setIsLoading(true);
@@ -59,7 +98,7 @@ const Inventory = () => {
       try {
         const carsData = await fetchCars();
         setAllCars(carsData);
-        setFilteredCars(carsData); // Initially, filtered cars are all cars
+        setFilteredCars(carsData);
       } catch (err) {
         setError("Failed to load inventory. Please try again later.");
       } finally {
@@ -69,67 +108,46 @@ const Inventory = () => {
     loadCars();
   }, []);
 
-  const applyFilters = (filters: any, sort: string, search: string) => {
+  const applyFilters = (filters, sort, search) => {
     let result = [...allCars];
 
-    // Apply make filter
     if (filters.make && filters.make !== "all") {
       result = result.filter((car) => car.make === filters.make);
     }
-
-    // Apply model filter
     if (filters.model && filters.model !== "all") {
       result = result.filter((car) => car.model === filters.model);
     }
-
-    // Apply range filter
     if (filters.rangeMin) {
       result = result.filter(
-        (car) =>
-          parseInt(car.specs.range) >= Number(filters.rangeMin)
+        (car) => parseInt(car.specs.range) >= Number(filters.rangeMin)
       );
     }
     if (filters.rangeMax) {
       result = result.filter(
-        (car) =>
-          parseInt(car.specs.range) <= Number(filters.rangeMax)
+        (car) => parseInt(car.specs.range) <= Number(filters.rangeMax)
       );
     }
-
-    // Apply color filter
     if (filters.color && filters.color !== "all") {
       result = result.filter((car) =>
         car.colors.some((color) => color.name === filters.color)
       );
     }
-
-    // Apply year filter
     if (filters.year && filters.year !== "all") {
       result = result.filter((car) => car.year === Number(filters.year));
     }
-
-    // Apply battery capacity filter
     if (filters.batteryMin) {
       result = result.filter(
-        (car) =>
-          parseInt(car.specs.battery) >= Number(filters.batteryMin)
+        (car) => parseInt(car.specs.battery) >= Number(filters.batteryMin)
       );
     }
     if (filters.batteryMax) {
       result = result.filter(
-        (car) =>
-          parseInt(car.specs.battery) <= Number(filters.batteryMax)
+        (car) => parseInt(car.specs.battery) <= Number(filters.batteryMax)
       );
     }
-
-    // Apply drivetrain filter
     if (filters.drivetrain && filters.drivetrain !== "all") {
-      result = result.filter(
-        (car) => car.drivetrain === filters.drivetrain
-      );
+      result = result.filter((car) => car.drivetrain === filters.drivetrain);
     }
-
-    // Apply search filter
     if (search) {
       const searchLower = search.toLowerCase();
       result = result.filter(
@@ -140,7 +158,6 @@ const Inventory = () => {
       );
     }
 
-    // Apply sorting
     switch (sort) {
       case "range-high":
         result.sort((a, b) => parseInt(b.specs.range) - parseInt(a.specs.range));
@@ -161,19 +178,20 @@ const Inventory = () => {
     setSearchQuery(search);
   };
 
-  const handleFilterChange = (filters: any) => {
+  const handleFilterChange = (filters) => {
     applyFilters(filters, activeSort, searchQuery);
   };
 
-  const handleSortChange = (sort: string) => {
+  const handleSortChange = (sort) => {
     applyFilters(activeFilters, sort, searchQuery);
   };
 
-  const handleSearchChange = (search: string) => {
+  const handleSearchChange = (search) => {
     applyFilters(activeFilters, activeSort, search);
   };
 
   const handleResetFilters = () => {
+    setSearchQuery('');
     setResetFilters(true);
     setActiveFilters({
       make: "all",
@@ -214,7 +232,7 @@ const Inventory = () => {
     return (
       <Layout>
         <div className="section-container flex justify-center items-center h-96">
-          <div className="animate-pulse text-xl">{t.loading || "Loading..."}</div>
+          <div className="animate-pulse text-xl">{t.loading}</div>
         </div>
       </Layout>
     );
@@ -242,6 +260,13 @@ const Inventory = () => {
   return (
     <Layout>
       <div className="section-container">
+        <SearchBar
+          onSearchChange={handleSearchChange}
+          language={language}
+          isRtl={isRtl}
+          resetFilters={resetFilters}
+          setResetFilters={setResetFilters}
+        />
         <motion.div
           className={`mb-8 ${isRtl ? "text-right" : ""}`}
           initial={{ opacity: 0, y: 20 }}
@@ -260,12 +285,11 @@ const Inventory = () => {
           <p className="text-lg text-muted-foreground">{t.subtitle}</p>
         </motion.div>
 
-        <FilterSection
+        {/* <FilterSection
           onFilterChange={handleFilterChange}
           onSortChange={handleSortChange}
-          onSearchChange={handleSearchChange}
           // reset={resetFilters}
-        />
+        /> */}
 
         <motion.div
           className="mb-8"
@@ -347,7 +371,7 @@ const Inventory = () => {
               isGridView
                 ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
                 : "grid-cols-1"
-            } ${isRtl ? "rtl:grid-rtl" : ""}`}  // Add this custom class
+            } ${isRtl ? "rtl:grid-rtl" : ""}`}
           >
             {filteredCars.map((car, index) => (
               <motion.div
@@ -355,10 +379,10 @@ const Inventory = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className={`w-full ${isRtl ? "rtl:text-right" : ""}`}  // Ensure full width and text alignment
+                className={`w-full ${isRtl ? "rtl:text-right" : ""}`}
               >
-                <CarCard 
-                  car={car} 
+                <CarCard
+                  car={car}
                   onRequestQuote={() => setSelectedCarForQuote(car)}
                 />
               </motion.div>
@@ -366,26 +390,14 @@ const Inventory = () => {
           </div>
         )}
 
-        <motion.div
-          className="mt-20 text-center bg-ev-blue/5 p-10 rounded-xl border border-ev-blue/10"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <h3 className="text-xl font-bold mb-4">{t.testDriveHeading}</h3>
-          <Link to="/test-drive" className="button-primary">
-            {t.bookTestDrive}
-          </Link>
-        </motion.div>
+        {selectedCarForQuote && (
+          <QuoteModal
+            car={selectedCarForQuote}
+            isOpen={!!selectedCarForQuote}
+            onClose={() => setSelectedCarForQuote(null)}
+          />
+        )}
       </div>
-      {selectedCarForQuote && (
-        <QuoteModal
-          car={selectedCarForQuote}
-          isOpen={!!selectedCarForQuote}
-          onClose={() => setSelectedCarForQuote(null)}
-        />
-      )}
     </Layout>
   );
 };

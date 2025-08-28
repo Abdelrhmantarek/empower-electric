@@ -80,7 +80,7 @@ const translations = {
     acceleration: "0-60 ميل في الساعة",
     seating: "المقاعد",
     requestQuote: "طلب عرض سعر",
-    bookTestDrive: "حجز تجربة قيادة",
+    // bookTestDrive: "حجز تجربة قيادة",
     delivery: "التوصيل",
     warranty: "الضمان",
     technicalSpecs: "المواصفات الفنية",
@@ -424,7 +424,7 @@ const CarDetail = () => {
                     <ChevronRight className={`w-5 h-5 group-hover:translate-x-1 transition-transform ${language === 'ar' ? 'rotate-180' : ''}`} />
                   </motion.button>
 
-                  <motion.button
+                  {/* <motion.button
                     onClick={(e) =>
                       handleNavigation(e, `/test-drive?car=${car.id}`)
                     }
@@ -436,7 +436,7 @@ const CarDetail = () => {
                     <ChevronRight 
                       className={`w-5 h-5 group-hover:translate-x-1 transition-transform ${language === 'ar' ? 'rotate-180' : ''}`} 
                     />
-                  </motion.button>
+                  </motion.button> */}
                 </div>
 
                 {/* Quick Info */}
@@ -942,7 +942,7 @@ const CarDetail = () => {
                 {t.requestQuote}
               </motion.button>
 
-              <motion.button
+              {/* <motion.button
                 onClick={(e) =>
                   handleNavigation(e, `/test-drive?car=${car.id}`)
                 }
@@ -951,7 +951,7 @@ const CarDetail = () => {
                 whileTap={{ scale: 0.98 }}
               >
                 {t.bookTestDrive}
-              </motion.button>
+              </motion.button> */}
             </div>
           </motion.div>
         </motion.div>

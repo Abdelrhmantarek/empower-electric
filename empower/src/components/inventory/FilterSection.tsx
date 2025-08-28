@@ -13,7 +13,7 @@ interface FilterSectionProps {
 
 const translations = {
   en: {
-    filters: "Filters",
+    // filters: "Filters",
     search: "Search Electric Vehicles...",
     make: "Manufacturer",
     model: "Model",
@@ -46,7 +46,7 @@ const translations = {
     },
   },
   ar: {
-    filters: "الفلاتر",
+    // filters: "الفلاتر",
     search: "ابحث عن السيارات الكهربائية...",
     make: "الصانع",
     model: "الطراز",
@@ -197,7 +197,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
       >
         {isRtl ? (
           <>
-            <motion.button
+            {/* <motion.button
               onClick={() => setIsFilterOpen(!isFilterOpen)}
               className="flex items-center space-x-2 bg-ev-blue text-white px-5 py-3 rounded-xl hover:bg-ev-blue/90 transition-all duration-200 dark:bg-ev-blue/80 dark:hover:bg-ev-blue"
               whileHover={{ scale: 1.03 }}
@@ -205,7 +205,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
             >
               <SlidersHorizontal className="h-5 w-5" />
               <span>{t.filters}</span>
-            </motion.button>
+            </motion.button> */}
             <div className="relative flex-1 max-w-md">
               <Search className="absolute top-1/2 transform -translate-y-1/2 right-3 h-5 w-5 text-gray-400 dark:text-gray-500" />
               <motion.input
@@ -239,7 +239,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
                 whileFocus="focus"
               />
             </div>
-            <motion.button
+            {/* <motion.button
               onClick={() => setIsFilterOpen(!isFilterOpen)}
               className="flex items-center space-x-2 bg-ev-blue text-white px-5 py-3 rounded-xl hover:bg-ev-blue/90 transition-all duration-200 dark:bg-ev-blue/80 dark:hover:bg-ev-blue"
               whileHover={{ scale: 1.03 }}
@@ -247,7 +247,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
             >
               <SlidersHorizontal className="h-5 w-5" />
               <span>{t.filters}</span>
-            </motion.button>
+            </motion.button> */}
           </>
         )}
       </motion.div>
@@ -263,9 +263,9 @@ const FilterSection: React.FC<FilterSectionProps> = ({
             className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
           >
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              {/* <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 {t.filters}
-              </h3>
+              </h3> */}
               <motion.button
                 onClick={() => setIsFilterOpen(false)}
                 whileHover={{ scale: 1.05 }}

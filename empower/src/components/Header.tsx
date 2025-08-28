@@ -14,14 +14,14 @@ const translations = {
   en: {
     home: "Home",
     inventory: "Inventory",
-    testDrive: "Book a Test Drive",
+    // testDrive: "Book a Test Drive",
     about: "About Us",
     contact: "Contact"
   },
   ar: {
     home: "الرئيسية",
     inventory: "المعرض",
-    testDrive: "حجز تجربة قيادة",
+    // testDrive: "حجز تجربة قيادة",
     about: "من نحن",
     contact: "اتصل بنا"
   }
@@ -73,7 +73,7 @@ export default function Header({ transparentHeader = false }: HeaderProps) {
   const navLinks = [
   { name: translations[language].home, path: "/" },
   { name: translations[language].inventory, path: "/inventory" },
-  { name: translations[language].testDrive, path: "/test-drive" },
+  // { name: translations[language].testDrive, path: "/test-drive" },
   { name: translations[language].about, path: "/about" },
   { name: translations[language].contact, path: "/contact" },
 ];

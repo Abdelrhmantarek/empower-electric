@@ -222,12 +222,12 @@ export default function Footer() {
                   <span>{t.inventory}</span>
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/test-drive" className={`text-gray-200 hover:text-ev-accent transition-colors flex items-center ${flexDirection} gap-1.5 text-sm font-medium`}>
                   <ChevronRight className={`h-4 w-4 text-ev-accent ${isRtl ? 'rotate-180' : ''}`} />
                   <span>{t.testDrive}</span>
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link to="/about" className={`text-gray-200 hover:text-ev-accent transition-colors flex items-center ${flexDirection} gap-1.5 text-sm font-medium`}>
                   <ChevronRight className={`h-4 w-4 text-ev-accent ${isRtl ? 'rotate-180' : ''}`} />

@@ -98,6 +98,7 @@ export default function HighlightsSection() {
           <div className="flex items-center justify-center min-h-[700px]" onMouseMove={handleMouseMove}>
             <div className="relative w-full flex items-center justify-center gap-8 overflow-visible">
               {carHighlights.map((car, index) => {
+                if (car.name === "GAC GS3") return null;
                 const isActive = index === activeIndex;
                 const isPrev = index === (activeIndex - 1 + carHighlights.length) % carHighlights.length;
                 const isNext = index === (activeIndex + 1) % carHighlights.length;
@@ -180,7 +181,7 @@ export default function HighlightsSection() {
                                 {t.viewDetails}
                                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                               </span>
-                              {car.colors && car.colors.length > 0 && (
+                              {/* {car.colors && car.colors.length > 0 && (
                                 <div className="flex gap-2">
                                   {car.colors.map((color, colorIndex) => (
                                     <div
@@ -191,7 +192,7 @@ export default function HighlightsSection() {
                                     />
                                   ))}
                                 </div>
-                              )}
+                              )} */}
                             </div>
                           )}
                         </div>
@@ -269,20 +270,20 @@ const translations = {
   en: {
     featuredModels: "Featured Models",
     discoverModels: "Discover our premium selection of cutting-edge electric vehicles that redefine the future of transportation",
-    title: "Drive The <span>Future</span> Today",
+    title: "Launch <span>Toward the Future</span>",
     description: "Experience premium electric vehicles with cutting-edge technology, exceptional performance, and zero emissions.",
     exploreButton: "Explore Our Stock",
-    testDriveButton: "Book a Test Drive",
+    // testDriveButton: "Book a Test Drive",
     scrollIndicator: "Scroll down to explore",
     viewDetails: "View Details"
   },
   ar: {
-    featuredModels: "النماذج المميزة",
+    featuredModels: "موديلاتنا",
     discoverModels: "اكتشف مجموعتنا المميزة من السيارات الكهربائية المتطورة التي تعيد تعريف مستقبل النقل",
-    title: "قد <span>المستقبل</span> اليوم",
+    title: "انطلق <span>نحو المستقبل</span>",
     description: "استمتع بتجربة السيارات الكهربائية الفاخرة مع تكنولوجيا متطورة، أداء استثنائي، وانبعاثات صفرية.",
     exploreButton: "استكشف مخزوننا",
-    testDriveButton: "احجز تجربة قيادة",
+    // testDriveButton: "احجز تجربة قيادة",
     scrollIndicator: "مرر لأسفل لاستكشاف المزيد",
     viewDetails: "عرض التفاصيل"
   }

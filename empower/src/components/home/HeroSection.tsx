@@ -6,17 +6,17 @@ import video from "../../../public/hero/hero-video.mp4";
 
 const translations = {
   en: {
-    title: "Drive The <span>Future</span> Today",
+    title: "Launch <span>Toward the Future</span>",
     description: "Experience premium electric vehicles with cutting-edge technology, exceptional performance, and zero emissions.",
-    exploreButton: "Explore Our Stock",
-    testDriveButton: "Book a Test Drive",
+    exploreButton: "Choose Your Car",
+    // testDriveButton: "Book a Test Drive",
     scrollIndicator: "Scroll down to explore"
   },
   ar: {
-    title: "قد <span>المستقبل</span> اليوم",
+    title: "انطلق <span>نحو المستقبل</span>",
     description: "استمتع بتجربة السيارات الكهربائية الفاخرة مع تكنولوجيا متطورة، أداء استثنائي، وانبعاثات صفرية.",
-    exploreButton: "استكشف مخزوننا",
-    testDriveButton: "احجز تجربة قيادة",
+    exploreButton: "اختر سيارتك",
+    // testDriveButton: "احجز تجربة قيادة",
     scrollIndicator: "مرر لأسفل لاستكشاف المزيد"
   }
 };
@@ -58,9 +58,9 @@ export default function HeroSection() {
               {t.exploreButton}
               <ArrowRight className={`ml-2 h-5 w-5 transition-transform group-hover:translate-x-1 ${language === "ar" ? "rotate-180" : ""}`} />
             </Link>
-            <Link to="/test-drive" className="button-secondary">
+            {/* <Link to="/test-drive" className="button-secondary">
               {t.testDriveButton}
-            </Link>
+            </Link> */}
           </div>
           {/* Animated Car */}
           {/* <div className="absolute bottom-16 right-0 transform translate-x-1/2 opacity-0 animate-slide-up" style={{ animationDelay: "0.8s", animationFillMode: "forwards" }}>

@@ -6,14 +6,14 @@ const translations = {
   en: {
     title: "Ready to Experience Electric Driving?",
     description: "Schedule a test drive today and discover the thrill of electric vehicles. Our expert consultants are ready to guide you through the entire experience.",
-    testDriveButton: "Book a Test Drive",
-    inventoryButton: "Browse Our Inventory"
+    // testDriveButton: "Book a Test Drive",
+    // inventoryButton: "Browse Our Inventory"
   },
   ar: {
     title: "هل أنت مستعد لتجربة القيادة الكهربائية؟",
     description: "احجز تجربة قيادة اليوم واكتشف إثارة السيارات الكهربائية. مستشارونا الخبراء مستعدون لإرشادك خلال التجربة بأكملها.",
-    testDriveButton: "احجز تجربة قيادة",
-    inventoryButton: "تصفح مخزوننا"
+    // testDriveButton: "احجز تجربة قيادة",
+    // inventoryButton: "تصفح مخزوننا"
   }
 };
 
@@ -36,12 +36,12 @@ export default function CtaSection() {
             {t.description}
           </p>
           <div className={`flex flex-col sm:flex-row gap-4 justify-center ${isRtl ? "flex-row-reverse" : ""}`}>
-            <Link to="/test-drive" className="button-accent transform hover:scale-105 transition-transform">
+            {/* <Link to="/test-drive" className="button-accent transform hover:scale-105 transition-transform">
               {t.testDriveButton}
-            </Link>
-            <Link to="/inventory" className="bg-transparent border border-white text-white hover:bg-white hover:text-ev-blue font-medium py-3 px-6 rounded-md transition-all duration-300 inline-flex items-center justify-center transform hover:scale-105">
+            </Link> */}
+            {/* <Link to="/inventory" className="bg-transparent border border-white text-white hover:bg-white hover:text-ev-blue font-medium py-3 px-6 rounded-md transition-all duration-300 inline-flex items-center justify-center transform hover:scale-105">
               {t.inventoryButton}
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

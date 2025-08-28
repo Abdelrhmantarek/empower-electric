@@ -245,7 +245,7 @@ const About = () => {
           <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">{t.visitDealership}</h2>
           <div className="aspect-video rounded-lg overflow-hidden border">
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1260.1689281125423!2d44.18200892451583!3d15.342873411917235!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1603db6ebb561185%3A0x1128d2408a881041!2sEmpower%20Cars!5e1!3m2!1sen!2seg!4v1749565058758!5m2!1sen!2seg"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1612.5400721808412!2d44.182942322737865!3d15.343114092101953!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1603db6ebb561185%3A0x1128d2408a881041!2sEmpower%20Cars!5e0!3m2!1sen!2sjo!4v1756384712761!5m2!1sen!2sjo"
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -264,10 +264,10 @@ const About = () => {
             {t.ctaDescription}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/test-drive" className="button-accent">
+            {/* <Link to="/test-drive" className="button-accent">
               {t.bookTestDrive}
-            </Link>
-            <Link to="/contact" className="bg-transparent border border-white text-white hover:bg-white hover:text-ev-blue font-medium py-3 px-6 rounded-md transition-all duration-300 inline-flex items-center justify-center">
+            </Link> */}
+            <Link to="/contact" className="button-accent">
               {t.contactUs}
             </Link>
           </div>
@@ -358,7 +358,7 @@ const translations = {
     reducedNoisePollutionDesc: "Enjoy a quieter, more peaceful driving experience with electric vehicles' near-silent operation.",
     taxIncentives: "Tax Incentives",
     taxIncentivesDesc: "Take advantage of federal and state tax credits and incentives designed to encourage EV adoption.",
-    title: "Drive The <span>Future</span> Today",
+    title: "Launch <span>Toward the Future</span>",
     description: "Experience premium electric vehicles with cutting-edge technology, exceptional performance, and zero emissions.",
     exploreButton: "Explore Our Stock",
     testDriveButton: "Book a Test Drive",
@@ -407,7 +407,7 @@ const translations = {
     quickLinks: "روابط سريعة",
     home: "الرئيسية",
     inventory: "المخزون",
-    testDrive: "حجز تجربة قيادة",
+    // testDrive: "حجز تجربة قيادة",
     about: "من نحن",
     contact: "اتصل بنا",
     address: "١٢٣ شارع السيارات الكهربائية، المدينة الكهربائية، EC 12345",
@@ -445,10 +445,10 @@ const translations = {
     reducedNoisePollutionDesc: "استمتع بتجربة قيادة هادئة ومريحة أكثر مع تشغيل السيارات الكهربائية الهادئ جدًا.",
     taxIncentives: "حوافز ضريبية",
     taxIncentivesDesc: "استفد من الائتمانات الضريبية الفيدرالية والولائية والحوافز المصممة لتشجيع اعتماد السيارات الكهربائية.",
-    title: "قد <span>المستقبل</span> اليوم",
+    title: "انطلق <span>نحو المستقبل</span>",
     description: "استمتع بتجربة السيارات الكهربائية الفاخرة مع تكنولوجيا متطورة، أداء استثنائي، وانبعاثات صفرية.",
     exploreButton: "استكشف مخزوننا",
-    testDriveButton: "احجز تجربة قيادة",
+    // testDriveButton: "احجز تجربة قيادة",
     scrollIndicator: "مرر لأسفل لاستكشاف المزيد",
     featuredModels: "النماذج المميزة",
     discoverModels: "اكتشف مجموعتنا المميزة من السيارات الكهربائية المتطورة التي تعيد تعريف مستقبل النقل"

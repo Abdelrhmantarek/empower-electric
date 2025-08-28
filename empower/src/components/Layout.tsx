@@ -32,7 +32,7 @@ export const LanguageContext = createContext<LanguageContextType>({
 
 export const useLanguage = () => {
   const [language, setLanguage] = useState<'en' | 'ar'>(
-    () => (localStorage.getItem('preferredLanguage') as 'en' | 'ar') || 'en'
+    () => (localStorage.getItem('preferredLanguage') as 'en' | 'ar') || 'ar'
   );
 
   // This effect ensures all components get the updated language immediately
@@ -57,8 +57,24 @@ export default function Layout({
   transparentHeader = false,
   noFooter = false,
 }: LayoutProps) {
-  const [language, setLanguage] = useState<Language>("en");
+  const [language, setLanguage] = useState<'en' | 'ar'>(
+    () => (localStorage.getItem('preferredLanguage') as 'en' | 'ar') || 'ar'
+  );
   const [initialLoading, setInitialLoading] = useState(true);
+
+  // This effect ensures all components get the updated language immediately
+  useEffect(() => {
+    const updateLanguage = () => {
+      const lang = localStorage.getItem('preferredLanguage') as 'en' | 'ar';
+      if (lang && lang !== language) {
+        setLanguage(lang);
+      }
+    };
+
+    // Custom event listener for language changes
+    window.addEventListener('languageChange', updateLanguage);
+    return () => window.removeEventListener('languageChange', updateLanguage);
+  }, [language]);
 
   // Show initial loader for 1 second
   useEffect(() => {
