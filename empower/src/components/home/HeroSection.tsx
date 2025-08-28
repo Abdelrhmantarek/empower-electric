@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { useLanguage } from "../Layout";
 import video from "../../../public/hero/hero-video.mp4";
+import hero_img from "../../../public/cars/hero.jpg";
 
 const translations = {
   en: {
@@ -29,19 +30,12 @@ export default function HeroSection() {
     <section className="relative h-[85vh] min-h-[600px] overflow-hidden bg-ev-charcoal">
       {/* Hero Background Video */}
       <div className="absolute inset-0 z-0">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
+        {/* Remove the video and add an image instead */}
+        <img 
+          src={hero_img}
+          alt="Electric Car" 
           className="w-full h-full object-cover"
-        >
-          <source 
-            src={video}
-            type="video/mp4" 
-          />
-          Your browser does not support the video tag.
-        </video>
+        />
       </div>
       
       {/* Hero Content */}
